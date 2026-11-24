@@ -28,5 +28,9 @@
       "@/*": ["./src/*"]
     }
   },
+  // @if storybook
+  "include": ["src", ".storybook"]
+  // @else
   "include": ["src"]
+  // @endif
 }

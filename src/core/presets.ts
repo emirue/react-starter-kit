@@ -34,7 +34,18 @@ const STANDARD = [
 
 const ADMIN = [...STANDARD, "tanstack-table", "admin-layout"]
 
-const ENTERPRISE = [...ADMIN, "orval", "msw", "playwright", "docker", "github-actions", "codeql", "env-validation", "error-boundary"]
+const ENTERPRISE = [
+  ...ADMIN,
+  "orval",
+  "msw",
+  "playwright",
+  "storybook",
+  "docker",
+  "github-actions",
+  "codeql",
+  "env-validation",
+  "error-boundary",
+]
 
 export const PRESETS: PresetDef[] = [
   { id: "minimal", name: "Minimal", description: "React, Vite, TypeScript and ESLint", features: MINIMAL },
@@ -43,7 +54,7 @@ export const PRESETS: PresetDef[] = [
   {
     id: "enterprise",
     name: "Enterprise",
-    description: "Admin plus Orval, MSW, Playwright, Docker, CI and CodeQL",
+    description: "Admin plus Orval, MSW, Playwright, Storybook, Docker, CI and CodeQL",
     features: ENTERPRISE,
   },
   { id: "custom", name: "Custom", description: "Start from Standard and pick features yourself", features: STANDARD },

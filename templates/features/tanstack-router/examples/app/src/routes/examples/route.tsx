@@ -1,36 +1,7 @@
 // @if example-pages
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router"
+import { createFileRoute } from "@tanstack/react-router"
 
-export const Route = createFileRoute("/examples")({
-  component: ExamplesLayout,
-})
+import { ExamplesLayout } from "@/app/layouts/examples-layout"
 
-/** A nested layout: its child routes render into <Outlet />. */
-function ExamplesLayout() {
-  const linkClass =
-    "rounded-md border px-3 py-1.5 text-sm transition-colors hover:bg-muted data-[status=active]:bg-muted data-[status=active]:font-medium"
-  return (
-    <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 py-10">
-      <h1 className="text-3xl font-semibold tracking-tight">Examples</h1>
-      <nav aria-label="Examples" className="flex flex-wrap gap-2">
-        {/* @if tanstack-query */}
-        <Link to="/examples/todos" className={linkClass}>
-          Server state
-        </Link>
-        {/* @endif */}
-        {/* @if forms-example */}
-        <Link to="/examples/sign-up" className={linkClass}>
-          Forms
-        </Link>
-        {/* @endif */}
-        {/* @if zustand */}
-        <Link to="/examples/counter" className={linkClass}>
-          Client state
-        </Link>
-        {/* @endif */}
-      </nav>
-      <Outlet />
-    </div>
-  )
-}
+export const Route = createFileRoute("/examples")({ component: ExamplesLayout })
 // @endif

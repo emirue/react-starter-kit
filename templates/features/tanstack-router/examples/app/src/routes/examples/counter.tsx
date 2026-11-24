@@ -1,9 +1,7 @@
 // @if zustand
 import { createFileRoute } from "@tanstack/react-router"
 
-import { Counter } from "@/features/counter/components/counter"
+import { CounterPage } from "@/pages/counter-example"
 
-export const Route = createFileRoute("/examples/counter")({
-  component: Counter,
-})
+export const Route = createFileRoute("/examples/counter")({ component: CounterPage })
 // @endif

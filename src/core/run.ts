@@ -103,7 +103,7 @@ function printReview(config: ProjectConfig, target: Target, files: string[], cha
     config.features.includes("shadcn")
       ? `UI:               shadcn/ui ${config.ui.base === "base" ? "Base UI" : "Radix UI"}, ${config.ui.style}`
       : undefined,
-    `Examples:         ${config.examples ? "included" : "not included"}`,
+    `Examples:         ${config.examples ? "included" : config.features.some((f) => f.endsWith("-router")) ? "not included" : "not included (examples need a router)"}`,
     `Files to create:  ${files.length}`,
     changes.length ? `Existing files to modify:\n${changes.map((c) => `  - ${c}`).join("\n")}` : undefined,
     `Plan:             ${steps.join(" → ")}`,
@@ -396,6 +396,8 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
   const next = [
     cd !== "." ? `cd ${/\s/.test(cd) ? JSON.stringify(cd) : cd}` : undefined,
     !installed ? PM[pm].install.join(" ") : undefined,
+    // The app imports the generated client, which only exists after generation.
+    !installed && config.features.includes("orval") ? `${PM[pm].run} api:generate` : undefined,
     config.mode === "standalone" ? `${PM[pm].run} dev` : PM[pm].filterRun(target.appName, "dev"),
   ].filter(Boolean)
 

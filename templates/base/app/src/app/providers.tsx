@@ -7,16 +7,20 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 // @endif
 import type { ReactNode } from "react"
 
+// @if tanstack-query
+import { createQueryClient } from "@/shared/api/query-client"
+// @endif
 // @if theme
-import { ThemeProvider } from "@/components/theme/theme-provider"
+import { ThemeProvider } from "@/shared/lib/theme"
 // @endif
 // @if admin-layout
-import { Toaster } from "@/components/ui/sonner"
-// @endif
-// @if tanstack-query
-import { queryClient } from "@/lib/query-client"
+import { Toaster } from "@/shared/ui/sonner"
 // @endif
 
+// @if tanstack-query
+const queryClient = createQueryClient()
+
+// @endif
 /** Every app-wide provider lives here, once. */
 export function AppProviders({ children }: { children: ReactNode }) {
   return (

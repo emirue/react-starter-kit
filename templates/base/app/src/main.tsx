@@ -2,9 +2,9 @@ import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 
 import "./index.css"
-import { App } from "./App.tsx"
+import { App } from "./app/app.tsx"
 // @if error-boundary
-import { ErrorBoundary } from "./components/error-boundary.tsx"
+import { ErrorBoundary } from "./app/error-boundary.tsx"
 // @endif
 
 const container = document.getElementById("root")

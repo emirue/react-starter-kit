@@ -3,6 +3,9 @@
 // @endif
 import { resolve } from "node:path"
 
+// @if storybook
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin"
+// @endif
 // @if tanstack-router
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 // @endif
@@ -10,6 +13,9 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import tailwindcss from "@tailwindcss/vite"
 // @endif
 import react from "@vitejs/plugin-react"
+// @if storybook
+import { playwright } from "@vitest/browser-playwright"
+// @endif
 // @if vite-proxy
 import { defineConfig, loadEnv } from "vite"
 // @else
@@ -51,7 +57,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    // @if vitest
+    // @if vitest && !storybook
     test: {
       environment: "jsdom",
       // @if testing-library || msw || theme
@@ -60,6 +66,35 @@ export default defineConfig(({ mode }) => {
       include: ["src/**/*.test.{ts,tsx}"],
       css: true,
       passWithNoTests: true,
+    },
+    // @endif
+    // @if storybook
+    test: {
+      passWithNoTests: true,
+      projects: [
+        {
+          // `test` and `test:run`: unit and component tests in jsdom.
+          extends: true,
+          test: {
+            name: "unit",
+            environment: "jsdom",
+            // @if testing-library || msw || theme
+            setupFiles: ["./src/test/setup.ts"],
+            // @endif
+            include: ["src/**/*.test.{ts,tsx}"],
+            css: true,
+          },
+        },
+        {
+          // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
+          extends: true,
+          plugins: [storybookTest({ configDir: resolve(import.meta.dirname, ".storybook") })],
+          test: {
+            name: "storybook",
+            browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
+          },
+        },
+      ],
     },
     // @endif
   }
@@ -86,7 +121,7 @@ export default defineConfig({
       "@": resolve(import.meta.dirname, "./src"),
     },
   },
-  // @if vitest
+  // @if vitest && !storybook
   test: {
     environment: "jsdom",
     // @if testing-library || msw || theme
@@ -95,6 +130,35 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     css: true,
     passWithNoTests: true,
+  },
+  // @endif
+  // @if storybook
+  test: {
+    passWithNoTests: true,
+    projects: [
+      {
+        // `test` and `test:run`: unit and component tests in jsdom.
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "jsdom",
+          // @if testing-library || msw || theme
+          setupFiles: ["./src/test/setup.ts"],
+          // @endif
+          include: ["src/**/*.test.{ts,tsx}"],
+          css: true,
+        },
+      },
+      {
+        // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
+        extends: true,
+        plugins: [storybookTest({ configDir: resolve(import.meta.dirname, ".storybook") })],
+        test: {
+          name: "storybook",
+          browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
+        },
+      },
+    ],
   },
   // @endif
 })
