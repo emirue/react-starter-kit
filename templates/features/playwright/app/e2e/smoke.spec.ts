@@ -112,6 +112,31 @@ test("switches to dark mode and remembers it", async ({ page }) => {
 })
 // @endif
 
+// @if admin-layout
+
+test("the settings page collapses the desktop sidebar", async ({ page }) => {
+  await page.goto("/settings")
+  await settle(page)
+  const sidebar = page.locator('[data-slot="sidebar"][data-state]')
+  await expect(sidebar).toHaveAttribute("data-state", "expanded")
+  await page.getByRole("button", { name: "Collapse sidebar" }).click()
+  await expect(sidebar).toHaveAttribute("data-state", "collapsed")
+  await expect(page.getByRole("button", { name: "Expand sidebar" })).toBeVisible()
+})
+
+test.describe("settings on a phone", () => {
+  test.use({ viewport: { width: 375, height: 812 } })
+
+  // Below md the sidebar is a sheet opened from the header; a desktop toggle would do nothing.
+  test("has no sidebar collapse button", async ({ page }) => {
+    await page.goto("/settings")
+    await settle(page)
+    await expect(page.getByRole("heading", { level: 1, name: "Settings" })).toBeVisible()
+    await expect(page.getByRole("button", { name: /^(Collapse|Expand) sidebar$/ })).toHaveCount(0)
+  })
+})
+// @endif
+
 test.describe("on a 375 px wide screen", () => {
   test.use({ viewport: { width: 375, height: 812 } })
 

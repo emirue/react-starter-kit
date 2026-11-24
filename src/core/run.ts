@@ -393,12 +393,14 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
 
   const failed = results.some((r) => r.status === "failed")
   const cd = rel(cwd, config.mode === "existing-workspace" ? target.rootDir : target.rootDir)
+  const appScript = (script: string) =>
+    config.mode === "standalone" ? `${PM[pm].run} ${script}` : PM[pm].filterRun(target.appName, script)
   const next = [
     cd !== "." ? `cd ${/\s/.test(cd) ? JSON.stringify(cd) : cd}` : undefined,
     !installed ? PM[pm].install.join(" ") : undefined,
     // The app imports the generated client, which only exists after generation.
-    !installed && config.features.includes("orval") ? `${PM[pm].run} api:generate` : undefined,
-    config.mode === "standalone" ? `${PM[pm].run} dev` : PM[pm].filterRun(target.appName, "dev"),
+    !installed && config.features.includes("orval") ? appScript("api:generate") : undefined,
+    appScript("dev"),
   ].filter(Boolean)
 
   if (failed) {
