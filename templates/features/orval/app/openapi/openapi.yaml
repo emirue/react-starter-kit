@@ -1,0 +1,103 @@
+openapi: 3.1.0
+info:
+  title: {{appName}} API
+  version: 0.1.0
+  description: Local sample specification. Replace it with your backend's OpenAPI document.
+servers:
+  - url: /api
+paths:
+  /todos:
+    get:
+      operationId: listTodos
+      tags: [todos]
+      parameters:
+        - name: filter
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [all, open, done]
+      responses:
+        "200":
+          description: Todos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Todo"
+    post:
+      operationId: createTodo
+      tags: [todos]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewTodo"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+  /todos/{id}:
+    patch:
+      operationId: updateTodo
+      tags: [todos]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TodoPatch"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Todo"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Todo:
+      type: object
+      required: [id, title, done]
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        done:
+          type: boolean
+    NewTodo:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+          minLength: 1
+    TodoPatch:
+      type: object
+      properties:
+        done:
+          type: boolean
+    Error:
+      type: object
+      required: [message]
+      properties:
+        message:
+          type: string

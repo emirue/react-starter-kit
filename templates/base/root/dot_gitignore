@@ -1,0 +1,40 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+*.tsbuildinfo
+# @if turbo
+.turbo
+# @endif
+# @if tanstack-router
+.tanstack
+# @endif
+# @if playwright
+test-results
+playwright-report
+blob-report
+# @endif
+# @if vitest
+coverage
+# @endif
+
+# Local environment files (may contain secrets)
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and OS files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sw?

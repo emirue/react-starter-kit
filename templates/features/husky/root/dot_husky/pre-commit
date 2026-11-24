@@ -1,0 +1,9 @@
+# @if lint-staged
+{{pmExec}} lint-staged
+# @else
+# @if eslint
+{{pmRun}} lint
+# @else
+{{pmRun}} typecheck
+# @endif
+# @endif

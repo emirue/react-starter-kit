@@ -1,0 +1,13 @@
+# @if workspace
+# Used by BuildKit when building with -f {{appDir}}/Dockerfile from the workspace root.
+**/node_modules
+**/dist
+**/.turbo
+.git
+**/.env.local
+**/.env.*.local
+**/coverage
+**/playwright-report
+**/test-results
+*.log
+# @endif

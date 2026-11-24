@@ -1,0 +1,20 @@
+dist
+coverage
+node_modules
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lock
+# @if tanstack-router
+src/routeTree.gen.ts
+# @endif
+# @if msw
+public/mockServiceWorker.js
+# @endif
+# @if orval
+src/api/generated
+# @endif
+# @if playwright
+playwright-report
+test-results
+# @endif

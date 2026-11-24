@@ -1,0 +1,55 @@
+{
+  "name": "create-produx-app",
+  "version": "0.1.0",
+  "description": "Interactive CLI that scaffolds verified React + Vite + TypeScript projects, standalone or inside a monorepo.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "create-produx-app": "./dist/index.mjs"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "typescript",
+    "scaffold",
+    "create",
+    "monorepo",
+    "cli"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "prepack": "pnpm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.15.0",
+    "globals": "17.14.0",
+    "playwright": "1.65.1",
+    "prettier": "3.10.1",
+    "tsdown": "0.23.7",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.74.0",
+    "vitest": "5.1.1"
+  },
+  "dependencies": {
+    "@clack/prompts": "1.9.0",
+    "commander": "15.1.0",
+    "execa": "10.2.1",
+    "zod": "4.6.7"
+  }
+}

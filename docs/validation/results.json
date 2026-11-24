@@ -1,0 +1,2166 @@
+{
+  "scenarios": {
+    "minimal": {
+      "scenario": "minimal",
+      "args": [
+        "minimal",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app minimal --preset minimal --yes",
+          "exitCode": 0,
+          "ms": 11322
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "minimal"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard": {
+      "scenario": "standard",
+      "args": [
+        "standard"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard --yes",
+          "exitCode": 0,
+          "ms": 33597
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 505
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=open",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/sign-up",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-no-examples": {
+      "scenario": "standard-no-examples",
+      "args": [
+        "standard-no-examples",
+        "--no-examples"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-no-examples --no-examples --yes",
+          "exitCode": 0,
+          "ms": 30103
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 460
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-no-examples"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-radix-tsr-fetch": {
+      "scenario": "standard-radix-tsr-fetch",
+      "args": [
+        "standard-radix-tsr-fetch",
+        "--ui",
+        "radix",
+        "--router",
+        "tanstack-router",
+        "--features",
+        "+fetch,-axios"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-radix-tsr-fetch --ui radix --router tanstack-router --features +fetch,-axios --yes",
+          "exitCode": 0,
+          "ms": 20803
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 524
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-radix-tsr-fetch"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=done",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-npm": {
+      "scenario": "standard-npm",
+      "args": [
+        "standard-npm",
+        "--package-manager",
+        "npm"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-npm --package-manager npm --yes",
+          "exitCode": 0,
+          "ms": 20827
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "npm run format:check",
+          "exitCode": 0,
+          "ms": 415
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-npm"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-npm-docker-ci": {
+      "scenario": "standard-npm-docker-ci",
+      "args": [
+        "standard-npm-docker-ci",
+        "--package-manager",
+        "npm",
+        "--features",
+        "+docker,+github-actions"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-npm-docker-ci --package-manager npm --features +docker,+github-actions --yes",
+          "exitCode": 0,
+          "ms": 14329
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "npm run format:check",
+          "exitCode": 0,
+          "ms": 438
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "docker build",
+          "status": "PASS",
+          "command": "docker build -f Dockerfile .",
+          "exitCode": 0,
+          "ms": 7140
+        },
+        {
+          "name": "container becomes healthy (HEALTHCHECK)",
+          "status": "PASS",
+          "detail": "healthy"
+        },
+        {
+          "name": "runs as non-root",
+          "status": "PASS",
+          "detail": "uid 101"
+        },
+        {
+          "name": "SPA fallback for deep links",
+          "status": "PASS"
+        },
+        {
+          "name": "hashed assets cached immutably",
+          "status": "PASS"
+        },
+        {
+          "name": "security headers on SPA routes",
+          "status": "PASS"
+        },
+        {
+          "name": "missing asset is a non-cached 404",
+          "status": "PASS"
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "PASS",
+          "command": "actionlint",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-npm-docker-ci"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-bun": {
+      "scenario": "standard-bun",
+      "args": [
+        "standard-bun",
+        "--package-manager",
+        "bun"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-bun --package-manager bun --yes",
+          "exitCode": 0,
+          "ms": 11716
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "bun run format:check",
+          "exitCode": 0,
+          "ms": 373
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "bunx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-bun"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "standard-yarn": {
+      "scenario": "standard-yarn",
+      "args": [
+        "standard-yarn",
+        "--package-manager",
+        "yarn"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-yarn --package-manager yarn --yes",
+          "exitCode": 0,
+          "ms": 24132
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "yarn run format:check",
+          "exitCode": 0,
+          "ms": 567
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-yarn"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "admin-base-react-router": {
+      "scenario": "admin-base-react-router",
+      "args": [
+        "admin-base-react-router",
+        "--preset",
+        "admin",
+        "--ui",
+        "base",
+        "--router",
+        "react-router"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-base-react-router --preset admin --ui base --router react-router --yes",
+          "exitCode": 0,
+          "ms": 20120
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 620
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "admin-base-tanstack-router": {
+      "scenario": "admin-base-tanstack-router",
+      "args": [
+        "admin-base-tanstack-router",
+        "--preset",
+        "admin",
+        "--ui",
+        "base",
+        "--router",
+        "tanstack-router"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-base-tanstack-router --preset admin --ui base --router tanstack-router --yes",
+          "exitCode": 0,
+          "ms": 22190
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 583
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "admin-radix-react-router": {
+      "scenario": "admin-radix-react-router",
+      "args": [
+        "admin-radix-react-router",
+        "--preset",
+        "admin",
+        "--ui",
+        "radix",
+        "--router",
+        "react-router"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-radix-react-router --preset admin --ui radix --router react-router --yes",
+          "exitCode": 0,
+          "ms": 25888
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 566
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "admin-radix-tanstack-router": {
+      "scenario": "admin-radix-tanstack-router",
+      "args": [
+        "admin-radix-tanstack-router",
+        "--preset",
+        "admin",
+        "--ui",
+        "radix",
+        "--router",
+        "tanstack-router"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-radix-tanstack-router --preset admin --ui radix --router tanstack-router --yes",
+          "exitCode": 0,
+          "ms": 36148
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 576
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "enterprise": {
+      "scenario": "enterprise",
+      "args": [
+        "enterprise",
+        "--preset",
+        "enterprise"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app enterprise --preset enterprise --yes",
+          "exitCode": 0,
+          "ms": 53269
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 630
+        },
+        {
+          "name": "test:e2e (Playwright)",
+          "status": "PASS",
+          "command": "pnpm run test:e2e",
+          "exitCode": 0,
+          "ms": 6136
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "docker build",
+          "status": "PASS",
+          "command": "docker build -f Dockerfile .",
+          "exitCode": 0,
+          "ms": 7924
+        },
+        {
+          "name": "container becomes healthy (HEALTHCHECK)",
+          "status": "PASS",
+          "detail": "healthy"
+        },
+        {
+          "name": "runs as non-root",
+          "status": "PASS",
+          "detail": "uid 101"
+        },
+        {
+          "name": "SPA fallback for deep links",
+          "status": "PASS"
+        },
+        {
+          "name": "hashed assets cached immutably",
+          "status": "PASS"
+        },
+        {
+          "name": "security headers on SPA routes",
+          "status": "PASS"
+        },
+        {
+          "name": "missing asset is a non-cached 404",
+          "status": "PASS"
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "PASS",
+          "command": "actionlint",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "enterprise-fetch-tsr-radix": {
+      "scenario": "enterprise-fetch-tsr-radix",
+      "args": [
+        "enterprise-fetch-tsr-radix",
+        "--preset",
+        "enterprise",
+        "--ui",
+        "radix",
+        "--router",
+        "tanstack-router",
+        "--features",
+        "+fetch,-axios"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app enterprise-fetch-tsr-radix --preset enterprise --ui radix --router tanstack-router --features +fetch,-axios --yes",
+          "exitCode": 0,
+          "ms": 26411
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 654
+        },
+        {
+          "name": "test:e2e (Playwright)",
+          "status": "PASS",
+          "command": "pnpm run test:e2e",
+          "exitCode": 0,
+          "ms": 7237
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "docker build",
+          "status": "PASS",
+          "command": "docker build -f Dockerfile .",
+          "exitCode": 0,
+          "ms": 10219
+        },
+        {
+          "name": "container becomes healthy (HEALTHCHECK)",
+          "status": "PASS",
+          "detail": "healthy"
+        },
+        {
+          "name": "runs as non-root",
+          "status": "PASS",
+          "detail": "uid 101"
+        },
+        {
+          "name": "SPA fallback for deep links",
+          "status": "PASS"
+        },
+        {
+          "name": "hashed assets cached immutably",
+          "status": "PASS"
+        },
+        {
+          "name": "security headers on SPA routes",
+          "status": "PASS"
+        },
+        {
+          "name": "missing asset is a non-cached 404",
+          "status": "PASS"
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "PASS",
+          "command": "actionlint",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "admin-no-examples": {
+      "scenario": "admin-no-examples",
+      "args": [
+        "admin-no-examples",
+        "--preset",
+        "admin",
+        "--no-examples"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-no-examples --preset admin --no-examples --yes",
+          "exitCode": 0,
+          "ms": 17491
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 527
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "custom-tooling": {
+      "scenario": "custom-tooling",
+      "args": [
+        "custom-tooling",
+        "--features",
+        "+tanstack-table,+eslint-query,+prettier-tailwind,+husky,+lint-staged,+vite-proxy,+env-validation,+github-actions"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app custom-tooling --features +tanstack-table,+eslint-query,+prettier-tailwind,+husky,+lint-staged,+vite-proxy,+env-validation,+github-actions --yes",
+          "exitCode": 0,
+          "ms": 20493
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "husky hooks installed (core.hooksPath)",
+          "status": "PASS",
+          "detail": ".husky/_"
+        },
+        {
+          "name": "git commit runs lint-staged and succeeds",
+          "status": "PASS",
+          "detail": "data loss.\n\n⋯ Preparing lint-staged…\n✔ Done preparing lint-staged!\n⋯ Running tasks for staged files…\n    *.{ts,tsx,js,jsx} — 50 files\n      ⋯ eslint --fix\n      ⋯ prettier --write\n    *.{json,css,md,html} — 11 files\n      ⋯ prettier --write\n\n✔ prettier --write\n✔ eslint --fix\n✔ prettier --write\n\n✔ Done running tasks for staged files!\n⋯ Staging changes from tasks…\n✔ Done staging changes from tasks!\n"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 656
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "PASS",
+          "command": "actionlint",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "custom-tooling"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "mono-turbo": {
+      "scenario": "mono-turbo",
+      "args": [
+        "mono-turbo",
+        "--mode",
+        "monorepo",
+        "--app-name",
+        "web",
+        "--features",
+        "+pkg-shared,+pkg-types,+pkg-ui"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
+          "exitCode": 0,
+          "ms": 23969
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "single root lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "filtered build (pnpm --filter web build)",
+          "status": "PASS"
+        },
+        {
+          "name": "Turborepo cache hit on rebuild",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 564
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: CSS contains .border-dashed",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "mono-enterprise": {
+      "scenario": "mono-enterprise",
+      "args": [
+        "mono-enterprise",
+        "--mode",
+        "monorepo",
+        "--app-name",
+        "web",
+        "--preset",
+        "enterprise",
+        "--features",
+        "+pkg-shared,+pkg-ui"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app mono-enterprise --mode monorepo --app-name web --preset enterprise --features +pkg-shared,+pkg-ui --yes",
+          "exitCode": 0,
+          "ms": 29166
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "single root lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "filtered build (pnpm --filter web build)",
+          "status": "PASS"
+        },
+        {
+          "name": "Turborepo cache hit on rebuild",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 694
+        },
+        {
+          "name": "test:e2e (Playwright)",
+          "status": "PASS",
+          "command": "pnpm run test:e2e",
+          "exitCode": 0,
+          "ms": 6069
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "docker build",
+          "status": "PASS",
+          "command": "docker build -f mono-enterprise/apps/web/Dockerfile .",
+          "exitCode": 0,
+          "ms": 140662
+        },
+        {
+          "name": "container becomes healthy (HEALTHCHECK)",
+          "status": "PASS",
+          "detail": "healthy"
+        },
+        {
+          "name": "runs as non-root",
+          "status": "PASS",
+          "detail": "uid 101"
+        },
+        {
+          "name": "SPA fallback for deep links",
+          "status": "PASS"
+        },
+        {
+          "name": "hashed assets cached immutably",
+          "status": "PASS"
+        },
+        {
+          "name": "security headers on SPA routes",
+          "status": "PASS"
+        },
+        {
+          "name": "missing asset is a non-cached 404",
+          "status": "PASS"
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "PASS",
+          "command": "actionlint",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: CSS contains .border-dashed",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "mono-no-turbo": {
+      "scenario": "mono-no-turbo",
+      "args": [
+        "mono-no-turbo",
+        "--mode",
+        "monorepo",
+        "--app-name",
+        "web",
+        "--no-turbo",
+        "--features",
+        "+pkg-shared"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app mono-no-turbo --mode monorepo --app-name web --no-turbo --features +pkg-shared --yes",
+          "exitCode": 0,
+          "ms": 22085
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "single root lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "filtered build (pnpm --filter web build)",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 544
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-standard": {
+      "scenario": "existing-standard",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--preset",
+        "standard",
+        "--allow-workspace-changes"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --preset standard --allow-workspace-changes --yes",
+          "exitCode": 0,
+          "ms": 18361
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no files outside the app changed (except the lockfile)",
+          "status": "PASS",
+          "detail": "pnpm install added minimumReleaseAgeExclude to pnpm-workspace.yaml"
+        },
+        {
+          "name": "existing TypeScript backend still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "existing app still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "no app-level lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "existing AGENTS.md kept",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 814
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-install-unapproved": {
+      "scenario": "existing-install-unapproved",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI exits with 1",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
+          "exitCode": 1,
+          "ms": 344
+        },
+        {
+          "name": "refused without changing any file",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-unlisted-dir": {
+      "scenario": "existing-unlisted-dir",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--app-dir",
+        "tools/web"
+      ],
+      "checks": [
+        {
+          "name": "CLI exits with 1",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --yes",
+          "exitCode": 1,
+          "ms": 326
+        },
+        {
+          "name": "refused without changing any file",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-duplicate-name": {
+      "scenario": "existing-duplicate-name",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "api"
+      ],
+      "checks": [
+        {
+          "name": "CLI exits with 1",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace api --yes",
+          "exitCode": 1,
+          "ms": 82
+        },
+        {
+          "name": "refused without changing any file",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-unlisted-dir-approved": {
+      "scenario": "existing-unlisted-dir-approved",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--app-dir",
+        "tools/web",
+        "--allow-workspace-changes",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --allow-workspace-changes --preset minimal --yes",
+          "exitCode": 0,
+          "ms": 12628
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no files outside the app changed (except the lockfile)",
+          "status": "PASS",
+          "detail": "pnpm install added minimumReleaseAgeExclude to pnpm-workspace.yaml"
+        },
+        {
+          "name": "existing TypeScript backend still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "existing app still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "no app-level lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "existing AGENTS.md kept",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-orval": {
+      "scenario": "existing-orval",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--features",
+        "+orval"
+      ],
+      "checks": [
+        {
+          "name": "CLI exits with 1",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --features +orval --yes",
+          "exitCode": 1,
+          "ms": 322
+        },
+        {
+          "name": "refused without changing any file",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-orval-approved": {
+      "scenario": "existing-orval-approved",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--features",
+        "+orval",
+        "--allow-workspace-changes"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --features +orval --allow-workspace-changes --yes",
+          "exitCode": 0,
+          "ms": 19972
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no files outside the app changed (except the lockfile)",
+          "status": "PASS",
+          "detail": "pnpm install added minimumReleaseAgeExclude to pnpm-workspace.yaml"
+        },
+        {
+          "name": "existing TypeScript backend still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "existing app still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "no app-level lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "existing AGENTS.md kept",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 525
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-root-scripts": {
+      "scenario": "existing-root-scripts",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI exits with 1",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
+          "exitCode": 1,
+          "ms": 334
+        },
+        {
+          "name": "refused without changing any file",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "existing-root-scripts-approved": {
+      "scenario": "existing-root-scripts-approved",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--preset",
+        "minimal",
+        "--allow-workspace-changes"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --preset minimal --allow-workspace-changes --yes",
+          "exitCode": 0,
+          "ms": 8679
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no files outside the app changed (except the lockfile)",
+          "status": "PASS",
+          "detail": "pnpm install added minimumReleaseAgeExclude to pnpm-workspace.yaml"
+        },
+        {
+          "name": "existing TypeScript backend still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "existing app still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "no app-level lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "existing AGENTS.md kept",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        }
+      ],
+      "date": "2026-11-24"
+    }
+  },
+  "environment": {
+    "cli": "0.1.0",
+    "cliPath": "/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/pkg-install/node_modules/.bin/create-produx-app",
+    "node": "v26.13.0",
+    "platform": "darwin arm64",
+    "pnpm": "11.13.0",
+    "npm": "11.20.0",
+    "yarn": "1.22.22",
+    "bun": "1.4.4",
+    "docker": "Docker version 29.3.1, build c2be9cc"
+  }
+}

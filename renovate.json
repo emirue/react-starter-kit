@@ -1,0 +1,36 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "customManagers": [
+    {
+      "description": "Versions pinned into generated projects",
+      "customType": "regex",
+      "managerFilePatterns": ["/^src/config/dependency-versions\\.json$/"],
+      "matchStrings": ["\"(?<depName>[^\"]+)\"\\s*:\\s*\"(?<currentValue>[^\"]+)\""],
+      "datasourceTemplate": "npm"
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Generated-project versions: one reviewed PR per run, never automerged",
+      "matchFileNames": ["src/config/dependency-versions.json"],
+      "groupName": "generated project dependencies",
+      "labels": ["generated-project-deps"],
+      "automerge": false
+    },
+    {
+      "description": "Majors need a migration review first",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
+    },
+    {
+      "description": "typescript-eslint peers typescript <6.1.0; keep TypeScript on 6.0.x until it widens",
+      "matchPackageNames": ["typescript"],
+      "allowedVersions": "<6.1.0"
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "pinDigests": true
+    }
+  ]
+}

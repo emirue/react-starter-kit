@@ -1,0 +1,12 @@
+{
+  // @if eslint && prettier
+  "*.{ts,tsx,js,jsx}": ["eslint --fix", "prettier --write"],
+  "*.{json,css,md,html}": "prettier --write"
+  // @endif
+  // @if eslint && !prettier
+  "*.{ts,tsx,js,jsx}": "eslint --fix"
+  // @endif
+  // @if !eslint && prettier
+  "*.{ts,tsx,js,jsx,json,css,md,html}": "prettier --write"
+  // @endif
+}

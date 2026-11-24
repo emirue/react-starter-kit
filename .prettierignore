@@ -1,0 +1,7 @@
+dist
+coverage
+templates
+pnpm-lock.yaml
+docs/research/raw
+docs/validation
+.playwright-mcp
