@@ -4,10 +4,10 @@ create-produx-app generates frontends only. These are the integration points it 
 
 ## API client
 
-`src/lib/api-client.ts` (Fetch or Axios, same interface):
+`src/shared/api/http-client.ts` (Fetch or Axios, same interface):
 
 ```ts
-import { api } from "@/lib/api-client"
+import { api } from "@/shared/api/http-client"
 
 const todos = await api.get<Todo[]>("/todos", { query: { filter: "open" }, signal })
 await api.post<Todo>("/todos", { title })
@@ -43,7 +43,7 @@ Keep them outside the Node workspace globs (for example `services/dotnet-api`); 
 
 1. Replace `openapi/openapi.yaml` with the backend's document (or point `orval.config.ts` at its URL).
 2. Run `pnpm api:generate`.
-3. Use the generated TanStack Query hooks from `src/api/generated`.
+3. Call the generated functions from `src/shared/api/generated` in a page's `api/` segment and wrap them in that page's query options (see `src/pages/todos-example/api/`). Requests go through `src/shared/api/orval-mutator.ts`, so base URL, auth headers and `ApiError` apply.
 
 The suite verifies that a workspace containing a .NET directory is left untouched. Building or running an ASP.NET Core project was not part of validation.
 

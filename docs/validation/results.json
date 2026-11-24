@@ -13,7 +13,7 @@
           "status": "PASS",
           "command": "create-produx-app minimal --preset minimal --yes",
           "exitCode": 0,
-          "ms": 11322
+          "ms": 20983
         },
         {
           "name": "Type checking passed",
@@ -32,6 +32,38 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 772
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 714
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 706
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 698
+        },
+        {
           "name": "preview server starts",
           "status": "PASS"
         },
@@ -43,6 +75,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -58,7 +105,7 @@
           "status": "PASS",
           "command": "create-produx-app standard --yes",
           "exitCode": 0,
-          "ms": 33597
+          "ms": 40336
         },
         {
           "name": "Type checking passed",
@@ -81,14 +128,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 505
+          "ms": 510
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1035
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1062
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1106
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1108
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1031
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -122,6 +208,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "4 routes"
         }
       ],
       "date": "2026-11-24"
@@ -138,7 +239,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-no-examples --no-examples --yes",
           "exitCode": 0,
-          "ms": 30103
+          "ms": 16603
         },
         {
           "name": "Type checking passed",
@@ -161,14 +262,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 460
+          "ms": 455
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 855
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 863
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 852
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/not-found/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 858
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 819
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -194,6 +334,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "2 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "2 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "2 routes"
         }
       ],
       "date": "2026-11-24"
@@ -215,7 +370,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-radix-tsr-fetch --ui radix --router tanstack-router --features +fetch,-axios --yes",
           "exitCode": 0,
-          "ms": 20803
+          "ms": 37446
         },
         {
           "name": "Type checking passed",
@@ -238,14 +393,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 524
+          "ms": 556
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1282
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1657
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1160
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1030
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1101
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -275,6 +469,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
         }
       ],
       "date": "2026-11-24"
@@ -292,7 +501,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-npm --package-manager npm --yes",
           "exitCode": 0,
-          "ms": 20827
+          "ms": 45074
         },
         {
           "name": "Type checking passed",
@@ -315,14 +524,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "npm run format:check",
           "exitCode": 0,
-          "ms": 415
+          "ms": 436
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1035
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 871
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "npm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 865
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 916
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "npm run lint",
+          "exitCode": 0,
+          "ms": 853
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -344,6 +592,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -363,7 +626,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-npm-docker-ci --package-manager npm --features +docker,+github-actions --yes",
           "exitCode": 0,
-          "ms": 14329
+          "ms": 14892
         },
         {
           "name": "Type checking passed",
@@ -386,14 +649,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "npm run format:check",
           "exitCode": 0,
-          "ms": 438
+          "ms": 397
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 857
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 848
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "npm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 879
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 876
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "npm run lint",
+          "exitCode": 0,
+          "ms": 848
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -403,7 +705,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 7140
+          "ms": 14268
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -454,6 +756,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -471,7 +788,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-bun --package-manager bun --yes",
           "exitCode": 0,
-          "ms": 11716
+          "ms": 12357
         },
         {
           "name": "Type checking passed",
@@ -494,14 +811,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "bun run format:check",
           "exitCode": 0,
-          "ms": 373
+          "ms": 363
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "bun run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 824
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "bun run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 843
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "bun run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 805
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "bun run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 811
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "bun run lint",
+          "exitCode": 0,
+          "ms": 814
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "bunx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -523,6 +879,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -540,7 +911,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-yarn --package-manager yarn --yes",
           "exitCode": 0,
-          "ms": 24132
+          "ms": 32788
         },
         {
           "name": "Type checking passed",
@@ -563,14 +934,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "yarn run format:check",
           "exitCode": 0,
-          "ms": 567
+          "ms": 553
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "yarn run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 996
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "yarn run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1011
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "yarn run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1001
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "yarn run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1035
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "yarn run lint",
+          "exitCode": 0,
+          "ms": 1027
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "npx --yes shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -592,6 +1002,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -613,7 +1038,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-base-react-router --preset admin --ui base --router react-router --yes",
           "exitCode": 0,
-          "ms": 20120
+          "ms": 21725
         },
         {
           "name": "Type checking passed",
@@ -636,14 +1061,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 620
+          "ms": 516
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1190
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1238
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1200
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1219
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1162
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -681,6 +1145,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "5 routes"
         }
       ],
       "date": "2026-11-24"
@@ -702,7 +1181,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-base-tanstack-router --preset admin --ui base --router tanstack-router --yes",
           "exitCode": 0,
-          "ms": 22190
+          "ms": 30760
         },
         {
           "name": "Type checking passed",
@@ -725,14 +1204,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 583
+          "ms": 740
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1897
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1462
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1296
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1399
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1236
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -770,6 +1288,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "5 routes"
         }
       ],
       "date": "2026-11-24"
@@ -791,7 +1324,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-radix-react-router --preset admin --ui radix --router react-router --yes",
           "exitCode": 0,
-          "ms": 25888
+          "ms": 34300
         },
         {
           "name": "Type checking passed",
@@ -814,14 +1347,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 566
+          "ms": 587
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1960
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1991
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1844
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1581
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1499
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -859,6 +1431,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "5 routes"
         }
       ],
       "date": "2026-11-24"
@@ -880,7 +1467,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-radix-tanstack-router --preset admin --ui radix --router tanstack-router --yes",
           "exitCode": 0,
-          "ms": 36148
+          "ms": 29110
         },
         {
           "name": "Type checking passed",
@@ -903,14 +1490,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 576
+          "ms": 614
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1616
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1256
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1222
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1242
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1213
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -948,6 +1574,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "5 routes"
         }
       ],
       "date": "2026-11-24"
@@ -965,7 +1606,7 @@
           "status": "PASS",
           "command": "create-produx-app enterprise --preset enterprise --yes",
           "exitCode": 0,
-          "ms": 53269
+          "ms": 48238
         },
         {
           "name": "Type checking passed",
@@ -988,6 +1629,10 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
@@ -995,14 +1640,63 @@
           "ms": 630
         },
         {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1578
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1318
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1266
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1309
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1297
+        },
+        {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 6136
+          "ms": 15848
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "build-storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run build-storybook",
+          "exitCode": 0,
+          "ms": 2246
+        },
+        {
+          "name": "test:storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run test:storybook",
+          "exitCode": 0,
+          "ms": 4691
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1012,7 +1706,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 7924
+          "ms": 53550
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -1075,6 +1769,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "4 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1098,7 +1807,7 @@
           "status": "PASS",
           "command": "create-produx-app enterprise-fetch-tsr-radix --preset enterprise --ui radix --router tanstack-router --features +fetch,-axios --yes",
           "exitCode": 0,
-          "ms": 26411
+          "ms": 60097
         },
         {
           "name": "Type checking passed",
@@ -1121,21 +1830,74 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 654
+          "ms": 754
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1809
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1748
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1433
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1369
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1345
         },
         {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 7237
+          "ms": 15855
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "build-storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run build-storybook",
+          "exitCode": 0,
+          "ms": 2608
+        },
+        {
+          "name": "test:storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run test:storybook",
+          "exitCode": 0,
+          "ms": 4179
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1145,7 +1907,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 10219
+          "ms": 36588
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -1204,6 +1966,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1222,7 +1999,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-no-examples --preset admin --no-examples --yes",
           "exitCode": 0,
-          "ms": 17491
+          "ms": 36975
         },
         {
           "name": "Type checking passed",
@@ -1245,14 +2022,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 527
+          "ms": 481
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1084
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1003
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1008
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/not-found/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1006
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 972
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1278,6 +2094,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "2 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "2 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "2 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1295,7 +2126,7 @@
           "status": "PASS",
           "command": "create-produx-app custom-tooling --features +tanstack-table,+eslint-query,+prettier-tailwind,+husky,+lint-staged,+vite-proxy,+env-validation,+github-actions --yes",
           "exitCode": 0,
-          "ms": 20493
+          "ms": 21248
         },
         {
           "name": "Type checking passed",
@@ -1321,10 +2152,14 @@
         {
           "name": "git commit runs lint-staged and succeeds",
           "status": "PASS",
-          "detail": "data loss.\n\n⋯ Preparing lint-staged…\n✔ Done preparing lint-staged!\n⋯ Running tasks for staged files…\n    *.{ts,tsx,js,jsx} — 50 files\n      ⋯ eslint --fix\n      ⋯ prettier --write\n    *.{json,css,md,html} — 11 files\n      ⋯ prettier --write\n\n✔ prettier --write\n✔ eslint --fix\n✔ prettier --write\n\n✔ Done running tasks for staged files!\n⋯ Staging changes from tasks…\n✔ Done staging changes from tasks!\n"
+          "detail": "data loss.\n\n⋯ Preparing lint-staged…\n✔ Done preparing lint-staged!\n⋯ Running tasks for staged files…\n    *.{ts,tsx,js,jsx} — 63 files\n      ⋯ eslint --fix\n      ⋯ prettier --write\n    *.{json,css,md,html} — 11 files\n      ⋯ prettier --write\n\n✔ prettier --write\n✔ eslint --fix\n✔ prettier --write\n\n✔ Done running tasks for staged files!\n⋯ Staging changes from tasks…\n✔ Done staging changes from tasks!\n"
         },
         {
           "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
           "status": "PASS"
         },
         {
@@ -1332,10 +2167,45 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 656
+          "ms": 621
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1142
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1146
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1503
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1636
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1410
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1363,6 +2233,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1384,7 +2269,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
           "exitCode": 0,
-          "ms": 23969
+          "ms": 27810
         },
         {
           "name": "Type checking passed",
@@ -1423,14 +2308,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 564
+          "ms": 510
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1323
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1067
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1603
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1195
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1061
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1450,12 +2374,27 @@
           "detail": "body background oklch(1 0 0)"
         },
         {
-          "name": "browser: CSS contains .border-dashed",
+          "name": "browser: CSS contains .border-l-4",
           "status": "PASS"
         },
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1479,7 +2418,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-enterprise --mode monorepo --app-name web --preset enterprise --features +pkg-shared,+pkg-ui --yes",
           "exitCode": 0,
-          "ms": 29166
+          "ms": 36329
         },
         {
           "name": "Type checking passed",
@@ -1518,21 +2457,74 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 694
+          "ms": 671
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1683
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1331
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1305
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1331
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1296
         },
         {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 6069
+          "ms": 14801
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "build-storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run build-storybook",
+          "exitCode": 0,
+          "ms": 2446
+        },
+        {
+          "name": "test:storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run test:storybook",
+          "exitCode": 0,
+          "ms": 4302
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1542,7 +2534,7 @@
           "status": "PASS",
           "command": "docker build -f mono-enterprise/apps/web/Dockerfile .",
           "exitCode": 0,
-          "ms": 140662
+          "ms": 40507
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -1591,12 +2583,27 @@
           "detail": "body background oklch(1 0 0)"
         },
         {
-          "name": "browser: CSS contains .border-dashed",
+          "name": "browser: CSS contains .border-l-4",
           "status": "PASS"
         },
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1619,7 +2626,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-no-turbo --mode monorepo --app-name web --no-turbo --features +pkg-shared --yes",
           "exitCode": 0,
-          "ms": 22085
+          "ms": 27044
         },
         {
           "name": "Type checking passed",
@@ -1654,14 +2661,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 544
+          "ms": 1254
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 2098
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1968
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1781
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1133
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1085
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1683,6 +2729,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1703,7 +2764,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset standard --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 18361
+          "ms": 19022
         },
         {
           "name": "Type checking passed",
@@ -1751,14 +2812,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 814
+          "ms": 526
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1005
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1007
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1019
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1013
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 975
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -1780,6 +2880,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1799,7 +2914,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
           "exitCode": 1,
-          "ms": 344
+          "ms": 305
         },
         {
           "name": "refused without changing any file",
@@ -1823,7 +2938,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --yes",
           "exitCode": 1,
-          "ms": 326
+          "ms": 289
         },
         {
           "name": "refused without changing any file",
@@ -1845,7 +2960,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace api --yes",
           "exitCode": 1,
-          "ms": 82
+          "ms": 84
         },
         {
           "name": "refused without changing any file",
@@ -1872,7 +2987,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --allow-workspace-changes --preset minimal --yes",
           "exitCode": 0,
-          "ms": 12628
+          "ms": 9820
         },
         {
           "name": "Type checking passed",
@@ -1916,6 +3031,38 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 689
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 671
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 690
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 667
+        },
+        {
           "name": "preview server starts",
           "status": "PASS"
         },
@@ -1927,6 +3074,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -1946,7 +3108,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --features +orval --yes",
           "exitCode": 1,
-          "ms": 322
+          "ms": 384
         },
         {
           "name": "refused without changing any file",
@@ -1971,7 +3133,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --features +orval --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 19972
+          "ms": 21364
         },
         {
           "name": "Type checking passed",
@@ -2019,14 +3181,53 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
           "name": "format:check",
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 525
+          "ms": 1242
         },
         {
-          "name": "shadcn add accordion + typecheck + build",
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 2349
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1692
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1442
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1644
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1104
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
           "status": "PASS",
           "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
           "exitCode": 0
@@ -2048,6 +3249,21 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
         }
       ],
       "date": "2026-11-24"
@@ -2067,7 +3283,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
           "exitCode": 1,
-          "ms": 334
+          "ms": 307
         },
         {
           "name": "refused without changing any file",
@@ -2092,7 +3308,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 8679
+          "ms": 10033
         },
         {
           "name": "Type checking passed",
@@ -2136,6 +3352,38 @@
           "status": "PASS"
         },
         {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 683
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 669
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 698
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 640
+        },
+        {
           "name": "preview server starts",
           "status": "PASS"
         },
@@ -2147,6 +3395,378 @@
         {
           "name": "browser: no console errors",
           "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "router-none-examples": {
+      "scenario": "router-none-examples",
+      "args": [
+        "router-none-examples",
+        "--router",
+        "none",
+        "--examples"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app router-none-examples --router none --examples --yes",
+          "exitCode": 0,
+          "ms": 17922
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no example pages without a router",
+          "status": "PASS",
+          "detail": "src/pages: home"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 482
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1238
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 891
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 912
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 913
+        },
+        {
+          "name": "shadcn add accordion + typecheck + build + lint",
+          "status": "PASS",
+          "command": "pnpm dlx shadcn@latest add accordion --yes (resolved shadcn 4.23.0)",
+          "exitCode": 0
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "router-none-examples"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "custom-tailwind-primitives": {
+      "scenario": "custom-tailwind-primitives",
+      "args": [
+        "custom-tailwind-primitives",
+        "--preset",
+        "minimal",
+        "--features",
+        "+tailwind,+react-router,+tanstack-query,+vitest,+testing-library"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app custom-tailwind-primitives --preset minimal --features +tailwind,+react-router,+tanstack-query,+vitest,+testing-library --yes",
+          "exitCode": 0,
+          "ms": 32374
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 940
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 891
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 881
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 874
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 849
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "custom-tailwind-primitives"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=open",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
+        }
+      ],
+      "date": "2026-11-24"
+    },
+    "custom-primitives-no-tailwind": {
+      "scenario": "custom-primitives-no-tailwind",
+      "args": [
+        "custom-primitives-no-tailwind",
+        "--preset",
+        "minimal",
+        "--features",
+        "+react-router,+tanstack-query,+vitest,+testing-library"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app custom-primitives-no-tailwind --preset minimal --features +react-router,+tanstack-query,+vitest,+testing-library --yes",
+          "exitCode": 0,
+          "ms": 36695
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1193
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 935
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 942
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 912
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 899
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "custom-primitives-no-tailwind"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=open",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
         }
       ],
       "date": "2026-11-24"
@@ -2154,7 +3774,7 @@
   },
   "environment": {
     "cli": "0.1.0",
-    "cliPath": "/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/pkg-install/node_modules/.bin/create-produx-app",
+    "cliPath": "/Users/emirue/projects/emirue/react-starter-kit/dist/index.mjs",
     "node": "v26.13.0",
     "platform": "darwin arm64",
     "pnpm": "11.13.0",

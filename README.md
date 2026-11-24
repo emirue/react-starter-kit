@@ -39,17 +39,17 @@ pnpm create produx-app@latest my-app --mode standalone --preset standard --packa
 
 ### Presets
 
-|                                                                                                | Minimal | Standard (default) | Admin | Enterprise |
-| ---------------------------------------------------------------------------------------------- | :-----: | :----------------: | :---: | :--------: |
-| React 19, Vite 8, TypeScript 6 (strict), `@/` alias                                            |    ✓    |         ✓          |   ✓   |     ✓      |
-| ESLint 10 (flat config, React Hooks, React Refresh)                                            |    ✓    |         ✓          |   ✓   |     ✓      |
-| Tailwind CSS 4, shadcn/ui (Base UI or Radix), Lucide, light/dark/system theme                  |         |         ✓          |   ✓   |     ✓      |
-| TanStack Query + Devtools, Zustand                                                             |         |         ✓          |   ✓   |     ✓      |
-| React Router 8 (or TanStack Router), Axios (or Fetch) API client                               |         |         ✓          |   ✓   |     ✓      |
-| React Hook Form + Zod + resolvers                                                              |         |         ✓          |   ✓   |     ✓      |
-| Vitest + React Testing Library, Prettier, CLAUDE.md, AGENTS.md                                 |         |         ✓          |   ✓   |     ✓      |
-| Admin layout: sidebar, header, dashboard, data table (TanStack Table), dialog, toasts          |         |                    |   ✓   |     ✓      |
-| Orval, MSW, Playwright, Docker + Nginx, GitHub Actions, CodeQL, env validation, error boundary |         |                    |       |     ✓      |
+|                                                                                                           | Minimal | Standard (default) | Admin | Enterprise |
+| --------------------------------------------------------------------------------------------------------- | :-----: | :----------------: | :---: | :--------: |
+| React 19, Vite 8, TypeScript 6 (strict), `@/` alias                                                       |    ✓    |         ✓          |   ✓   |     ✓      |
+| ESLint 10 (flat config, React Hooks, React Refresh)                                                       |    ✓    |         ✓          |   ✓   |     ✓      |
+| Tailwind CSS 4, shadcn/ui (Base UI or Radix), Lucide, light/dark/system theme                             |         |         ✓          |   ✓   |     ✓      |
+| TanStack Query + Devtools, Zustand                                                                        |         |         ✓          |   ✓   |     ✓      |
+| React Router 8 (or TanStack Router), Axios (or Fetch) API client                                          |         |         ✓          |   ✓   |     ✓      |
+| React Hook Form + Zod + resolvers                                                                         |         |         ✓          |   ✓   |     ✓      |
+| Vitest + React Testing Library, Prettier, CLAUDE.md, AGENTS.md                                            |         |         ✓          |   ✓   |     ✓      |
+| Admin layout: sidebar, header, dashboard, data table (TanStack Table), dialog, toasts                     |         |                    |   ✓   |     ✓      |
+| Orval, MSW, Playwright, Storybook, Docker + Nginx, GitHub Actions, CodeQL, env validation, error boundary |         |                    |       |     ✓      |
 
 `Custom` starts from Standard and lets you pick features. Details: [docs/presets.md](docs/presets.md) and [docs/features.md](docs/features.md).
 
@@ -59,15 +59,16 @@ pnpm create produx-app@latest my-app --mode standalone --preset standard --packa
 my-app/
 ├── public/
 ├── src/
-│   ├── app/            providers.tsx, router.tsx
-│   ├── components/     theme/, ui/ (shadcn/ui)
-│   ├── config/         env.ts (the only reader of import.meta.env)
-│   ├── features/       todos/, sign-up/, counter/ (examples; delete freely)
-│   ├── layouts/
-│   ├── lib/            api-client.ts, api-error.ts, query-client.ts, utils.ts
-│   ├── pages/
-│   ├── test/setup.ts
-│   ├── App.tsx
+│   ├── app/            app.tsx, providers.tsx, router.tsx, route-error.tsx, layouts/
+│   ├── pages/          home/, not-found/, examples/ and the *-example slices (delete freely)
+│   ├── features/       switch-theme/ (user actions used in several places)
+│   ├── shared/
+│   │   ├── ui/         design system: shadcn/ui, PageHeader, Loading/Error/EmptyState
+│   │   ├── api/        http-client.ts, api-error.ts, query-client.ts
+│   │   ├── lib/        theme/, utils.ts
+│   │   └── config/     env.ts (the only reader of import.meta.env)
+│   ├── test/           setup.ts, render.tsx
+│   ├── index.css       design tokens
 │   └── main.tsx
 ├── .env.example
 ├── AGENTS.md, CLAUDE.md
@@ -78,6 +79,8 @@ my-app/
 ```
 
 Only selected features produce files and dependencies; the validation suite checks that unselected packages never appear.
+
+Generated apps follow one architecture: Feature-Sliced Design layers (`app` → `pages` → `features` → `entities` → `shared`) with slice public APIs, enforced by `eslint-plugin-boundaries` in `lint`, plus a token-based design system and responsive and accessibility rules. See [docs/architecture/frontend-architecture.md](docs/architecture/frontend-architecture.md).
 
 ## CLI options
 
@@ -144,7 +147,7 @@ Everything below was run end to end (generate → install → type check → lin
 
 ## Backend integration
 
-The CLI never generates a backend. Generated apps call APIs through one client (`src/lib/api-client.ts`, Fetch or Axios) with a configurable base URL, timeouts, cancellation and a single `ApiError` type, and can proxy `/api` to a local backend in development. Monorepos can share types with TypeScript backends (NestJS, Express) through `packages/types`; non-TypeScript backends (ASP.NET Core, ...) connect over HTTP and OpenAPI (Orval). See [docs/backend-integration.md](docs/backend-integration.md).
+The CLI never generates a backend. Generated apps call APIs through one client (`src/shared/api/http-client.ts`, Fetch or Axios) with a configurable base URL, timeouts, cancellation and a single `ApiError` type, and can proxy `/api` to a local backend in development. Monorepos can share types with TypeScript backends (NestJS, Express) through `packages/types`; non-TypeScript backends (ASP.NET Core, ...) connect over HTTP and OpenAPI (Orval). See [docs/backend-integration.md](docs/backend-integration.md).
 
 ## Dependency version policy
 
@@ -165,7 +168,7 @@ node dist/index.mjs my-app            # or: npm pack, then npx --package ./creat
 | `ERR_PNPM_IGNORED_BUILDS`                                            | pnpm 11+ blocks dependency build scripts. Generated projects approve only what they need in `pnpm-workspace.yaml` → `allowBuilds`. |
 | `pnpm-workspace.yaml` gains `minimumReleaseAgeExclude` after install | pnpm records packages published less than a day ago. Review and commit it, or reinstall later.                                     |
 | `The engine "node" is incompatible` (Yarn)                           | Yarn 1 enforces `engines`; use a Node.js version from the table above.                                                             |
-| `test:e2e` cannot find a browser                                     | Run `pnpm exec playwright install chromium` once (not done automatically: large download).                                         |
+| `test:e2e` or `test:storybook` cannot find a browser                 | Run `pnpm exec playwright install chromium` once (not done automatically: large download).                                         |
 | `Generated projects need Node.js …` warning                          | Your Node.js is older than the generated project needs; switch versions before installing.                                         |
 
 ## Known limitations
@@ -173,7 +176,8 @@ node dist/index.mjs my-app            # or: npm pack, then npx --package ./creat
 - shadcn/ui ships the `nova` style only (Base UI and Radix); other shadcn presets are not offered yet.
 - Monorepo modes are pnpm-only. Shared packages (`packages/shared`, `types`, `ui`) are created in new monorepos only.
 - The shared UI package holds plain React components; shadcn/ui components stay app-local.
-- Orval is supported in TanStack Query mode only.
+- Orval generates request functions (`axios-functions` or `fetch` client) wrapped by the page's own query options; it requires TanStack Query and MSW (the sample spec is served by MSW).
+- Example pages need a router; `--router none` generates no examples.
 - Docker images are supported for standalone apps and new monorepos with pnpm or npm.
 - Windows and Linux have not been run locally.
 

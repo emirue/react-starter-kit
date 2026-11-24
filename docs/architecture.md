@@ -45,7 +45,9 @@ templates/
 - `app/` goes to the app directory; `root/` to the project root (the app directory in standalone mode, the app directory again in an existing workspace, except `.github/` and `.husky/`, which are skipped there); `monorepo/` only to a new monorepo's root.
 - `dot_` prefixes become `.` (npm drops some dotfiles from packages).
 - Files are composed with line directives in the file's own comment syntax (`// @if a && !b`, `{/* @if x */}`, `# @if`, `<!-- @if -->`, `/* @if */`). Malformed expressions and unknown variables throw; files that render empty are skipped.
-- Two layers producing the same path is an error. Shared files (for example `vite.config.ts`, `App.tsx`) use directives instead of overrides, so each feature's contribution is visible in one place.
+- Two layers producing the same path is an error. Shared files (for example `vite.config.ts`, `src/app/app.tsx`) use directives instead of overrides, so each feature's contribution is visible in one place.
+- Templates write the generated app's structure, which follows [architecture/frontend-architecture.md](architecture/frontend-architecture.md) (layers, slice public APIs, design system). Put new template files where that document says; the generated `eslint.config.js` fails `lint` on files outside the layers and on imports that break the rules, so the validation matrix catches a misplaced file.
+- `examples` is only set when a router is selected (`resolve-config.ts`): example pages are routes.
 
 ## Same features in every mode
 

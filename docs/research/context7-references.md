@@ -1169,6 +1169,36 @@ allowBuilds:
 
 ---
 
+## Architecture refactor (2026-11-24)
+
+Context7's monthly quota was exhausted; these facts come from the installed packages of a generated Enterprise app (`node_modules`, `.d.ts`, templates) and from runs in that app. Background research on Feature-Sliced Design and the enforcement tools was done from official sources and recorded during the analysis.
+
+### Storybook 10.6.8 with Vitest 5.1.1
+
+- `@storybook/addon-vitest@10.6.8` peers: `vitest ^4 || ^5`, `@vitest/browser ^4 || ^5`, `@vitest/browser-playwright ^4 || ^5`, `storybook ^10.6.8` (`npm view`). `@vitest/browser` is therefore pinned explicitly (5.1.1).
+- The addon's own setup template for Vitest 4+ (`node_modules/@storybook/addon-vitest/templates/vitest.config.4.template.ts`) adds a `test.projects` entry with `extends: true`, `storybookTest({ configDir })` and `browser: { enabled: true, headless: true, provider: playwright({}), instances: [{ browser: "chromium" }] }`. It has no `setupFiles`: project annotations are applied by the plugin. Generated apps follow that shape inside `vite.config.ts`, next to a `unit` project, so the Storybook UI's test runner finds it.
+- `storybook build` and the story tests used the app's `vite.config.ts` plugins and `@/` alias without extra `viteFinal` configuration (measured: build and 20 story tests passed, including stories importing `@/shared/lib/theme`).
+- `parameters.a11y.test: "error"` makes axe violations fail story tests (measured: the `destructive` button and badge failed at 4.0:1 contrast until the token was changed).
+- `core.disableTelemetry: true` turns off usage telemetry (the build otherwise prints the telemetry notice).
+
+### eslint-plugin-boundaries 7.4.4
+
+- Element descriptors' `mode` option is deprecated (`@boundaries/elements` 3.3.4 `dist/index.d.mts`: "For element descriptors, the mode is always folder"); a run with `mode: "file"` printed a deprecation warning. Single files (`src/main.tsx`, `src/vite-env.d.ts`) are therefore listed in `boundaries/ignore` instead of being an element.
+- Patterns use the default right-to-left `partialMatch` (not anchored to ESLint's working directory). Running ESLint from a monorepo root on the app was not tested; the monorepo scenarios run `lint` from the app through the workspace scripts.
+- Measured with a canary file in a generated app: deep imports into another page, imports of another page's index, a page importing `app`, `shared` importing a page, a relative import into another slice, an app-level deep import and a dynamic `import()` of a page's internal file were all reported; a file outside every layer was reported by `boundaries/no-unknown-files`.
+
+### Orval 8.49.0 function clients
+
+Generated in a scratch copy with the app's mutator:
+
+- `client: "axios-functions"` with a mutator: `listTodos(params?, options?)` returns `orvalRequest<Todo[]>(...)`, i.e. the data.
+- `client: "fetch"` with a mutator: `listTodos(params?, options?: RequestInit)` returns `{ data, status, headers }` (`listTodosResponse`); non-2xx variants are part of the union (`updateTodoResponse404`).
+- Models are written to `schemas` with an `index.ts` (`Todo`, `NewTodo`, `TodoPatch`, `ListTodosParams`, ...).
+
+### TanStack Router 1.170.46: missing chunks
+
+`dist/esm/lazyRouteComponent.js` reloads the page once when a lazy route module fails to load (`isModuleNotFoundError`, guarded by a `sessionStorage` key `tanstack_router_reload:<message>`); the second failure is thrown to the route's error component. React Router shows the route `ErrorBoundary` on the first failure.
+
 ## Selected versions without a dedicated section
 
 | Package                            | Selected     | Where the research touches it                                                     |

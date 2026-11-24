@@ -58,7 +58,7 @@ Standard plus an admin dashboard layout and data table.
 
 ## Enterprise (`enterprise`)
 
-Admin plus Orval, MSW, Playwright, Docker, CI and CodeQL.
+Admin plus Orval, MSW, Playwright, Storybook, Docker, CI and CodeQL.
 
 - `tailwind`
 - `lucide`
@@ -83,6 +83,7 @@ Admin plus Orval, MSW, Playwright, Docker, CI and CodeQL.
 - `orval`
 - `msw`
 - `playwright`
+- `storybook`
 - `docker`
 - `github-actions`
 - `codeql`
@@ -114,13 +115,13 @@ Start from Standard and pick features yourself.
 
 ## Example code
 
-Standard and above include examples unless `--no-examples` is given:
+Standard and above include examples unless `--no-examples` is given. Examples are pages, so they need a router: with `--router none` none are generated. Each example is a page slice (see [architecture/frontend-architecture.md](architecture/frontend-architecture.md)):
 
-| Example       | Path                   | Shows                                                                                                         |
-| ------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------- |
-| Server state  | `src/features/todos`   | TanStack Query: query key factory, loading, error and retry, mutations, cache invalidation, URL search params |
-| Forms         | `src/features/sign-up` | React Hook Form + Zod: field errors, accessible messages, server-side errors with `setError`                  |
-| Client state  | `src/features/counter` | Zustand: selectors, `persist` with `partialize` (only the step preference is stored)                          |
-| Users (Admin) | `src/features/users`   | TanStack Table v9: search, sorting, pagination, empty/loading/error states; dialog form; toast                |
+| Example       | Path                        | Shows                                                                                                                      |
+| ------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| Server state  | `src/pages/todos-example`   | TanStack Query: query key factory, loading/error/empty states with retry, mutations, cache invalidation, filter in the URL |
+| Forms         | `src/pages/sign-up-example` | React Hook Form + Zod: field errors, accessible messages, server-side errors with `setError`                               |
+| Client state  | `src/pages/counter-example` | Zustand: selectors, `persist` with `partialize` (only the step preference is stored)                                       |
+| Users (Admin) | `src/pages/users`           | TanStack Table v9: search, sorting, pagination, loading/error/empty states; dialog form; toast                             |
 
-The examples use an in-memory API so they work without a backend; with MSW (Enterprise) the same code calls `/api` through the API client and MSW answers. Deleting an example folder and its route does not break providers, the router, the API client or the theme.
+The examples use an in-memory API so they work without a backend; with MSW (Enterprise) the todos example calls `/api` through the generated Orval client (or the API client without Orval) and MSW answers. Deleting an example slice and its route does not break providers, the router, the API client or the theme.
