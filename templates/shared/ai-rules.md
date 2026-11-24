@@ -61,6 +61,28 @@ Where new code goes:
 4. Add shadcn/ui components with `{{pmDlx}} shadcn@latest add <name>`; `components.json` puts them in `src/shared/ui`.
 <!-- @endif -->
 
+Reference implementations (copy their shape for new code of the same kind; if you delete one, remove its line here):
+
+<!-- @if example-pages && tanstack-query -->
+- Page with server data: `src/pages/todos-example` (`api/` key factory and query options, URL filter in `model/`, loading/error/empty states).
+<!-- @endif -->
+<!-- @if example-pages && forms-example -->
+- Page with a form: `src/pages/sign-up-example` (Zod schema in `model/`, field and server errors).
+<!-- @endif -->
+<!-- @if admin-layout && examples -->
+- Page with a table and a dialog: `src/pages/users` (TanStack Table, create mutation with invalidation).
+<!-- @endif -->
+<!-- @if theme -->
+- Feature used in several places: `src/features/switch-theme` (public API in `index.ts`).
+<!-- @endif -->
+<!-- @if shadcn || ui-primitives -->
+- Shared components: `src/shared/ui/state.tsx` and `src/shared/ui/page-header.tsx`.
+<!-- @endif -->
+<!-- @if api-client -->
+- HTTP client: `src/shared/api/http-client.ts` (base URL, timeout, cancellation, `ApiError`).
+<!-- @endif -->
+- Entities: none yet. Create `src/entities/<domain>/` when a second page needs the same domain data.
+
 ## Conventions
 
 - File names: `kebab-case.ts(x)`. Components: `PascalCase`. Hooks: `useSomething`.
