@@ -3,18 +3,26 @@
  *
  *   node scripts/validate.ts [--only a,b] [--browser] [--shadcn-add] [--cli <path to bin>] [--out <json>]
  *
+ * Besides install, typecheck, lint, tests and build (run by the CLI), every
+ * scenario checks the generated architecture: no raw color classes, and lint
+ * rejecting files that break the layer rules. --browser adds axe (light and
+ * dark) and a 375 px overflow check on "/" and every deep link.
+ *
  * Results are written as JSON (default: docs/validation/results.json). Every
  * entry records the command, exit code and duration that produced it.
  */
 import { spawn, spawnSync } from "node:child_process"
 import { existsSync } from "node:fs"
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises"
+import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises"
+import { createRequire } from "node:module"
 import { tmpdir } from "node:os"
-import { dirname, join, resolve } from "node:path"
+import { dirname, join, relative, resolve, sep } from "node:path"
 import { parseArgs } from "node:util"
 
+import type { Page } from "playwright"
+
 import { FEATURES } from "../src/core/features.ts"
-import { SCENARIOS, type Scenario } from "./scenarios.ts"
+import { rawColorClasses, SCENARIOS, vendoredUiFiles, type Scenario } from "./scenarios.ts"
 
 type Status = "PASS" | "FAIL" | "SKIPPED"
 interface Check {
@@ -65,6 +73,24 @@ async function waitForHttp(url: string, timeoutMs = 20_000) {
   return false
 }
 
+// WCAG 2.x A/AA and axe best practices.
+const AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa", "best-practice"]
+const axeSource = () => readFile(createRequire(import.meta.url).resolve("axe-core/axe.min.js"), "utf8")
+
+/** Waits for the heading, the network and loading regions, so checks see the final page. */
+async function settle(page: Page) {
+  await page
+    .locator("h1")
+    .first()
+    .waitFor({ timeout: 10_000 })
+    .catch(() => undefined)
+  await page.waitForLoadState("networkidle").catch(() => undefined)
+  // LoadingState regions; other status regions are live regions that stay in the DOM.
+  await page
+    .waitForFunction(`!document.querySelector('[role=status][aria-label^="Loading"]')`, undefined, { timeout: 10_000 })
+    .catch(() => undefined)
+}
+
 async function browserCheck(url: string, scenario: Scenario): Promise<Check[]> {
   const { chromium } = await import("playwright")
   const browser = await chromium.launch()
@@ -111,9 +137,133 @@ async function browserCheck(url: string, scenario: Scenario): Promise<Check[]> {
       checks.push({ name: `browser: direct URL ${path}`, status: ok ? "PASS" : "FAIL" })
     }
     checks.push({ name: "browser: no console errors", status: errors.length ? "FAIL" : "PASS", detail: errors.join(" | ") || undefined })
+
+    const routes = ["/", ...(scenario.deepLinks ?? [])]
+    const axe = await axeSource()
+    for (const colorScheme of ["light", "dark"] as const) {
+      const context = await browser.newContext({ colorScheme })
+      const themed = await context.newPage()
+      const found: string[] = []
+      for (const path of routes) {
+        await themed.goto(new URL(path, url).toString())
+        await settle(themed)
+        if (colorScheme === "dark" && scenario.features.includes("theme")) {
+          // Otherwise the dark run would silently audit the light theme.
+          const dark = await themed.evaluate<boolean>("document.documentElement.classList.contains('dark')")
+          if (!dark) found.push(`${path}: dark theme not applied`)
+        }
+        await themed.addScriptTag({ content: axe })
+        const violations = await themed.evaluate<string[]>(
+          `axe.run(document, { runOnly: { type: "tag", values: ${JSON.stringify(AXE_TAGS)} } })` +
+            `.then((r) => r.violations.map((v) => v.id + " x" + v.nodes.length + " at " + v.nodes[0].target.join(" ")))`
+        )
+        if (violations.length) found.push(`${path}: ${violations.join(", ")}`)
+      }
+      await context.close()
+      checks.push({
+        name: `browser: no axe violations (${colorScheme})`,
+        status: found.length ? "FAIL" : "PASS",
+        detail: found.join(" | ") || `${routes.length} routes`,
+      })
+    }
+
+    const narrow = await browser.newContext({ viewport: { width: 375, height: 812 } })
+    const phone = await narrow.newPage()
+    const overflowing: string[] = []
+    for (const path of routes) {
+      await phone.goto(new URL(path, url).toString())
+      await settle(phone)
+      const [scrollWidth, clientWidth] = await phone.evaluate<[number, number]>(
+        "[document.documentElement.scrollWidth, document.documentElement.clientWidth]"
+      )
+      if (scrollWidth > clientWidth) overflowing.push(`${path}: ${scrollWidth}px`)
+    }
+    await narrow.close()
+    checks.push({
+      name: "browser: no horizontal overflow at 375 px",
+      status: overflowing.length ? "FAIL" : "PASS",
+      detail: overflowing.join(" | ") || `${routes.length} routes`,
+    })
   } finally {
     await browser.close()
   }
+  return checks
+}
+
+/** Raw palette or hex/rgb color classes anywhere in src, except vendored shadcn/ui files. */
+async function designSystemCheck(s: Scenario, app: string): Promise<Check> {
+  const vendored = vendoredUiFiles(s.features)
+  const found: string[] = []
+  for (const entry of await readdir(join(app, "src"), { recursive: true, withFileTypes: true })) {
+    const rel = relative(app, join(entry.parentPath, entry.name)).split(sep).join("/")
+    if (!entry.isFile() || !/\.tsx?$/.test(rel) || vendored.has(rel)) continue
+    const raw = rawColorClasses(await readFile(join(app, rel), "utf8"))
+    if (raw.length) found.push(`${rel}: ${[...new Set(raw)].join(" ")}`)
+  }
+  return { name: "design system: no raw color classes", status: found.length ? "FAIL" : "PASS", detail: found.join(" | ") || undefined }
+}
+
+/**
+ * Writes files that each break one architecture rule. Lint must fail on every one
+ * for the right reason (a boundaries rule, reported for the canary file) and pass
+ * again once they are removed.
+ */
+async function architectureCanaries(s: Scenario, app: string, log: string): Promise<Check[]> {
+  const pagesDir = join(app, "src", "pages")
+  const slices = existsSync(pagesDir)
+    ? (await readdir(pagesDir, { withFileTypes: true }))
+        .filter((e) => e.isDirectory())
+        .map((e) => e.name)
+        .sort()
+    : []
+  const [page, sibling] = slices
+  const uiDir = join(pagesDir, page ?? "", "ui")
+  const internal =
+    page && existsSync(uiDir) ? (await readdir(uiDir)).find((f) => /\.tsx?$/.test(f) && !/\.(test|stories)\./.test(f)) : undefined
+  if (!page || !internal)
+    return [{ name: "architecture canaries", status: "FAIL", detail: "no page slice with a ui/ module under src/pages" }]
+
+  // Side-effect imports: an unused named import would also fail lint, for the wrong reason.
+  const canaries: [rule: string, file: string, code: string][] = [
+    ["upward import (shared -> pages)", "src/shared/lib/__canary.ts", `import "@/pages/${page}"\n`],
+    [
+      "public API bypass (deep import into a page)",
+      "src/app/__canary.ts",
+      `import "@/pages/${page}/ui/${internal.replace(/\.tsx?$/, "")}"\n`,
+    ],
+    ["file outside the layers", "src/utils/__canary.ts", "export const canary = true\n"],
+  ]
+  if (sibling) canaries.push(["sibling slice import (pages -> pages)", `src/pages/${sibling}/ui/__canary.ts`, `import "@/pages/${page}"\n`])
+
+  const checks: Check[] = []
+  for (const [rule, file, code] of canaries) {
+    const path = join(app, file)
+    const createdDir = await mkdir(dirname(path), { recursive: true })
+    await writeFile(path, code)
+    try {
+      const r = await exec(s.pm, ["run", "lint"], app, log)
+      const ok = r.code !== 0 && /boundaries\//.test(r.output) && r.output.includes("__canary")
+      checks.push({
+        name: `lint rejects ${rule}`,
+        status: ok ? "PASS" : "FAIL",
+        command: `${s.pm} run lint  (with ${file})`,
+        exitCode: r.code,
+        ms: r.ms,
+        detail: ok ? undefined : r.output.slice(-1500),
+      })
+    } finally {
+      await rm(createdDir ?? path, { recursive: true, force: true })
+    }
+  }
+  const clean = await exec(s.pm, ["run", "lint"], app, log)
+  checks.push({
+    name: "lint passes again without the canaries",
+    status: clean.code === 0 ? "PASS" : "FAIL",
+    command: `${s.pm} run lint`,
+    exitCode: clean.code,
+    ms: clean.ms,
+    detail: clean.code === 0 ? undefined : clean.output.slice(-1500),
+  })
   return checks
 }
 
@@ -219,6 +369,7 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
     status: unexpected.length ? "FAIL" : "PASS",
     detail: unexpected.join(", ") || undefined,
   })
+  checks.push(await designSystemCheck(s, app))
 
   if (pkg.scripts["format:check"]) {
     const r = await exec(s.pm, ["run", "format:check"], app, log)
@@ -230,6 +381,8 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
       ms: r.ms,
     })
   }
+
+  if (s.features.includes("eslint")) checks.push(...(await architectureCanaries(s, app, log)))
 
   if (pkg.scripts["test:e2e"]) {
     const r = await exec(s.pm, ["run", "test:e2e"], app, log, { CI: "1" })
@@ -243,6 +396,20 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
     })
   }
 
+  if (s.features.includes("storybook")) {
+    for (const script of ["build-storybook", "test:storybook"]) {
+      const r = await exec(s.pm, ["run", script], app, log, { CI: "1" })
+      checks.push({
+        name: `${script} (Storybook)`,
+        status: r.code === 0 ? "PASS" : "FAIL",
+        command: `${s.pm} run ${script}`,
+        exitCode: r.code,
+        ms: r.ms,
+        detail: r.code === 0 ? undefined : r.output.slice(-1500),
+      })
+    }
+  }
+
   if (values["shadcn-add"] && s.features.includes("shadcn")) {
     // Use the project's own package manager: generated projects pin it in "packageManager".
     const dlx: Record<string, string[]> = { pnpm: ["pnpm", "dlx"], npm: ["npx", "--yes"], yarn: ["npx", "--yes"], bun: ["bunx"] }
@@ -250,14 +417,16 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
     const add = await exec(dlxCmd!, [...dlxArgs, "shadcn@latest", "add", "accordion", "--yes"], app, log)
     const tc = add.code === 0 ? await exec(s.pm, ["run", "typecheck"], app, log) : add
     const build = tc.code === 0 ? await exec(s.pm, ["run", "build"], app, log) : tc
+    // The added component must also satisfy the architecture lint rules.
+    const lint = build.code === 0 && pkg.scripts.lint ? await exec(s.pm, ["run", "lint"], app, log) : build
     const shadcnVersion = spawnSync("npm", ["view", "shadcn@latest", "version"], { encoding: "utf8" }).stdout.trim() || "?"
-    const ok = add.code === 0 && tc.code === 0 && build.code === 0 && existsSync(join(app, "src/components/ui/accordion.tsx"))
+    const ok = lint.code === 0 && existsSync(join(app, "src/shared/ui/accordion.tsx"))
     checks.push({
-      name: "shadcn add accordion + typecheck + build",
+      name: "shadcn add accordion + typecheck + build + lint",
       status: ok ? "PASS" : "FAIL",
       command: `${[dlxCmd, ...dlxArgs].join(" ")} shadcn@latest add accordion --yes (resolved shadcn ${shadcnVersion})`,
-      exitCode: build.code,
-      detail: ok ? undefined : build.output.slice(-1500),
+      exitCode: lint.code,
+      detail: ok ? undefined : lint.output.slice(-1500),
     })
   }
 
