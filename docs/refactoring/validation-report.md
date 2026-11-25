@@ -17,7 +17,7 @@ Tests were written by a separate agent from the standard, before or alongside th
 
 ## Generated-project matrix
 
-macOS, Node 26: `node scripts/validate.ts --browser --shadcn-add`, one full run (2026-11-25 10:34–11:02) and a re-run of the 7 scenarios using Playwright, Storybook or MSW after the last two fixes (11:04–11:15, exit 0): 35 scenarios, 758/758 checks PASS. Details and the first run's three failures: [../validation-report.md](../validation-report.md#generated-project-matrix).
+macOS, Node 26: `node scripts/validate.ts --browser --shadcn-add`, one full run (2026-11-25 10:34–11:02) and a re-run of the 7 scenarios using Playwright, Storybook or MSW after the last two fixes (11:04–11:15, exit 0): 35 scenarios, 758/758 checks PASS. 0.1.1 was validated again afterwards (36 scenarios): [../validation-report.md](../validation-report.md#generated-project-matrix).
 
 | Check (per scenario where it applies)                                                                                                                         | PASS                                                                                              |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |

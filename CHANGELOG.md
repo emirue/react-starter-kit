@@ -28,6 +28,8 @@ All notable changes to this project are documented here. The format follows
 - Scoped app names (`@acme/web`) get `apps/web`, so saved configs load again.
 - `npm create produx-app ... --mode monorepo` uses pnpm instead of failing with
   "requested: npm".
+- Ctrl+C during install or validation stops the running command and every
+  process it started before rolling back, so no project directory is left.
 - The interactive app directory is validated like `--app-dir`; an empty
   `--features` list is an error; workspace-only options in a standalone run are
   reported as ignored.

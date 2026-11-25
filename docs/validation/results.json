@@ -13,7 +13,7 @@
           "status": "PASS",
           "command": "create-produx-app minimal --preset minimal --yes",
           "exitCode": 0,
-          "ms": 9139
+          "ms": 12976
         },
         {
           "name": "Type checking passed",
@@ -40,28 +40,28 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 2144
+          "ms": 2138
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1015
+          "ms": 1497
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1151
+          "ms": 1838
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 973
+          "ms": 1672
         },
         {
           "name": "preview server starts",
@@ -105,7 +105,7 @@
           "status": "PASS",
           "command": "create-produx-app standard --yes",
           "exitCode": 0,
-          "ms": 21074
+          "ms": 29801
         },
         {
           "name": "Type checking passed",
@@ -136,42 +136,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 684
+          "ms": 1986
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1573
+          "ms": 2476
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1175
+          "ms": 2326
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1107
+          "ms": 1913
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1160
+          "ms": 2242
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1105
+          "ms": 2079
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -239,7 +239,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-no-examples --no-examples --yes",
           "exitCode": 0,
-          "ms": 20803
+          "ms": 21044
         },
         {
           "name": "Type checking passed",
@@ -270,42 +270,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 502
+          "ms": 925
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1215
+          "ms": 1703
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 939
+          "ms": 1377
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 990
+          "ms": 1379
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/not-found/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 957
+          "ms": 1342
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 944
+          "ms": 1325
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -370,7 +370,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-radix-tsr-fetch --ui radix --router tanstack-router --features +fetch,-axios --yes",
           "exitCode": 0,
-          "ms": 41708
+          "ms": 21272
         },
         {
           "name": "Type checking passed",
@@ -401,42 +401,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 528
+          "ms": 941
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1310
+          "ms": 1644
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1060
+          "ms": 1641
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 995
+          "ms": 1721
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 991
+          "ms": 1641
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 958
+          "ms": 1436
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -501,7 +501,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-npm --package-manager npm --yes",
           "exitCode": 0,
-          "ms": 49116
+          "ms": 20711
         },
         {
           "name": "Type checking passed",
@@ -532,42 +532,42 @@
           "status": "PASS",
           "command": "npm run format:check",
           "exitCode": 0,
-          "ms": 420
+          "ms": 440
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 838
+          "ms": 911
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "npm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 868
+          "ms": 901
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "npm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 868
+          "ms": 918
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 903
+          "ms": 927
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "npm run lint",
           "exitCode": 0,
-          "ms": 893
+          "ms": 920
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -626,7 +626,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-npm-docker-ci --package-manager npm --features +docker,+github-actions --yes",
           "exitCode": 0,
-          "ms": 15844
+          "ms": 14954
         },
         {
           "name": "Type checking passed",
@@ -657,42 +657,42 @@
           "status": "PASS",
           "command": "npm run format:check",
           "exitCode": 0,
-          "ms": 441
+          "ms": 490
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 926
+          "ms": 1001
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "npm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 951
+          "ms": 915
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "npm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 981
+          "ms": 943
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 958
+          "ms": 911
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "npm run lint",
           "exitCode": 0,
-          "ms": 1106
+          "ms": 925
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -705,7 +705,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 15851
+          "ms": 3336
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -788,7 +788,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-bun --package-manager bun --yes",
           "exitCode": 0,
-          "ms": 11888
+          "ms": 11644
         },
         {
           "name": "Type checking passed",
@@ -819,42 +819,42 @@
           "status": "PASS",
           "command": "bun run format:check",
           "exitCode": 0,
-          "ms": 350
+          "ms": 346
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "bun run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 781
+          "ms": 775
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "bun run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 781
+          "ms": 772
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "bun run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 806
+          "ms": 774
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "bun run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 782
+          "ms": 802
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "bun run lint",
           "exitCode": 0,
-          "ms": 779
+          "ms": 766
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -911,7 +911,7 @@
           "status": "PASS",
           "command": "create-produx-app standard-yarn --package-manager yarn --yes",
           "exitCode": 0,
-          "ms": 24774
+          "ms": 100236
         },
         {
           "name": "Type checking passed",
@@ -949,35 +949,35 @@
           "status": "PASS",
           "command": "yarn run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1096
+          "ms": 1091
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "yarn run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1582
+          "ms": 1145
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "yarn run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1582
+          "ms": 1126
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "yarn run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1052
+          "ms": 1143
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "yarn run lint",
           "exitCode": 0,
-          "ms": 1059
+          "ms": 1146
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -1038,7 +1038,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-base-react-router --preset admin --ui base --router react-router --yes",
           "exitCode": 0,
-          "ms": 21742
+          "ms": 20005
         },
         {
           "name": "Type checking passed",
@@ -1069,42 +1069,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 632
+          "ms": 1007
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1438
+          "ms": 2048
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1286
+          "ms": 1661
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1288
+          "ms": 1672
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1277
+          "ms": 1658
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1236
+          "ms": 1580
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -1181,7 +1181,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-base-tanstack-router --preset admin --ui base --router tanstack-router --yes",
           "exitCode": 0,
-          "ms": 24225
+          "ms": 27023
         },
         {
           "name": "Type checking passed",
@@ -1212,42 +1212,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 573
+          "ms": 1008
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1242
+          "ms": 1766
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1261
+          "ms": 1793
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1266
+          "ms": 1680
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1250
+          "ms": 1677
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1216
+          "ms": 1707
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -1324,7 +1324,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-radix-react-router --preset admin --ui radix --router react-router --yes",
           "exitCode": 0,
-          "ms": 47518
+          "ms": 31678
         },
         {
           "name": "Type checking passed",
@@ -1355,42 +1355,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 579
+          "ms": 1542
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1343
+          "ms": 2614
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1242
+          "ms": 2635
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1195
+          "ms": 2528
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1210
+          "ms": 2121
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1185
+          "ms": 2468
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -1467,7 +1467,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-radix-tanstack-router --preset admin --ui radix --router tanstack-router --yes",
           "exitCode": 0,
-          "ms": 39117
+          "ms": 34472
         },
         {
           "name": "Type checking passed",
@@ -1498,42 +1498,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 628
+          "ms": 2018
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 2134
+          "ms": 4639
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1702
+          "ms": 2249
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1357
+          "ms": 2168
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1282
+          "ms": 1739
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1202
+          "ms": 1706
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -1606,7 +1606,7 @@
           "status": "PASS",
           "command": "create-produx-app enterprise --preset enterprise --yes",
           "exitCode": 0,
-          "ms": 32069
+          "ms": 31686
         },
         {
           "name": "Type checking passed",
@@ -1637,70 +1637,70 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 817
+          "ms": 1132
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1909
+          "ms": 2490
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1497
+          "ms": 2016
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1491
+          "ms": 1887
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1503
+          "ms": 1999
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1376
+          "ms": 1887
         },
         {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 16827
+          "ms": 17686
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run build-storybook",
           "exitCode": 0,
-          "ms": 3097
+          "ms": 2797
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook",
           "exitCode": 0,
-          "ms": 4700
+          "ms": 4585
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 3814,
+          "ms": 3925,
           "detail": "29 tests"
         },
         {
@@ -1714,7 +1714,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 9216
+          "ms": 10785
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -1815,7 +1815,7 @@
           "status": "PASS",
           "command": "create-produx-app enterprise-fetch-tsr-radix --preset enterprise --ui radix --router tanstack-router --features +fetch,-axios --yes",
           "exitCode": 0,
-          "ms": 34843
+          "ms": 33028
         },
         {
           "name": "Type checking passed",
@@ -1846,70 +1846,70 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 754
+          "ms": 1707
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1575
+          "ms": 2839
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1385
+          "ms": 2184
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1468
+          "ms": 2386
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1615
+          "ms": 2294
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1465
+          "ms": 2594
         },
         {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 16819
+          "ms": 17481
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run build-storybook",
           "exitCode": 0,
-          "ms": 2458
+          "ms": 3653
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook",
           "exitCode": 0,
-          "ms": 4544
+          "ms": 4930
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 3529,
+          "ms": 4267,
           "detail": "29 tests"
         },
         {
@@ -1923,7 +1923,7 @@
           "status": "PASS",
           "command": "docker build -f Dockerfile .",
           "exitCode": 0,
-          "ms": 9563
+          "ms": 9354
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -2015,7 +2015,7 @@
           "status": "PASS",
           "command": "create-produx-app admin-no-examples --preset admin --no-examples --yes",
           "exitCode": 0,
-          "ms": 21473
+          "ms": 19134
         },
         {
           "name": "Type checking passed",
@@ -2046,42 +2046,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 814
+          "ms": 998
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1778
+          "ms": 2004
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1368
+          "ms": 1558
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1236
+          "ms": 1617
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/not-found/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1242
+          "ms": 1685
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1487
+          "ms": 1663
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -2142,7 +2142,7 @@
           "status": "PASS",
           "command": "create-produx-app custom-tooling --features +tanstack-table,+eslint-query,+prettier-tailwind,+husky,+lint-staged,+vite-proxy,+env-validation,+github-actions --yes",
           "exitCode": 0,
-          "ms": 20847
+          "ms": 28040
         },
         {
           "name": "Type checking passed",
@@ -2183,42 +2183,42 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 861
+          "ms": 1605
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1101
+          "ms": 1891
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1149
+          "ms": 1920
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1156
+          "ms": 2020
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1138
+          "ms": 2090
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1059
+          "ms": 2197
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -2285,7 +2285,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
           "exitCode": 0,
-          "ms": 25182
+          "ms": 23915
         },
         {
           "name": "Type checking passed",
@@ -2332,57 +2332,57 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 519
+          "ms": 987
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1005
+          "ms": 1970
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 996
+          "ms": 1551
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1020
+          "ms": 1581
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1037
+          "ms": 1551
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1019
+          "ms": 1509
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 793
+          "ms": 869
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 795,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-SYQiGE/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 904,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -2449,7 +2449,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-enterprise --mode monorepo --app-name web --preset enterprise --features +pkg-shared,+pkg-ui --yes",
           "exitCode": 0,
-          "ms": 35431
+          "ms": 31157
         },
         {
           "name": "Type checking passed",
@@ -2496,85 +2496,85 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 834
+          "ms": 1120
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1905
+          "ms": 2312
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1531
+          "ms": 1878
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1569
+          "ms": 1790
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 2651
+          "ms": 1825
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1711
+          "ms": 1769
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 1912
+          "ms": 1148
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1573,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-Kx0t51/mono-enterprise/mono-enterprise/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 1149,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/mono-enterprise/mono-enterprise/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "test:e2e (Playwright)",
           "status": "PASS",
           "command": "pnpm run test:e2e",
           "exitCode": 0,
-          "ms": 17701
+          "ms": 15553
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run build-storybook",
           "exitCode": 0,
-          "ms": 2812
+          "ms": 2653
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook",
           "exitCode": 0,
-          "ms": 4622
+          "ms": 4311
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "pnpm run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 3810,
+          "ms": 3731,
           "detail": "29 tests"
         },
         {
@@ -2588,7 +2588,7 @@
           "status": "PASS",
           "command": "docker build -f mono-enterprise/apps/web/Dockerfile .",
           "exitCode": 0,
-          "ms": 117906
+          "ms": 26385
         },
         {
           "name": "container becomes healthy (HEALTHCHECK)",
@@ -2680,7 +2680,7 @@
           "status": "PASS",
           "command": "create-produx-app mono-no-turbo --mode monorepo --app-name web --no-turbo --features +pkg-shared --yes",
           "exitCode": 0,
-          "ms": 23600
+          "ms": 27413
         },
         {
           "name": "Type checking passed",
@@ -2723,57 +2723,57 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 672
+          "ms": 1616
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1446
+          "ms": 1923
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1185
+          "ms": 1902
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1145
+          "ms": 1554
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1144
+          "ms": 2107
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1149
+          "ms": 2119
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 856
+          "ms": 743
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 874,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-SYQiGE/mono-no-turbo/mono-no-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 748,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/mono-no-turbo/mono-no-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -2833,7 +2833,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset standard --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 20986
+          "ms": 27047
         },
         {
           "name": "Type checking passed",
@@ -2889,57 +2889,57 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 647
+          "ms": 601
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1638
+          "ms": 1400
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1215
+          "ms": 1119
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1197
+          "ms": 1058
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1164
+          "ms": 1073
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1216
+          "ms": 1015
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 945
+          "ms": 787
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 920,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-SYQiGE/existing-standard/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 788,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/existing-standard/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -2998,7 +2998,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
           "exitCode": 1,
-          "ms": 405
+          "ms": 360
         },
         {
           "name": "refused without changing any file",
@@ -3022,7 +3022,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --yes",
           "exitCode": 1,
-          "ms": 369
+          "ms": 334
         },
         {
           "name": "refused without changing any file",
@@ -3044,7 +3044,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace api --yes",
           "exitCode": 1,
-          "ms": 116
+          "ms": 103
         },
         {
           "name": "refused without changing any file",
@@ -3071,7 +3071,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --app-dir tools/web --allow-workspace-changes --preset minimal --yes",
           "exitCode": 0,
-          "ms": 9026
+          "ms": 8583
         },
         {
           "name": "Type checking passed",
@@ -3123,43 +3123,43 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 785
+          "ms": 818
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 852
+          "ms": 755
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 801
+          "ms": 765
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 743
+          "ms": 710
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node tools/web/node_modules/eslint/bin/eslint.js tools/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 525
+          "ms": 455
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node tools/web/node_modules/eslint/bin/eslint.js tools/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 501,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-SYQiGE/existing-unlisted-dir-approved/ws/tools/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"home\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 467,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/existing-unlisted-dir-approved/ws/tools/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"home\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "preview server starts",
@@ -3207,7 +3207,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --features +orval --yes",
           "exitCode": 1,
-          "ms": 366
+          "ms": 364
         },
         {
           "name": "refused without changing any file",
@@ -3232,7 +3232,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --features +orval --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 21257
+          "ms": 23671
         },
         {
           "name": "Type checking passed",
@@ -3288,57 +3288,57 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 708
+          "ms": 571
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1527
+          "ms": 1164
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1117
+          "ms": 1062
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1129
+          "ms": 1046
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1112
+          "ms": 1037
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 1095
+          "ms": 1020
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 842
+          "ms": 785
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 863,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-Kx0t51/existing-orval-approved/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 799,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/existing-orval-approved/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -3397,7 +3397,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --yes",
           "exitCode": 1,
-          "ms": 377
+          "ms": 347
         },
         {
           "name": "refused without changing any file",
@@ -3422,7 +3422,7 @@
           "status": "PASS",
           "command": "create-produx-app --mode existing-workspace web --preset minimal --allow-workspace-changes --yes",
           "exitCode": 0,
-          "ms": 9298
+          "ms": 9575
         },
         {
           "name": "Type checking passed",
@@ -3474,43 +3474,43 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 803
+          "ms": 717
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 784
+          "ms": 773
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 767
+          "ms": 697
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 744
+          "ms": 679
         },
         {
           "name": "ESLint from the workspace root passes",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
           "exitCode": 0,
-          "ms": 505
+          "ms": 440
         },
         {
           "name": "ESLint from the workspace root rejects an upward import",
           "status": "PASS",
           "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 497,
-          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-SYQiGE/existing-root-scripts-approved/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"home\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+          "ms": 442,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/existing-root-scripts-approved/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"home\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
         },
         {
           "name": "preview server starts",
@@ -3557,7 +3557,7 @@
           "status": "PASS",
           "command": "create-produx-app router-none-examples --router none --examples --yes",
           "exitCode": 0,
-          "ms": 37593
+          "ms": 16241
         },
         {
           "name": "Type checking passed",
@@ -3593,35 +3593,35 @@
           "status": "PASS",
           "command": "pnpm run format:check",
           "exitCode": 0,
-          "ms": 504
+          "ms": 940
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1116
+          "ms": 1489
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1035
+          "ms": 1409
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 981
+          "ms": 1371
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 927
+          "ms": 1373
         },
         {
           "name": "shadcn add accordion + typecheck + build + lint",
@@ -3680,7 +3680,7 @@
           "status": "PASS",
           "command": "create-produx-app custom-tailwind-primitives --preset minimal --features +tailwind,+react-router,+tanstack-query,+vitest,+testing-library --yes",
           "exitCode": 0,
-          "ms": 15048
+          "ms": 13674
         },
         {
           "name": "Type checking passed",
@@ -3711,35 +3711,35 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 956
+          "ms": 1610
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 943
+          "ms": 1370
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 945
+          "ms": 1415
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 940
+          "ms": 1478
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 947
+          "ms": 1334
         },
         {
           "name": "preview server starts",
@@ -3800,7 +3800,7 @@
           "status": "PASS",
           "command": "create-produx-app custom-primitives-no-tailwind --preset minimal --features +react-router,+tanstack-query,+vitest,+testing-library --yes",
           "exitCode": 0,
-          "ms": 11979
+          "ms": 13935
         },
         {
           "name": "Type checking passed",
@@ -3831,35 +3831,35 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 914
+          "ms": 1737
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 897
+          "ms": 1440
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 900
+          "ms": 1496
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 911
+          "ms": 1549
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 906
+          "ms": 1589
         },
         {
           "name": "preview server starts",
@@ -3915,7 +3915,7 @@
           "status": "PASS",
           "command": "create-produx-app custom-primitives-no-tailwind-tsr --preset minimal --features +tanstack-router,+tanstack-query,+vitest,+testing-library --yes",
           "exitCode": 0,
-          "ms": 13219
+          "ms": 15201
         },
         {
           "name": "Type checking passed",
@@ -3946,35 +3946,35 @@
           "status": "PASS",
           "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1021
+          "ms": 1704
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 978
+          "ms": 1533
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "pnpm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 992
+          "ms": 1448
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 966
+          "ms": 1411
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "pnpm run lint",
           "exitCode": 0,
-          "ms": 928
+          "ms": 1397
         },
         {
           "name": "preview server starts",
@@ -4030,7 +4030,7 @@
           "status": "PASS",
           "command": "create-produx-app storybook-npm --package-manager npm --features +storybook --yes",
           "exitCode": 0,
-          "ms": 57722
+          "ms": 25902
         },
         {
           "name": "Type checking passed",
@@ -4061,63 +4061,63 @@
           "status": "PASS",
           "command": "npm run format:check",
           "exitCode": 0,
-          "ms": 433
+          "ms": 512
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 987
+          "ms": 1174
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "npm run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1036
+          "ms": 1002
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "npm run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 959
+          "ms": 1094
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 948
+          "ms": 1028
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "npm run lint",
           "exitCode": 0,
-          "ms": 952
+          "ms": 1048
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "npm run build-storybook",
           "exitCode": 0,
-          "ms": 2175
+          "ms": 2196
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "npm run test:storybook",
           "exitCode": 0,
-          "ms": 3923
+          "ms": 3844
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "npm run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 3698,
+          "ms": 3977,
           "detail": "24 tests"
         },
         {
@@ -4177,7 +4177,7 @@
           "status": "PASS",
           "command": "create-produx-app storybook-yarn --package-manager yarn --features +storybook --yes",
           "exitCode": 0,
-          "ms": 34133
+          "ms": 43737
         },
         {
           "name": "Type checking passed",
@@ -4208,63 +4208,63 @@
           "status": "PASS",
           "command": "yarn run format:check",
           "exitCode": 0,
-          "ms": 708
+          "ms": 767
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "yarn run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1271
+          "ms": 1244
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "yarn run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 1221
+          "ms": 1298
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "yarn run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 1209
+          "ms": 1293
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "yarn run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 1242
+          "ms": 1252
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "yarn run lint",
           "exitCode": 0,
-          "ms": 1206
+          "ms": 1395
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "yarn run build-storybook",
           "exitCode": 0,
-          "ms": 2218
+          "ms": 2276
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "yarn run test:storybook",
           "exitCode": 0,
-          "ms": 4398
+          "ms": 4274
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "yarn run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 4465,
+          "ms": 3822,
           "detail": "24 tests"
         },
         {
@@ -4324,7 +4324,7 @@
           "status": "PASS",
           "command": "create-produx-app storybook-bun --package-manager bun --features +storybook --yes",
           "exitCode": 0,
-          "ms": 14590
+          "ms": 19651
         },
         {
           "name": "Type checking passed",
@@ -4355,63 +4355,63 @@
           "status": "PASS",
           "command": "bun run format:check",
           "exitCode": 0,
-          "ms": 432
+          "ms": 384
         },
         {
           "name": "lint rejects upward import (shared -> pages)",
           "status": "PASS",
           "command": "bun run lint  (with src/shared/lib/__canary.ts)",
           "exitCode": 1,
-          "ms": 1072
+          "ms": 1112
         },
         {
           "name": "lint rejects public API bypass (deep import into a page)",
           "status": "PASS",
           "command": "bun run lint  (with src/app/__canary.ts)",
           "exitCode": 1,
-          "ms": 902
+          "ms": 827
         },
         {
           "name": "lint rejects file outside the layers",
           "status": "PASS",
           "command": "bun run lint  (with src/utils/__canary.ts)",
           "exitCode": 1,
-          "ms": 905
+          "ms": 824
         },
         {
           "name": "lint rejects sibling slice import (pages -> pages)",
           "status": "PASS",
           "command": "bun run lint  (with src/pages/examples/ui/__canary.ts)",
           "exitCode": 1,
-          "ms": 919
+          "ms": 813
         },
         {
           "name": "lint passes again without the canaries",
           "status": "PASS",
           "command": "bun run lint",
           "exitCode": 0,
-          "ms": 947
+          "ms": 823
         },
         {
           "name": "build-storybook (Storybook)",
           "status": "PASS",
           "command": "bun run build-storybook",
           "exitCode": 0,
-          "ms": 1873
+          "ms": 1732
         },
         {
           "name": "test:storybook (Storybook)",
           "status": "PASS",
           "command": "bun run test:storybook",
           "exitCode": 0,
-          "ms": 4492
+          "ms": 3887
         },
         {
           "name": "test:storybook in the dark theme (Storybook)",
           "status": "PASS",
           "command": "bun run test:storybook  (defaultTheme \"dark\", with a canary story)",
           "exitCode": 0,
-          "ms": 4569,
+          "ms": 3284,
           "detail": "24 tests"
         },
         {
@@ -4455,10 +4455,145 @@
         }
       ],
       "date": "2026-11-25"
+    },
+    "mono-app-dir": {
+      "scenario": "mono-app-dir",
+      "args": [
+        "mono-app-dir",
+        "--mode",
+        "monorepo",
+        "--app-name",
+        "web",
+        "--app-dir",
+        "web",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app mono-app-dir --mode monorepo --app-name web --app-dir web --preset minimal --yes",
+          "exitCode": 0,
+          "ms": 16301
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "single root lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "filtered build (pnpm --filter web build)",
+          "status": "PASS"
+        },
+        {
+          "name": "Turborepo cache hit on rebuild",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 2125
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 2038
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1646
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1713
+        },
+        {
+          "name": "ESLint from the workspace root passes",
+          "status": "PASS",
+          "command": "node web/node_modules/eslint/bin/eslint.js web  (from the workspace root)",
+          "exitCode": 0,
+          "ms": 433
+        },
+        {
+          "name": "ESLint from the workspace root rejects an upward import",
+          "status": "PASS",
+          "command": "node web/node_modules/eslint/bin/eslint.js web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 427,
+          "detail": "\n/private/tmp/claude-501/-Users-emirue-projects-emirue-react-starter-kit/67ceb9c1-fd5b-4c97-bf4a-bdb41f359d13/scratchpad/tmp/produx-validate-fdmDg7/mono-app-dir/mono-app-dir/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"home\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-25"
     }
   },
   "environment": {
-    "cli": "0.1.0",
+    "cli": "0.1.1",
     "cliPath": "/Users/emirue/projects/emirue/react-starter-kit/dist/index.mjs",
     "node": "v26.12.0",
     "platform": "darwin arm64",
