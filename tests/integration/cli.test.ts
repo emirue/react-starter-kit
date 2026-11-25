@@ -38,14 +38,20 @@ function nextSteps(out: string): string[] {
     .filter(Boolean)
 }
 
-/** A `pnpm` that succeeds without doing anything and logs its arguments. */
-async function fakePnpm(): Promise<{ PATH: string; log: string }> {
+/** A `pnpm` that succeeds without doing anything and logs its arguments (one line per call). */
+async function fakePnpm(): Promise<{ PATH: string; calls: () => Promise<string[]> }> {
   const bin = join(cwd, "fake-bin")
   const log = join(bin, "calls.log")
   await mkdir(bin)
-  await writeFile(join(bin, "pnpm"), `#!/bin/sh\necho "$*" >> "${log}"\n`)
-  await chmod(join(bin, "pnpm"), 0o755)
-  return { PATH: `${bin}${delimiter}${process.env.PATH}`, log }
+  if (process.platform === "win32") {
+    // A shell script without an extension is not runnable on Windows: the real pnpm.cmd would install.
+    await writeFile(join(bin, "pnpm.cmd"), `@echo %*>>"${log}"\r\n`)
+  } else {
+    await writeFile(join(bin, "pnpm"), `#!/bin/sh\necho "$*" >> "${log}"\n`)
+    await chmod(join(bin, "pnpm"), 0o755)
+  }
+  const calls = async () => (await readFile(log, "utf8")).split(/\r?\n/).map((l) => l.trim())
+  return { PATH: `${bin}${delimiter}${process.env.PATH}`, calls }
 }
 
 async function tree(dir: string): Promise<Record<string, string>> {
@@ -204,12 +210,10 @@ describe("create-produx-app CLI", () => {
     })
 
     it("has no install or api:generate step once the CLI installed and generated", async () => {
-      const { PATH, log } = await fakePnpm()
+      const { PATH, calls } = await fakePnpm()
       const r = cliWithEnv({ PATH }, "app", "--yes", "--no-git", "--no-verify", "--preset", "enterprise")
       expect(r.code).toBe(0)
-      expect((await readFile(log, "utf8")).split("\n")).toEqual(
-        expect.arrayContaining(["install --no-frozen-lockfile", "run api:generate"])
-      )
+      expect(await calls()).toEqual(expect.arrayContaining(["install --no-frozen-lockfile", "run api:generate"]))
       expect(nextSteps(r.out)).toEqual(["cd app", "pnpm dev"])
     })
   })
