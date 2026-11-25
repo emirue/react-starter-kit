@@ -135,15 +135,17 @@ Recommended: the current Node.js LTS (26.x).
 
 Everything below was run end to end (generate → install → type check → lint → unit tests → build, plus browser checks); see [docs/validation-report.md](docs/validation-report.md) for commands, exit codes and dates.
 
-|                                                            | Status                                                                |
-| ---------------------------------------------------------- | --------------------------------------------------------------------- |
-| macOS (arm64), Node.js 22.23.2 / 24.21.0 / 26.13.0         | PASS                                                                  |
-| Linux, Windows                                             | NOT TESTED locally (CI matrix provided in `.github/workflows/ci.yml`) |
-| pnpm 11.13.0: standalone, new monorepo, existing workspace | PASS                                                                  |
-| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard       | PASS                                                                  |
-| npm, Yarn, Bun: monorepo modes                             | Not supported in this release (pnpm only)                             |
-| pnpm 12, Yarn 4                                            | NOT TESTED                                                            |
-| GitHub Actions / CodeQL workflows                          | Generated and checked with actionlint; not executed on GitHub         |
+|                                                                                                   | Status                                                        |
+| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| macOS (arm64), Node.js 26: full matrix                                                            | PASS                                                          |
+| Linux (arm64, Docker), Node.js 22.23.2 / 24.21.0: 9 scenarios with browser checks                 | PASS                                                          |
+| Linux x64, macOS, Windows x64 (GitHub Actions), Node.js 26: Minimal, Standard, Turborepo monorepo | PASS (no browser checks)                                      |
+| Windows with Playwright, Storybook, npm, Yarn or Bun                                              | NOT TESTED                                                    |
+| pnpm 11.13.0 (macOS) and 11.29.0 (Linux, CI): standalone, new monorepo, existing workspace        | PASS                                                          |
+| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard, and Standard + Storybook (macOS)            | PASS                                                          |
+| npm, Yarn, Bun: monorepo modes                                                                    | Not supported in this release (pnpm only)                     |
+| pnpm 12, Yarn 4                                                                                   | NOT TESTED                                                    |
+| GitHub Actions / CodeQL workflows                                                                 | Generated and checked with actionlint; not executed on GitHub |
 
 ## Backend integration
 
@@ -170,6 +172,7 @@ node dist/index.mjs my-app            # or: npm pack, then npx --package ./creat
 | `The engine "node" is incompatible` (Yarn)                           | Yarn 1 enforces `engines`; use a Node.js version from the table above.                                                             |
 | `test:e2e` or `test:storybook` cannot find a browser                 | Run `pnpm exec playwright install chromium` once (not done automatically: large download).                                         |
 | `Generated projects need Node.js …` warning                          | Your Node.js is older than the generated project needs; switch versions before installing.                                         |
+| CI: `pnpm v11.13.0 is a broken release and cannot be installed`      | pnpm 11.13.0 is deprecated on npm. Upgrade pnpm, then update `packageManager` in `package.json`.                                   |
 
 ## Known limitations
 
@@ -179,7 +182,7 @@ node dist/index.mjs my-app            # or: npm pack, then npx --package ./creat
 - Orval generates request functions (`axios-functions` or `fetch` client) wrapped by the page's own query options; it requires TanStack Query and MSW (the sample spec is served by MSW).
 - Example pages need a router; `--router none` generates no examples.
 - Docker images are supported for standalone apps and new monorepos with pnpm or npm.
-- Windows and Linux have not been run locally.
+- On Windows only Minimal, Standard and a Turborepo monorepo are verified (GitHub Actions, without browser checks).
 
 ## Contributing
 

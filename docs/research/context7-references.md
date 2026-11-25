@@ -1184,7 +1184,7 @@ Context7's monthly quota was exhausted; these facts come from the installed pack
 ### eslint-plugin-boundaries 7.4.4
 
 - Element descriptors' `mode` option is deprecated (`@boundaries/elements` 3.3.4 `dist/index.d.mts`: "For element descriptors, the mode is always folder"); a run with `mode: "file"` printed a deprecation warning. Single files (`src/main.tsx`, `src/vite-env.d.ts`) are therefore listed in `boundaries/ignore` instead of being an element.
-- Patterns use the default right-to-left `partialMatch` (not anchored to ESLint's working directory). Running ESLint from a monorepo root on the app was not tested; the monorepo scenarios run `lint` from the app through the workspace scripts.
+- Element patterns use the default right-to-left `partialMatch`, but paths are taken relative to `boundaries/root-path`, which defaults to `process.cwd()` (`dist/Settings/Settings.js`, `getNormalizedRootPath`; an absolute setting is used as is). Measured from a monorepo root: `boundaries/ignore` entries such as `src/main.tsx` no longer matched and every app file was reported by `no-unknown-files`. Generated configs set `"boundaries/root-path": import.meta.dirname` (see 2026-11-25 below).
 - Measured with a canary file in a generated app: deep imports into another page, imports of another page's index, a page importing `app`, `shared` importing a page, a relative import into another slice, an app-level deep import and a dynamic `import()` of a page's internal file were all reported; a file outside every layer was reported by `boundaries/no-unknown-files`.
 
 ### Orval 8.49.0 function clients
@@ -1198,6 +1198,17 @@ Generated in a scratch copy with the app's mutator:
 ### TanStack Router 1.170.46: missing chunks
 
 `dist/esm/lazyRouteComponent.js` reloads the page once when a lazy route module fails to load (`isModuleNotFoundError`, guarded by a `sessionStorage` key `tanstack_router_reload:<message>`); the second failure is thrown to the route's error component. React Router shows the route `ErrorBoundary` on the first failure.
+
+## Cross-platform validation (2026-11-25)
+
+Facts from the installed packages, the pinned actions' sources and the runs on GitHub Actions and in Docker (Context7 quota still exhausted).
+
+- **pnpm/action-setup v6.1.1** (README at the pinned SHA): `version` may be omitted only when `package.json` declares pnpm 11+ in `packageManager` or `devEngines.packageManager`. **pnpm 11.13.0** is deprecated on npm ("This is a broken version. Please install pnpm v11.13.1 or newer", `npm view pnpm@11.13.0 deprecated`); the action's self-installer refuses it with `ERR_PNPM_BROKEN_PNPM_RELEASE`.
+- **Corepack** (bundled with Node 22.23.2, Debian container): on first use it prints `! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-<version>.tgz` on stderr before running the command.
+- **execa 10.2.1** (`lib/arguments/command-file.js`): on Windows it resolves the command through `PATH` and `PATHEXT` and escapes arguments for `cmd.exe`, so `.cmd` shims (pnpm, npm) run without a shell; `node:child_process` resolves neither.
+- **@testing-library/jest-dom 8.0.0**: the `./vitest` entry (`dist/vitest.mjs`) runs `import { expect } from 'vitest'; expect.extend(...)`; `./matchers` does not import vitest. The README documents `import * as matchers from '@testing-library/jest-dom/matchers'` + `expect.extend(matchers)` for other `expect`s.
+- **Windows short paths** (measured on `windows-latest`): `os.tmpdir()` is `C:\Users\RUNNER~1\AppData\Local\Temp`. A project run from there with `root` and the alias based on `import.meta.dirname` failed in Vitest: test files were loaded by the long path (`C:/Users/runneradmin/...`), `@/` imports by the short one (`ERR_MODULE_NOT_FOUND`); with only the alias fixed, jest-dom's `./vitest` extended a second Vitest `expect` (`Invalid Chai property`). With `root = realpathSync.native(import.meta.dirname)` and the matchers registered on the setup file's `expect`, the same scenario passed.
+- **Debian containers** (measured in `node:22.23.2-bookworm`): `vite preview` listened on 127.0.0.1 while Node's `fetch("http://localhost:…")` connected to `::1` (`ECONNREFUSED`; `curl` succeeded by falling back).
 
 ## Selected versions without a dedicated section
 
@@ -1220,7 +1231,7 @@ The shadcn registry packages (`cn`, `class-variance-authority`, `tw-animate-css`
 
 ## Unconfirmed and open items
 
-1. **Ctrl+C and Node coverage:** for the clack spinner, the docs and the measurement disagree. Linux, Windows, external SIGINT and Node 26 were not run, and Vitest with jsdom 31 was not run on Node 24.15+.
+1. **Ctrl+C and Node coverage:** for the clack spinner, the docs and the measurement disagree. Ctrl+C was measured on macOS only (`scripts/interactive-check.py`), not on Linux, Windows or with an external SIGINT. Vitest with jsdom 31 ran on Node 22.23.2 and 24.21.0 (Linux, Docker) and 26 (macOS, GitHub Actions on Linux, macOS and Windows).
 2. **Unmeasured CLI paths:** clack `validate` with a zod 4 schema, and a tsdown shebang injected through `banner`.
 3. **shadcn `init` output** was not measured in the quality-tool research. Still open: whether it runs without prompts, whether `-t vite` adds `button`, whether `shadcn@latest` is written to dependencies, and which dark variant the CSS uses.
 4. **Hooks and docs versions:** no husky or lint-staged hook was run on a real commit. The Tailwind docs came from `main`, and Prettier 3.10 changes were not researched.
