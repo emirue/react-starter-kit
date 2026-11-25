@@ -67,21 +67,24 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
       - run: node scripts/validate.ts --only ${{ matrix.scenario }} --out validation-${{ matrix.os }}-${{ matrix.scenario }}.json
-        env:
-          # Generated projects go to the runner's temp directory, so a failed run can upload their logs.
-          TMPDIR: ${{ runner.temp }}
-          TEMP: ${{ runner.temp }}
-          TMP: ${{ runner.temp }}
       - if: ${{ !cancelled() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: validation-${{ matrix.os }}-${{ matrix.scenario }}
           path: validation-${{ matrix.os }}-${{ matrix.scenario }}.json
+      # Generated projects stay in the OS temp directory (as for users: on Windows a short 8.3 path).
+      - if: ${{ failure() }}
+        id: logs
+        shell: bash
+        run: |
+          dir="$(node -p "require('node:os').tmpdir()")"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          for f in "$dir"/produx-validate-*/*/validate.log; do echo "::group::$f"; tail -n 200 "$f"; echo "::endgroup::"; done
       - if: ${{ failure() }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: logs-${{ matrix.os }}-${{ matrix.scenario }}
-          path: ${{ runner.temp }}/produx-validate-*/*/validate.log
+          path: ${{ steps.logs.outputs.dir }}/produx-validate-*/*/validate.log
 
   versions:
     if: github.event_name == 'schedule'
