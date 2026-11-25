@@ -41,7 +41,7 @@ New scenarios: `router-none-examples`, `custom-tailwind-primitives` (Tailwind wi
 | Where                                                        | What ran                                                                                                                                                                    | Result                                                                                     |
 | ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | Linux arm64 (Docker, Debian bookworm), Node 22.23.2, 24.21.0 | 9 scenarios with `--browser`, including Enterprise (e2e, Storybook, dark-theme stories) and a monorepo; 8 ran before the last two fixes, Enterprise again on the final code | PASS; Docker checks SKIPPED (no daemon in the container). [../validation/](../validation/) |
-| GitHub Actions: Ubuntu, macOS, Windows (Node 26)             | Repository gates on Node 22.22.2 and 26; Minimal, Standard and a Turborepo monorepo without `--browser`                                                                     | PASS, Windows from its default short (8.3) temp path                                       |
+| GitHub Actions: Ubuntu, macOS, Windows (Node 26)             | Repository gates (the CLI's own tests) on all three with Node 26, plus Node 22.22.2 on Ubuntu; Minimal, Standard and a Turborepo monorepo without `--browser`               | PASS, Windows from its default short (8.3) temp path                                       |
 
 ## Manual checks during implementation
 
@@ -59,7 +59,6 @@ See items 25–41 in [../validation-report.md](../validation-report.md#defects-f
 ## NOT TESTED
 
 - Windows with Playwright, Storybook, npm, Yarn or Bun, and browser checks on Windows and Linux x64 (the CI `generate` job runs Minimal, Standard and a monorepo without `--browser`).
-- The CLI's own unit and integration tests on Windows and macOS runners (the CI `verify` job runs on Ubuntu).
 - Ctrl+C rollback on Linux and Windows (measured on macOS only).
 - Docker image builds on Linux (SKIPPED inside the containers; built and run on macOS).
 - Updating an existing generated app to the new structure (documented by hand in [migration.md](migration.md), not automated).

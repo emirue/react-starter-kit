@@ -1,5 +1,5 @@
 {
-  "note": "GitHub Actions run 45530427473 (commit a8142aa), job generate: node scripts/validate.ts --only <scenario>, without --browser. Windows uses the default temp directory (short 8.3 path).",
+  "note": "GitHub Actions run 45536853019 (commit a6b7446), job generate: node scripts/validate.ts --only <scenario>, without --browser. Windows uses the default temp directory (short 8.3 path).",
   "runs": [
     {
       "artifact": "validation-macos-latest-minimal",
@@ -17,7 +17,7 @@
               "status": "PASS",
               "command": "create-produx-app minimal --preset minimal --yes",
               "exitCode": 0,
-              "ms": 11143
+              "ms": 21361
             },
             {
               "name": "Type checking passed",
@@ -44,28 +44,28 @@
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1349
+              "ms": 2167
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 1435
+              "ms": 1978
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 1078
+              "ms": 1777
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 1174
+              "ms": 2086
             }
           ],
           "date": "2026-11-25"
@@ -103,7 +103,7 @@
               "status": "PASS",
               "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
               "exitCode": 0,
-              "ms": 25021
+              "ms": 56963
             },
             {
               "name": "Type checking passed",
@@ -150,57 +150,57 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 828
+              "ms": 1245
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1540
+              "ms": 2538
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 1471
+              "ms": 2367
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 1487
+              "ms": 3805
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 1538
+              "ms": 3185
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 1450
+              "ms": 2270
             },
             {
               "name": "ESLint from the workspace root passes",
               "status": "PASS",
               "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
               "exitCode": 0,
-              "ms": 1188
+              "ms": 1920
             },
             {
               "name": "ESLint from the workspace root rejects an upward import",
               "status": "PASS",
               "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1181,
-              "detail": "\n/private/var/folders/q2/p1t6rgxj5fj32g1dc7dmd49r0000gn/T/produx-validate-dPAEfp/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+              "ms": 1745,
+              "detail": "\n/private/var/folders/q2/p1t6rgxj5fj32g1dc7dmd49r0000gn/T/produx-validate-vOB2RP/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
             }
           ],
           "date": "2026-11-25"
@@ -232,7 +232,7 @@
               "status": "PASS",
               "command": "create-produx-app standard --yes",
               "exitCode": 0,
-              "ms": 26568
+              "ms": 38380
             },
             {
               "name": "Type checking passed",
@@ -263,42 +263,42 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 1072
+              "ms": 1464
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 2342
+              "ms": 2485
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 2209
+              "ms": 2228
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 2419
+              "ms": 2222
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 2119
+              "ms": 2046
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 2118
+              "ms": 1612
             }
           ],
           "date": "2026-11-25"
@@ -332,7 +332,7 @@
               "status": "PASS",
               "command": "create-produx-app minimal --preset minimal --yes",
               "exitCode": 0,
-              "ms": 9194
+              "ms": 11451
             },
             {
               "name": "Type checking passed",
@@ -359,28 +359,28 @@
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1213
+              "ms": 1624
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 1213
+              "ms": 1617
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 1221
+              "ms": 1612
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 1193
+              "ms": 1571
             }
           ],
           "date": "2026-11-25"
@@ -418,7 +418,7 @@
               "status": "PASS",
               "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
               "exitCode": 0,
-              "ms": 27233
+              "ms": 24737
             },
             {
               "name": "Type checking passed",
@@ -465,57 +465,57 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 1034
+              "ms": 934
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1932
+              "ms": 1764
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 1921
+              "ms": 1733
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 1896
+              "ms": 1731
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 1891
+              "ms": 1727
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 1879
+              "ms": 1710
             },
             {
               "name": "ESLint from the workspace root passes",
               "status": "PASS",
               "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
               "exitCode": 0,
-              "ms": 1441
+              "ms": 1328
             },
             {
               "name": "ESLint from the workspace root rejects an upward import",
               "status": "PASS",
               "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1469,
-              "detail": "\n/tmp/produx-validate-WcPgvr/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+              "ms": 1331,
+              "detail": "\n/tmp/produx-validate-zGlwxT/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
             }
           ],
           "date": "2026-11-25"
@@ -547,7 +547,7 @@
               "status": "PASS",
               "command": "create-produx-app standard --yes",
               "exitCode": 0,
-              "ms": 28573
+              "ms": 20240
             },
             {
               "name": "Type checking passed",
@@ -578,42 +578,42 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 1316
+              "ms": 888
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 2406
+              "ms": 1608
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 2387
+              "ms": 1614
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 2431
+              "ms": 1603
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 2397
+              "ms": 1605
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 2378
+              "ms": 1580
             }
           ],
           "date": "2026-11-25"
@@ -647,7 +647,7 @@
               "status": "PASS",
               "command": "create-produx-app minimal --preset minimal --yes",
               "exitCode": 0,
-              "ms": 24297
+              "ms": 56921
             },
             {
               "name": "Type checking passed",
@@ -674,28 +674,28 @@
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 2263
+              "ms": 2008
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 2224
+              "ms": 1964
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 2288
+              "ms": 1998
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 2249
+              "ms": 1939
             }
           ],
           "date": "2026-11-25"
@@ -733,7 +733,7 @@
               "status": "PASS",
               "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
               "exitCode": 0,
-              "ms": 55319
+              "ms": 76041
             },
             {
               "name": "Type checking passed",
@@ -780,57 +780,57 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 905
+              "ms": 1054
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 4918
+              "ms": 7315
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 1863
+              "ms": 2348
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 1933
+              "ms": 2323
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 1861
+              "ms": 2374
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 1782
+              "ms": 2377
             },
             {
               "name": "ESLint from the workspace root passes",
               "status": "PASS",
               "command": "node apps\\web\\node_modules\\eslint\\bin\\eslint.js apps\\web  (from the workspace root)",
               "exitCode": 0,
-              "ms": 1442
+              "ms": 1927
             },
             {
               "name": "ESLint from the workspace root rejects an upward import",
               "status": "PASS",
               "command": "node apps\\web\\node_modules\\eslint\\bin\\eslint.js apps\\web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 1488,
-              "detail": "\nC:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\produx-validate-DQT6NO\\mono-turbo\\mono-turbo\\apps\\web\\src\\shared\\lib\\__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+              "ms": 1950,
+              "detail": "\nC:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\produx-validate-l1bVt0\\mono-turbo\\mono-turbo\\apps\\web\\src\\shared\\lib\\__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
             }
           ],
           "date": "2026-11-25"
@@ -862,7 +862,7 @@
               "status": "PASS",
               "command": "create-produx-app standard --yes",
               "exitCode": 0,
-              "ms": 132254
+              "ms": 73441
             },
             {
               "name": "Type checking passed",
@@ -893,42 +893,42 @@
               "status": "PASS",
               "command": "pnpm run format:check",
               "exitCode": 0,
-              "ms": 1102
+              "ms": 823
             },
             {
               "name": "lint rejects upward import (shared -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
               "exitCode": 1,
-              "ms": 2400
+              "ms": 1852
             },
             {
               "name": "lint rejects public API bypass (deep import into a page)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/app/__canary.ts)",
               "exitCode": 1,
-              "ms": 2353
+              "ms": 1865
             },
             {
               "name": "lint rejects file outside the layers",
               "status": "PASS",
               "command": "pnpm run lint  (with src/utils/__canary.ts)",
               "exitCode": 1,
-              "ms": 2330
+              "ms": 1914
             },
             {
               "name": "lint rejects sibling slice import (pages -> pages)",
               "status": "PASS",
               "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
               "exitCode": 1,
-              "ms": 2767
+              "ms": 1856
             },
             {
               "name": "lint passes again without the canaries",
               "status": "PASS",
               "command": "pnpm run lint",
               "exitCode": 0,
-              "ms": 2752
+              "ms": 1896
             }
           ],
           "date": "2026-11-25"

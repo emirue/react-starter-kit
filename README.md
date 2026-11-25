@@ -4,7 +4,7 @@ An interactive CLI that creates React + Vite + TypeScript projects with a verifi
 
 It is not a template copier. Each project is assembled from feature modules, installed, and then validated (type check, lint, unit tests, production build) before the CLI reports success.
 
-> **Status: 0.1.0, not published to npm yet.** The `npm create produx-app` commands below work once the package is published. Until then, run it from a clone or a packed tarball (see [Running before publication](#running-before-publication)).
+> **Status: 0.1.0.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
 
 ## Quick start
 
@@ -155,7 +155,7 @@ The CLI never generates a backend. Generated apps call APIs through one client (
 
 Generated projects pin exact versions from [`src/config/dependency-versions.json`](src/config/dependency-versions.json), verified for this CLI release. The CLI never installs unverified `latest` versions. Updates go through Renovate and the validation matrix ([docs/releasing.md](docs/releasing.md)). Deliberate exceptions, such as TypeScript 6.0.x instead of 7, are explained in [docs/dependency-compatibility.md](docs/dependency-compatibility.md).
 
-## Running before publication
+## Running from a clone
 
 ```bash
 git clone <this repository> && cd <it>
