@@ -562,6 +562,17 @@ describe("storybook feature", () => {
     expect(pkg(withoutEslint).devDependencies["eslint-plugin-storybook"]).toBeUndefined()
   })
 
+  it("checks Storybook addons against the app's package.json, also from a monorepo root", async () => {
+    // storybook/no-uninstalled-addons reads ./package.json from the cwd by default (mono-enterprise, lint from the root).
+    const config = content(await plan({ preset: "enterprise" }), "eslint.config.js")!
+    expect(config).toContain('"storybook/no-uninstalled-addons": ["error", { packageJsonLocation: `${import.meta.dirname}/package.json` }]')
+  })
+
+  it("does not lint the generated MSW service worker", async () => {
+    expect(content(await plan({ preset: "enterprise" }), "eslint.config.js")).toContain('"public/mockServiceWorker.js"')
+    expect(content(await plan({}), "eslint.config.js")).not.toContain("mockServiceWorker")
+  })
+
   it("enables the Storybook ESLint plugin in eslint.config.js", async () => {
     expect(content(await plan({ features: ["+storybook"] }), "eslint.config.js")).toContain("eslint-plugin-storybook")
   })

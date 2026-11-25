@@ -32,6 +32,9 @@ export default defineConfig([
     // @if orval
     "src/shared/api/generated",
     // @endif
+    // @if msw
+    "public/mockServiceWorker.js",
+    // @endif
     // @if playwright
     "playwright-report",
     "test-results",
@@ -107,6 +110,13 @@ export default defineConfig([
   },
   // @if storybook
   ...storybook.configs["flat/recommended"],
+  {
+    // The addon check reads ./package.json from the cwd by default: wrong when ESLint runs from a monorepo root.
+    files: [".storybook/main.ts"],
+    rules: {
+      "storybook/no-uninstalled-addons": ["error", { packageJsonLocation: `${import.meta.dirname}/package.json` }],
+    },
+  },
   // @endif
   // @if shadcn
   {
