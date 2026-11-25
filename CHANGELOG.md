@@ -40,3 +40,4 @@ All notable changes to this project are documented here. The format follows
   setup file's `expect`.
 - The Storybook addon lint checks the app's own `package.json`.
 - The Dockerfile fallback pnpm is 11.29.0 (11.13.0 is deprecated on npm).
+- The `bin` entry is `dist/index.mjs`: npm 11 publish dropped `./dist/index.mjs`.

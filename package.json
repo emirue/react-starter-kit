@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "bin": {
-    "create-produx-app": "./dist/index.mjs"
+    "create-produx-app": "dist/index.mjs"
   },
   "files": [
     "dist",
