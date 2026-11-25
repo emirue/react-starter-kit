@@ -553,9 +553,11 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
 
   if (values.browser) {
     const port = String(4300 + SCENARIOS.indexOf(s))
-    const [cmd, ...pre] = s.pm === "pnpm" ? ["pnpm", "exec"] : ["npx"]
+    // Vite itself, not through pnpm/npx: a package manager that re-launches itself (pnpm switching to the
+    // version in "packageManager") survived server.kill() and left preview servers running.
     // An explicit IPv4 address: "localhost" may resolve to ::1 for fetch and to 127.0.0.1 for Vite (Debian containers).
-    const server = execa(cmd!, [...pre, "vite", "preview", "--host", "127.0.0.1", "--port", port, "--strictPort"], {
+    const vite = join(app, "node_modules", "vite", "bin", "vite.js")
+    const server = execa(process.execPath, [vite, "preview", "--host", "127.0.0.1", "--port", port, "--strictPort"], {
       cwd: app,
       stdio: "ignore",
       reject: false,
