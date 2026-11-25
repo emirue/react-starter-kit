@@ -4,6 +4,34 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] - 2026-11-25
+
+### Fixed
+
+- A pnpm release deprecated on npm as broken (11.13.0) is no longer recorded in
+  `packageManager` and the Dockerfile: the CLI warns and records the verified
+  11.29.0, so the generated GitHub Actions setup can install it.
+- Existing workspaces: an app directory excluded by a negated glob
+  (`!apps/excluded`) is refused before anything is written, instead of being
+  created outside the workspace.
+- `--save-config <path>` is listed in the review; inside an existing workspace
+  it needs the same approval as other workspace changes.
+- The generated README lists every file to change when removing an example
+  (home page, examples menu, admin sidebar, e2e routes, `AGENTS.md`) and
+  mentions `--no-examples`.
+- `package.json` has `repository`, `homepage` and `bugs`.
+- New monorepo: an `--app-dir` outside `apps/` is added to the workspace
+  packages. Before, the app was not installed or checked, yet the run passed.
+- `--config` in interactive mode: the file's answers are no longer asked again
+  and overridden by prompt defaults.
+- Existing workspace with `--config`: the app name on the command line wins.
+- Scoped app names (`@acme/web`) get `apps/web`, so saved configs load again.
+- `npm create produx-app ... --mode monorepo` uses pnpm instead of failing with
+  "requested: npm".
+- The interactive app directory is validated like `--app-dir`; an empty
+  `--features` list is an error; workspace-only options in a standalone run are
+  reported as ignored.
+
 ## [0.1.0] - 2026-11-25
 
 ### Added

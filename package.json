@@ -1,6 +1,6 @@
 {
   "name": "create-produx-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Interactive CLI that scaffolds verified React + Vite + TypeScript projects, standalone or inside a monorepo.",
   "license": "MIT",
   "repository": {
