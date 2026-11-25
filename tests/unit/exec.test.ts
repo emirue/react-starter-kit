@@ -1,10 +1,11 @@
+import { existsSync } from "node:fs"
 import { chmod, mkdtemp, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 import { afterEach, describe, expect, it } from "vitest"
 
-import { commandVersion } from "../../src/utils/exec.ts"
+import { commandVersion, runCommand, stopRunningCommands } from "../../src/utils/exec.ts"
 
 const dirs: string[] = []
 afterEach(async () => {
@@ -48,5 +49,26 @@ describe("commandVersion", () => {
   it("keeps prerelease versions and rejects output that is not a version", async () => {
     expect(await commandVersion(await fakeCommand("9.0.0-beta.1\n"))).toBe("9.0.0-beta.1")
     expect(await commandVersion(await fakeCommand("not installed\n"))).toBeUndefined()
+  })
+})
+
+describe("stopRunningCommands", () => {
+  // Ctrl+C rolls back after this. A package manager that re-launched itself (pnpm switching to the
+  // version in "packageManager") kept writing after its parent was gone, so a directory survived the rollback.
+  it("stops the whole process tree of a running command before returning", async () => {
+    const dir = await mkdtemp(join(tmpdir(), "produx-stop-"))
+    dirs.push(dir)
+    const marker = join(dir, "written-by-grandchild")
+    const grandchild = `setInterval(() => require("fs").writeFileSync(${JSON.stringify(marker)}, "x"), 20)`
+    const parent = `require("child_process").spawn(process.execPath, ["-e", ${JSON.stringify(grandchild)}], { stdio: "ignore" }); setInterval(() => {}, 1000)`
+    const running = runCommand(process.execPath, ["-e", parent], dir)
+    for (let i = 0; i < 100 && !existsSync(marker); i++) await new Promise((r) => setTimeout(r, 20))
+    expect(existsSync(marker)).toBe(true)
+
+    await stopRunningCommands()
+    expect((await running).ok).toBe(false)
+    await rm(marker, { force: true })
+    await new Promise((r) => setTimeout(r, 300))
+    expect(existsSync(marker)).toBe(false)
   })
 })

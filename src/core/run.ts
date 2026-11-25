@@ -8,7 +8,7 @@ import { PM, pmFromUserAgent, recordedPmVersion } from "../adapters/package-mana
 import type { CliOptions } from "../cli/options.ts"
 import { promptForOptions } from "../cli/prompts.ts"
 import { ProduxError } from "../utils/errors.ts"
-import { commandVersion, runCommand } from "../utils/exec.ts"
+import { commandVersion, runCommand, stopRunningCommands } from "../utils/exec.ts"
 import { satisfies } from "../utils/node-version.ts"
 import { toValidPackageName, validatePackageName } from "../utils/project-name.ts"
 import { assertWritableTarget, Journal, writeFiles } from "./apply.ts"
@@ -352,10 +352,13 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
   const onSigint = () => {
     if (cancelling) return
     cancelling = true
-    void journal.rollback().finally(() => {
-      p.cancel("Cancelled. Changes made by this run were rolled back.")
-      process.exit(130)
-    })
+    // Stop the running install or check first: it could otherwise write again after the rollback.
+    void stopRunningCommands()
+      .then(() => journal.rollback())
+      .finally(() => {
+        p.cancel("Cancelled. Changes made by this run were rolled back.")
+        process.exit(130)
+      })
   }
   process.on("SIGINT", onSigint)
 
