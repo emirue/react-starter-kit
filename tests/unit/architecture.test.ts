@@ -421,12 +421,21 @@ describe("generated configuration", () => {
     ["standard", {}],
     ["enterprise (Vitest projects)", { preset: "enterprise" }],
     ["vite proxy", { features: ["+vite-proxy"] }],
-  ] as [string, Partial<CliOptions>][])("%s: the @ alias points at the real path of src", async (_, o) => {
-    // On Windows a short (8.3) working directory, e.g. C:\Users\RUNNER~1, would give "@/" imports
-    // a second path that Vitest cannot load (seen on windows-latest).
+  ] as [string, Partial<CliOptions>][])("%s: Vite and Vitest use the real path of the project", async (_, o) => {
+    // From a short (8.3) Windows working directory, e.g. C:\Users\RUNNER~1, Vitest loaded test files by
+    // their long path and setup files and "@/" imports by the short one (seen on windows-latest).
     const config = content(await plan(o), "vite.config.ts")!
     expect(config).toMatch(/^import \{ realpathSync \} from "node:fs"$/m)
-    expect(config).toMatch(/"@": realpathSync\.native\(resolve\(import\.meta\.dirname, "src"\)\)/)
+    expect(config).toMatch(/^const root = realpathSync\.native\(import\.meta\.dirname\)$/m)
+    expect(config).toMatch(/^\s+root,$/m)
+    expect(config).toContain('"@": resolve(root, "src")')
+    expect(config).not.toContain("import.meta.dirname,")
+    expect(config).not.toMatch(/resolve\(import\.meta\.dirname/)
+  })
+
+  it("Storybook and the Vite proxy resolve paths from the real project root", async () => {
+    expect(content(await plan({ preset: "enterprise" }), "vite.config.ts")).toContain('configDir: resolve(root, ".storybook")')
+    expect(content(await plan({ features: ["+vite-proxy"] }), "vite.config.ts")).toContain('loadEnv(mode, root, "VITE_")')
   })
 
   it("components.json points shadcn/ui at shared/ui and shared/lib", async () => {

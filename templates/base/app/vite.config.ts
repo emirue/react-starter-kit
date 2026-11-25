@@ -23,11 +23,16 @@ import { defineConfig, loadEnv } from "vite"
 import { defineConfig } from "vite"
 // @endif
 
+// The project directory by its real path. From a short (8.3) Windows path such as C:\Users\RUNNER~1,
+// Vitest would otherwise load test files by their long path and setup files and "@/" imports by the short one.
+const root = realpathSync.native(import.meta.dirname)
+
 // https://vite.dev/config/
 // @if vite-proxy
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, import.meta.dirname, "VITE_")
+  const env = loadEnv(mode, root, "VITE_")
   return {
+    root,
     // @if tanstack-router
     plugins: [
       tanstackRouter({ target: "react", autoCodeSplitting: true }),
@@ -45,8 +50,7 @@ export default defineConfig(({ mode }) => {
     // @endif
     resolve: {
       alias: {
-        // The real path: from a short (8.3) Windows directory, "@/" imports would get a second path Vitest cannot load.
-        "@": realpathSync.native(resolve(import.meta.dirname, "src")),
+        "@": resolve(root, "src"),
       },
     },
     server: {
@@ -90,7 +94,7 @@ export default defineConfig(({ mode }) => {
         {
           // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
           extends: true,
-          plugins: [storybookTest({ configDir: resolve(import.meta.dirname, ".storybook") })],
+          plugins: [storybookTest({ configDir: resolve(root, ".storybook") })],
           test: {
             name: "storybook",
             browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
@@ -103,6 +107,7 @@ export default defineConfig(({ mode }) => {
 })
 // @else
 export default defineConfig({
+  root,
   // @if tanstack-router
   plugins: [
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
@@ -120,8 +125,7 @@ export default defineConfig({
   // @endif
   resolve: {
     alias: {
-      // The real path: from a short (8.3) Windows directory, "@/" imports would get a second path Vitest cannot load.
-      "@": realpathSync.native(resolve(import.meta.dirname, "src")),
+      "@": resolve(root, "src"),
     },
   },
   // @if vitest && !storybook
@@ -155,7 +159,7 @@ export default defineConfig({
       {
         // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
         extends: true,
-        plugins: [storybookTest({ configDir: resolve(import.meta.dirname, ".storybook") })],
+        plugins: [storybookTest({ configDir: resolve(root, ".storybook") })],
         test: {
           name: "storybook",
           browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
