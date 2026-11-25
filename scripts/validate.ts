@@ -94,8 +94,16 @@ async function browserCheck(url: string, scenario: Scenario): Promise<Check[]> {
   try {
     const page = await browser.newPage()
     const errors: string[] = []
-    // With the page and resource URLs: "Failed to load resource" alone does not say what failed.
-    page.on("console", (m) => m.type() === "error" && errors.push(`${m.text()} (${m.location().url || page.url()})`))
+    // Without a backend the examples' API requests fail by design (the page shows its error state). Whether
+    // Chromium logs that 404 before the next navigation is a race, so those are counted separately.
+    const apiFailures: string[] = []
+    page.on("console", (m) => {
+      if (m.type() !== "error") return
+      // With the resource URL: "Failed to load resource" alone does not say what failed.
+      const where = m.location().url || page.url()
+      const apiFailure = m.text().startsWith("Failed to load resource") && new URL(where, url).pathname.startsWith("/api/")
+      ;(apiFailure ? apiFailures : errors).push(`${m.text()} (${where})`)
+    })
     page.on("pageerror", (e) => errors.push(e.message))
     await page.goto(url)
     const h1 = await page
@@ -133,7 +141,11 @@ async function browserCheck(url: string, scenario: Scenario): Promise<Check[]> {
           .catch(() => null)) !== null
       checks.push({ name: `browser: direct URL ${path}`, status: ok ? "PASS" : "FAIL" })
     }
-    checks.push({ name: "browser: no console errors", status: errors.length ? "FAIL" : "PASS", detail: errors.join(" | ") || undefined })
+    checks.push({
+      name: "browser: no console errors",
+      status: errors.length ? "FAIL" : "PASS",
+      detail: errors.join(" | ") || (apiFailures.length ? `not counted (no backend): ${apiFailures.join(" | ")}` : undefined),
+    })
 
     const routes = ["/", ...(scenario.deepLinks ?? [])]
     const axe = await axeSource()
