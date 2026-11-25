@@ -449,6 +449,8 @@ describe("generated configuration", () => {
     expect(config).toContain("boundaries/elements")
     expect(config).toContain("boundaries/no-unknown-files")
     expect(config).toMatch(/["']import\/resolver["']\s*:\s*\{[^}]*\btypescript\b/)
+    // Element patterns resolve against the app, not the cwd: ESLint run from a monorepo root (an editor) still matches them.
+    expect(config).toMatch(/["']boundaries\/root-path["']\s*:\s*import\.meta\.dirname/)
     expect(config).not.toContain("src/components")
   })
 

@@ -61,6 +61,8 @@ export default defineConfig([
     settings: {
       // Without a resolver, `@/` imports are silently left unchecked.
       "import/resolver": { typescript: { alwaysTryTypes: true, project: `${import.meta.dirname}/tsconfig.json` } },
+      // Element patterns are relative to this app, also when ESLint runs from a monorepo root (e.g. an editor).
+      "boundaries/root-path": import.meta.dirname,
       "boundaries/elements": [
         { type: "app", pattern: ["src/app", "src/routes"] },
         { type: "shared", pattern: "src/shared" },
