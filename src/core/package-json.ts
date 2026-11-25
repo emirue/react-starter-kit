@@ -2,6 +2,7 @@ import versions from "../config/dependency-versions.json" with { type: "json" }
 import { FEATURES } from "./features.ts"
 import type { GenerateOptions, Target } from "./generate.ts"
 import type { ProjectConfig } from "./resolve-config.ts"
+import { globMatches } from "./workspace.ts"
 
 const VERSIONS = versions as Record<string, string>
 
@@ -147,7 +148,12 @@ export function rootPackageJson(config: ProjectConfig, target: Target, opts: Gen
 export function pnpmWorkspaceYaml(config: ProjectConfig): string | undefined {
   if (config.packageManager !== "pnpm") return undefined
   const lines: string[] = []
-  if (config.mode === "monorepo") lines.push("packages:", "  - 'apps/*'", "  - 'packages/*'", "")
+  if (config.mode === "monorepo") {
+    // An --app-dir outside apps/ and packages/ must be listed, or the app is not part of the workspace.
+    const appDir = config.workspace!.appDir
+    const listed = ["apps/*", "packages/*"].some((g) => globMatches(g, appDir)) ? [] : [`  - '${appDir}'`]
+    lines.push("packages:", "  - 'apps/*'", "  - 'packages/*'", ...listed, "")
+  }
   // orval bundles esbuild; its postinstall only verifies the platform binary.
   if (config.features.includes("orval")) lines.push("allowBuilds:", "  esbuild: true", "")
   return lines.length ? `${lines.join("\n").trimEnd()}\n` : undefined

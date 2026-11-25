@@ -91,4 +91,13 @@ describe("createPlan (existing workspace)", () => {
     expect(paths(p)).toContain("apps/admin/.gitignore")
     expect(p.skipped.map((s) => s.path)).toEqual(expect.arrayContaining([".github/workflows/ci.yml"]))
   })
+
+  it("adds an app directory outside apps/ to the workspace packages", async () => {
+    // With only apps/* and packages/*, --app-dir web was outside the workspace: nothing was installed or checked there.
+    const config = resolveConfig({ cli: cli({ mode: "monorepo", appName: "web", appDir: "web" }) })
+    const p = await createPlan(config, { ...target, appDir: "/tmp/acme/web" }, { packageManagerVersion: "11.29.0" })
+    expect(p.files.find((f) => f.path === "pnpm-workspace.yaml")!.content).toContain("  - 'web'")
+    const usual = await plan({ appName: "web" })
+    expect(usual.files.find((f) => f.path === "pnpm-workspace.yaml")!.content).not.toContain("'apps/web'")
+  })
 })
