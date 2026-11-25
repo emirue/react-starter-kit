@@ -444,6 +444,16 @@ describe("generated configuration", () => {
     expect(setup).toContain('import type {} from "@testing-library/jest-dom/vitest"')
   })
 
+  it("Playwright's preview port comes from E2E_PORT (default 4173)", async () => {
+    // A fixed port collided with another project's preview on the same machine; locally
+    // reuseExistingServer would even test that other app.
+    const config = content(await plan({ preset: "enterprise" }), "playwright.config.ts")!
+    expect(config).toMatch(/^const PORT = Number\(process\.env\.E2E_PORT \?\? 4173\)$/m)
+    expect(config).toContain("--port ${PORT} --strictPort")
+    expect(config).not.toMatch(/localhost:4173|--port 4173/)
+    expect(content(await plan({ preset: "enterprise" }), "README.md")).toContain("E2E_PORT")
+  })
+
   it("Storybook and the Vite proxy resolve paths from the real project root", async () => {
     expect(content(await plan({ preset: "enterprise" }), "vite.config.ts")).toContain('configDir: resolve(root, ".storybook")')
     expect(content(await plan({ features: ["+vite-proxy"] }), "vite.config.ts")).toContain('loadEnv(mode, root, "VITE_")')

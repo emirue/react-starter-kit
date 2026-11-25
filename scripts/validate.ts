@@ -482,7 +482,8 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
   if (workspaceRoot && s.features.includes("eslint")) checks.push(...(await rootLintChecks(join(cwd, workspaceRoot), app, log)))
 
   if (pkg.scripts["test:e2e"]) {
-    const r = await exec(s.pm, ["run", "test:e2e"], app, log, { CI: "1" })
+    // A port of its own: another project's preview on the default 4173 made the run fail ("already used").
+    const r = await exec(s.pm, ["run", "test:e2e"], app, log, { CI: "1", E2E_PORT: String(5300 + SCENARIOS.indexOf(s)) })
     checks.push({
       name: "test:e2e (Playwright)",
       status: r.code === 0 ? "PASS" : "FAIL",
