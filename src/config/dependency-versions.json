@@ -51,7 +51,7 @@
   "husky": "9.1.7",
   "lint-staged": "17.6.2",
   "turbo": "2.11.13",
-  "pnpm": "11.13.0",
+  "pnpm": "11.29.0",
   "eslint-plugin-boundaries": "7.4.4",
   "eslint-import-resolver-typescript": "4.4.5",
   "storybook": "10.6.8",
