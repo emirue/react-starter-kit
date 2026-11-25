@@ -345,6 +345,10 @@ async function darkStoriesCheck(s: Scenario, app: string, log: string, lightTest
   }
 }
 
+// Docker checks need a daemon. Without one (e.g. when the harness itself runs in a container) they are SKIPPED, not failed.
+const dockerAvailable = execaSync("docker", ["info"], { reject: false }).exitCode === 0
+const noDocker = (name: string): Check => ({ name, status: "SKIPPED", detail: "docker is not available here" })
+
 /** Builds the image, runs it and checks health, SPA fallback and cache headers. */
 async function dockerCheck(s: Scenario, cwd: string, log: string): Promise<Check[]> {
   const tag = `produx-validate-${s.name}`
@@ -513,8 +517,9 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
     })
   }
 
-  if (s.features.includes("docker")) checks.push(...(await dockerCheck(s, cwd, log)))
-  if (s.features.includes("github-actions")) {
+  if (s.features.includes("docker")) checks.push(...(dockerAvailable ? await dockerCheck(s, cwd, log) : [noDocker("docker build + run")]))
+  if (s.features.includes("github-actions") && !dockerAvailable) checks.push(noDocker("actionlint (GitHub workflows)"))
+  else if (s.features.includes("github-actions")) {
     // Workflows cannot run locally; actionlint checks syntax, expressions and action inputs.
     const root = join(cwd, s.rootPath ?? s.appPath)
     const lint = await exec(
@@ -535,9 +540,14 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
   if (values.browser) {
     const port = String(4300 + SCENARIOS.indexOf(s))
     const [cmd, ...pre] = s.pm === "pnpm" ? ["pnpm", "exec"] : ["npx"]
-    const server = execa(cmd!, [...pre, "vite", "preview", "--port", port, "--strictPort"], { cwd: app, stdio: "ignore", reject: false })
+    // An explicit IPv4 address: "localhost" may resolve to ::1 for fetch and to 127.0.0.1 for Vite (Debian containers).
+    const server = execa(cmd!, [...pre, "vite", "preview", "--host", "127.0.0.1", "--port", port, "--strictPort"], {
+      cwd: app,
+      stdio: "ignore",
+      reject: false,
+    })
     try {
-      const url = `http://localhost:${port}/`
+      const url = `http://127.0.0.1:${port}/`
       if (!(await waitForHttp(url))) checks.push({ name: "preview server starts", status: "FAIL" })
       else {
         checks.push({ name: "preview server starts", status: "PASS" })
