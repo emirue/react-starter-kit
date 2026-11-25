@@ -94,7 +94,8 @@ async function browserCheck(url: string, scenario: Scenario): Promise<Check[]> {
   try {
     const page = await browser.newPage()
     const errors: string[] = []
-    page.on("console", (m) => m.type() === "error" && errors.push(m.text()))
+    // With the page and resource URLs: "Failed to load resource" alone does not say what failed.
+    page.on("console", (m) => m.type() === "error" && errors.push(`${m.text()} (${m.location().url || page.url()})`))
     page.on("pageerror", (e) => errors.push(e.message))
     await page.goto(url)
     const h1 = await page
