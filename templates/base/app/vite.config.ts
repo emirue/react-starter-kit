@@ -1,6 +1,7 @@
 // @if vitest
 /// <reference types="vitest/config" />
 // @endif
+import { realpathSync } from "node:fs"
 import { resolve } from "node:path"
 
 // @if storybook
@@ -44,7 +45,8 @@ export default defineConfig(({ mode }) => {
     // @endif
     resolve: {
       alias: {
-        "@": resolve(import.meta.dirname, "./src"),
+        // The real path: from a short (8.3) Windows directory, "@/" imports would get a second path Vitest cannot load.
+        "@": realpathSync.native(resolve(import.meta.dirname, "src")),
       },
     },
     server: {
@@ -118,7 +120,8 @@ export default defineConfig({
   // @endif
   resolve: {
     alias: {
-      "@": resolve(import.meta.dirname, "./src"),
+      // The real path: from a short (8.3) Windows directory, "@/" imports would get a second path Vitest cannot load.
+      "@": realpathSync.native(resolve(import.meta.dirname, "src")),
     },
   },
   // @if vitest && !storybook

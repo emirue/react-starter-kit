@@ -417,6 +417,18 @@ describe("generated layout: target tree", () => {
 })
 
 describe("generated configuration", () => {
+  it.each([
+    ["standard", {}],
+    ["enterprise (Vitest projects)", { preset: "enterprise" }],
+    ["vite proxy", { features: ["+vite-proxy"] }],
+  ] as [string, Partial<CliOptions>][])("%s: the @ alias points at the real path of src", async (_, o) => {
+    // On Windows a short (8.3) working directory, e.g. C:\Users\RUNNER~1, would give "@/" imports
+    // a second path that Vitest cannot load (seen on windows-latest).
+    const config = content(await plan(o), "vite.config.ts")!
+    expect(config).toMatch(/^import \{ realpathSync \} from "node:fs"$/m)
+    expect(config).toMatch(/"@": realpathSync\.native\(resolve\(import\.meta\.dirname, "src"\)\)/)
+  })
+
   it("components.json points shadcn/ui at shared/ui and shared/lib", async () => {
     for (const o of [{}, { preset: "admin", ui: "radix" }] as Partial<CliOptions>[]) {
       expect(JSON.parse(content(await plan(o), "components.json")!).aliases).toEqual({
