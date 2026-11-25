@@ -1,0 +1,2 @@
+# Keep LF on every platform: Windows checkouts would otherwise fail format:check and the template tests.
+* text=auto eol=lf
