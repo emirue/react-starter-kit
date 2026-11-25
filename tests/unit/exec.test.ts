@@ -15,6 +15,17 @@ afterEach(async () => {
 async function fakeCommand(stdout: string, stderr = "") {
   const dir = await mkdtemp(join(tmpdir(), "produx-exec-"))
   dirs.push(dir)
+  if (process.platform === "win32") {
+    // Windows runs .cmd files, not shebang scripts (as for the pnpm.cmd and npm.cmd shims).
+    const file = join(dir, "fake-pm.cmd")
+    const lines = (text: string, redirect: string) =>
+      text
+        .split("\n")
+        .filter(Boolean)
+        .map((l) => `echo ${l}${redirect}`)
+    await writeFile(file, ["@echo off", ...lines(stderr, " 1>&2"), ...lines(stdout, "")].join("\r\n") + "\r\n")
+    return file
+  }
   const file = join(dir, "fake-pm")
   await writeFile(
     file,
@@ -24,7 +35,7 @@ async function fakeCommand(stdout: string, stderr = "") {
   return file
 }
 
-describe.skipIf(process.platform === "win32")("commandVersion", () => {
+describe("commandVersion", () => {
   it("reads the version from stdout", async () => {
     expect(await commandVersion(await fakeCommand("11.29.0\n"))).toBe("11.29.0")
   })
