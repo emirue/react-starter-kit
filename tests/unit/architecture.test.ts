@@ -433,6 +433,17 @@ describe("generated configuration", () => {
     expect(config).not.toMatch(/resolve\(import\.meta\.dirname/)
   })
 
+  it("registers the jest-dom matchers on the expect the setup file imports", async () => {
+    // "@testing-library/jest-dom/vitest" imports vitest itself; from a short Windows path that is a
+    // second copy of Vitest, and every matcher was "Invalid Chai property" (windows-latest).
+    const setup = content(await plan({}), "src/test/setup.ts")!
+    expect(setup).toContain('import * as matchers from "@testing-library/jest-dom/matchers"')
+    expect(setup).toMatch(/^import \{[^}]*\bexpect\b[^}]*\} from "vitest"$/m)
+    expect(setup).toContain("expect.extend(matchers)")
+    expect(setup).not.toMatch(/^import "@testing-library\/jest-dom\/vitest"$/m)
+    expect(setup).toContain('import type {} from "@testing-library/jest-dom/vitest"')
+  })
+
   it("Storybook and the Vite proxy resolve paths from the real project root", async () => {
     expect(content(await plan({ preset: "enterprise" }), "vite.config.ts")).toContain('configDir: resolve(root, ".storybook")')
     expect(content(await plan({ features: ["+vite-proxy"] }), "vite.config.ts")).toContain('loadEnv(mode, root, "VITE_")')
