@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 
 import { parseCliArgs } from "../../src/cli/options.ts"
+import { appDirValidator } from "../../src/cli/prompts.ts"
 import { ProduxError } from "../../src/utils/errors.ts"
 
 const parse = (...argv: string[]) => parseCliArgs(argv, { silent: true })
@@ -84,5 +85,18 @@ describe("--app-dir validation (review findings)", () => {
 
   it("accepts a plain relative directory", () => {
     expect(parse("web", "--mode", "existing-workspace", "--app-dir", "tools/web-app_2").kind).toBe("run")
+  })
+})
+
+describe("review findings after 0.1.0", () => {
+  it("rejects an empty --features list instead of silently using the preset", () => {
+    expect(() => parse("x", "--features", "")).toThrow(/--features/)
+  })
+
+  it("validates the interactive app directory like --app-dir", () => {
+    expect(appDirValidator("apps/it's web")).toMatch(/relative path/)
+    expect(appDirValidator("apps/web")).toBeUndefined()
+    // Empty input means "use the default".
+    expect(appDirValidator("")).toBeUndefined()
   })
 })

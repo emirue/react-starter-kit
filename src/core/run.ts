@@ -14,7 +14,7 @@ import { toValidPackageName, validatePackageName } from "../utils/project-name.t
 import { assertWritableTarget, Journal, writeFiles } from "./apply.ts"
 import { CONFIG_FILE_NAME, parseConfigFile, serializeConfig, type ConfigFile } from "./config-schema.ts"
 import { createPlan, NODE_REQUIREMENT, type Target } from "./generate.ts"
-import { resolveConfig, type ProjectConfig } from "./resolve-config.ts"
+import { resolveConfig, withConfigFileAnswers, type ProjectConfig } from "./resolve-config.ts"
 import {
   addWorkspaceGlob,
   detectWorkspace,
@@ -155,7 +155,12 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
 
   const ua = pmFromUserAgent()
   const opts = interactive
-    ? await promptForOptions(o, { detected, defaultPm: ua?.name ?? "pnpm", filePreset: file?.preset, fileFeatures: file?.features })
+    ? await promptForOptions(withConfigFileAnswers(o, file), {
+        detected,
+        defaultPm: ua?.name ?? "pnpm",
+        filePreset: file?.preset,
+        fileFeatures: file?.features,
+      })
     : o
   if (opts.mode === "existing-workspace" && !detected) {
     throw new ProduxError("No workspace detected from the current directory.", "Run inside the workspace or pass --workspace-root <path>.")
@@ -167,6 +172,16 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
       `Monorepo modes are verified with pnpm workspaces only (requested: ${config.packageManager}).`,
       "Use --package-manager pnpm, or create a standalone app."
     )
+  }
+  if (config.mode === "standalone") {
+    const given: [string, unknown][] = [
+      ["--app-name", o.appName],
+      ["--app-dir", o.appDir],
+      ["--turbo/--no-turbo", o.turbo],
+      ["--workspace-root", o.workspaceRoot],
+    ]
+    const ignored = given.filter(([, v]) => v !== undefined).map(([flag]) => flag)
+    if (ignored.length) p.log.warn(`${ignored.join(", ")} only apply to a monorepo or an existing workspace (--mode); ignored.`)
   }
   const target = resolveTarget(config, opts, cwd, detected)
   const writeRoot = config.mode === "existing-workspace" ? target.appDir : target.rootDir

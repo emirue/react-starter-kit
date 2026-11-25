@@ -96,6 +96,12 @@ describe("create-produx-app CLI", () => {
     expect(stripVTControlCharacters(r.out)).toContain("pnpm 11.13.0 is deprecated as a broken release")
   })
 
+  it("warns about workspace options that a standalone app ignores", () => {
+    const r = cli("app", "--app-name", "web", "--app-dir", "apps/web", "--yes", "--no-install", "--no-git")
+    expect(r.code).toBe(0)
+    expect(stripVTControlCharacters(r.out)).toContain("--app-name, --app-dir only apply to a monorepo or an existing workspace")
+  })
+
   it("links the npm page to the repository", () => {
     // Without "repository" the npm page has no GitHub link and the README's relative links have no base.
     expect(pkg.repository).toEqual({ type: "git", url: "git+https://github.com/emirue/react-starter-kit.git" })

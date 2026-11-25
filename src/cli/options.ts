@@ -95,6 +95,8 @@ function checkConflicts(o: CliOptions): string[] {
   if (o.mode === "monorepo" && o.workspaceRoot !== undefined) {
     issues.push("--workspace-root is for --mode existing-workspace. A new monorepo is created in <directory>.")
   }
+  if (o.features?.length === 0)
+    issues.push("--features was given an empty list. Pass feature ids, or leave the option out to use the preset.")
   const dirError = o.appDir === undefined ? undefined : validateRelativeDir(o.appDir)
   if (dirError) issues.push(`--app-dir ${dirError}.`)
   if (o.allowWorkspaceChanges && o.mode !== undefined && o.mode !== "existing-workspace") {

@@ -4,7 +4,7 @@ import type { PackageManager } from "../adapters/package-manager.ts"
 import { FEATURES, type FeatureGroup } from "../core/features.ts"
 import { getPreset, isPresetAvailable, PRESETS, type PresetId } from "../core/presets.ts"
 import type { WorkspaceInfo } from "../core/workspace.ts"
-import { validatePackageName } from "../utils/project-name.ts"
+import { validatePackageName, validateRelativeDir } from "../utils/project-name.ts"
 import type { CliOptions } from "./options.ts"
 
 export class CancelledError extends Error {
@@ -21,6 +21,8 @@ async function ask<T>(prompt: Promise<T>): Promise<Exclude<T, symbol>> {
 
 // Empty input means "use the default value", which is valid.
 const nameValidator = (v: string | undefined) => (v ? validatePackageName(v.split(/[\\/]/).pop() ?? "") : undefined)
+/** The same rule as --app-dir: the value is written into pnpm-workspace.yaml. */
+export const appDirValidator = (v: string | undefined) => (v ? validateRelativeDir(v) : undefined)
 
 const GROUPS: { group: FeatureGroup; label: string }[] = [
   { group: "ui", label: "UI and styling" },
@@ -63,8 +65,9 @@ export async function promptForOptions(
     next.appDir ??= await ask(
       p.text({
         message: "Application directory (relative to the workspace root)",
-        defaultValue: `apps/${next.appName}`,
-        placeholder: `apps/${next.appName}`,
+        defaultValue: `apps/${next.appName.replace(/^@[^/]+\//, "")}`,
+        placeholder: `apps/${next.appName.replace(/^@[^/]+\//, "")}`,
+        validate: appDirValidator,
       })
     )
   } else {
