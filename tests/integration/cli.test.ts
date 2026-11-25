@@ -84,6 +84,12 @@ describe("create-produx-app CLI", () => {
     expect(version.out.trim()).toBe(pkg.version)
   })
 
+  it("declares the bin in the form npm publish keeps", () => {
+    // npm 11 publish dropped "./dist/index.mjs" ("script name dist/index.mjs was invalid and removed"),
+    // which would publish a package without the create-produx-app command.
+    expect(pkg.bin).toEqual({ "create-produx-app": "dist/index.mjs" })
+  })
+
   it("dry-run writes nothing", async () => {
     const r = cli("app", "--yes", "--dry-run")
     expect(r.code).toBe(0)
