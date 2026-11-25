@@ -11,13 +11,14 @@
  * Results are written as JSON (default: docs/validation/results.json). Every
  * entry records the command, exit code and duration that produced it.
  */
-import { spawn, spawnSync } from "node:child_process"
 import { existsSync } from "node:fs"
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises"
 import { createRequire } from "node:module"
 import { tmpdir } from "node:os"
 import { dirname, join, relative, resolve, sep } from "node:path"
-import { parseArgs } from "node:util"
+import { parseArgs, stripVTControlCharacters } from "node:util"
+
+import { execa, execaSync } from "execa"
 
 import type { Page } from "playwright"
 
@@ -45,18 +46,13 @@ const { values } = parseArgs({
   },
 })
 
-function exec(cmd: string, args: string[], cwd: string, logFile: string, env: Record<string, string> = {}) {
-  return new Promise<{ code: number | null; ms: number; output: string }>((done) => {
-    const start = Date.now()
-    const child = spawn(cmd, args, { cwd, env: { ...process.env, ...env }, stdio: ["ignore", "pipe", "pipe"] })
-    let output = ""
-    child.stdout.on("data", (d) => (output += d))
-    child.stderr.on("data", (d) => (output += d))
-    child.on("close", async (code) => {
-      await writeFile(logFile, output, { flag: "a" })
-      done({ code, ms: Date.now() - start, output })
-    })
-  })
+// execa resolves PATHEXT and .cmd shims on Windows (pnpm, npm), which node:child_process does not.
+async function exec(cmd: string, args: string[], cwd: string, logFile: string, env: Record<string, string> = {}) {
+  const start = Date.now()
+  const r = await execa(cmd, args, { cwd, env, reject: false, all: true, stdin: "ignore" })
+  const output = r.all ?? ""
+  await writeFile(logFile, output, { flag: "a" })
+  return { code: r.exitCode ?? null, ms: Date.now() - start, output }
 }
 
 async function waitForHttp(url: string, timeoutMs = 20_000) {
@@ -267,6 +263,88 @@ async function architectureCanaries(s: Scenario, app: string, log: string): Prom
   return checks
 }
 
+/**
+ * Lints the app from the workspace root, as an editor opened at the root does
+ * (ESLint looks up the config from each file). The layer rules must still apply.
+ */
+async function rootLintChecks(root: string, app: string, log: string): Promise<Check[]> {
+  const eslint = join(app, "node_modules", "eslint", "bin", "eslint.js")
+  const target = relative(root, app)
+  const command = `node ${relative(root, eslint)} ${target}  (from the workspace root)`
+  const clean = await exec("node", [eslint, target], root, log)
+  const page = (await readdir(join(app, "src", "pages"))).sort()[0]
+  const canary = join(app, "src", "shared", "lib", "__canary.ts")
+  const createdDir = await mkdir(dirname(canary), { recursive: true })
+  await writeFile(canary, `import "@/pages/${page}"\n`)
+  try {
+    const r = await exec("node", [eslint, target], root, log)
+    return [
+      {
+        name: "ESLint from the workspace root passes",
+        status: clean.code === 0 ? "PASS" : "FAIL",
+        command,
+        exitCode: clean.code,
+        ms: clean.ms,
+        detail: clean.code === 0 ? undefined : clean.output.slice(-1500),
+      },
+      {
+        name: "ESLint from the workspace root rejects an upward import",
+        status: r.code !== 0 && /boundaries\/dependencies/.test(r.output) && r.output.includes("__canary") ? "PASS" : "FAIL",
+        command: `${command}  (with src/shared/lib/__canary.ts)`,
+        exitCode: r.code,
+        ms: r.ms,
+        detail: r.output.slice(-600),
+      },
+    ]
+  } finally {
+    await rm(createdDir ?? canary, { recursive: true, force: true })
+  }
+}
+
+const passedTests = (output: string) => Number(/Tests\s+(\d+) passed/.exec(stripVTControlCharacters(output))?.[1] ?? NaN)
+
+// Fails unless the theme decorator put the dark class on <html>, so a clean dark run proves dark styles were checked.
+const DARK_CANARY = `import type { Meta, StoryObj } from "@storybook/react-vite"
+import { expect } from "storybook/test"
+
+const meta = { title: "Validation/Dark canary", render: () => <p>Dark canary</p> } satisfies Meta
+export default meta
+
+export const DarkClassApplied: StoryObj<typeof meta> = {
+  play: async () => {
+    await expect(document.documentElement.classList.contains("dark")).toBe(true)
+  },
+}
+`
+
+/** Story tests (with their a11y checks) again with the dark theme as the default. */
+async function darkStoriesCheck(s: Scenario, app: string, log: string, lightTests: number): Promise<Check> {
+  const name = "test:storybook in the dark theme (Storybook)"
+  const preview = join(app, ".storybook", "preview.tsx")
+  const original = await readFile(preview, "utf8")
+  const dark = original.replace('defaultTheme: "light"', 'defaultTheme: "dark"')
+  if (dark === original) return { name, status: "FAIL", detail: 'defaultTheme: "light" not found in .storybook/preview.tsx' }
+  const canary = join(app, "src", "__dark-canary.stories.tsx")
+  await writeFile(preview, dark)
+  await writeFile(canary, DARK_CANARY)
+  try {
+    const r = await exec(s.pm, ["run", "test:storybook"], app, log, { CI: "1" })
+    // Every story plus the canary must have run and passed.
+    const ok = r.code === 0 && passedTests(r.output) === lightTests + 1
+    return {
+      name,
+      status: ok ? "PASS" : "FAIL",
+      command: `${s.pm} run test:storybook  (defaultTheme "dark", with a canary story)`,
+      exitCode: r.code,
+      ms: r.ms,
+      detail: ok ? `${lightTests + 1} tests` : r.output.slice(-1500),
+    }
+  } finally {
+    await writeFile(preview, original)
+    await rm(canary, { force: true })
+  }
+}
+
 /** Builds the image, runs it and checks health, SPA fallback and cache headers. */
 async function dockerCheck(s: Scenario, cwd: string, log: string): Promise<Check[]> {
   const tag = `produx-validate-${s.name}`
@@ -383,6 +461,8 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
   }
 
   if (s.features.includes("eslint")) checks.push(...(await architectureCanaries(s, app, log)))
+  const workspaceRoot = s.rootPath ?? s.cwd
+  if (workspaceRoot && s.features.includes("eslint")) checks.push(...(await rootLintChecks(join(cwd, workspaceRoot), app, log)))
 
   if (pkg.scripts["test:e2e"]) {
     const r = await exec(s.pm, ["run", "test:e2e"], app, log, { CI: "1" })
@@ -397,8 +477,10 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
   }
 
   if (s.features.includes("storybook")) {
+    let lightTests = NaN
     for (const script of ["build-storybook", "test:storybook"]) {
       const r = await exec(s.pm, ["run", script], app, log, { CI: "1" })
+      if (script === "test:storybook" && r.code === 0) lightTests = passedTests(r.output)
       checks.push({
         name: `${script} (Storybook)`,
         status: r.code === 0 ? "PASS" : "FAIL",
@@ -408,6 +490,7 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
         detail: r.code === 0 ? undefined : r.output.slice(-1500),
       })
     }
+    if (lightTests > 0) checks.push(await darkStoriesCheck(s, app, log, lightTests))
   }
 
   if (values["shadcn-add"] && s.features.includes("shadcn")) {
@@ -419,7 +502,7 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
     const build = tc.code === 0 ? await exec(s.pm, ["run", "build"], app, log) : tc
     // The added component must also satisfy the architecture lint rules.
     const lint = build.code === 0 && pkg.scripts.lint ? await exec(s.pm, ["run", "lint"], app, log) : build
-    const shadcnVersion = spawnSync("npm", ["view", "shadcn@latest", "version"], { encoding: "utf8" }).stdout.trim() || "?"
+    const shadcnVersion = execaSync("npm", ["view", "shadcn@latest", "version"], { reject: false }).stdout.trim() || "?"
     const ok = lint.code === 0 && existsSync(join(app, "src/shared/ui/accordion.tsx"))
     checks.push({
       name: "shadcn add accordion + typecheck + build + lint",
@@ -452,7 +535,7 @@ async function runScenario(s: Scenario, root: string): Promise<{ scenario: strin
   if (values.browser) {
     const port = String(4300 + SCENARIOS.indexOf(s))
     const [cmd, ...pre] = s.pm === "pnpm" ? ["pnpm", "exec"] : ["npx"]
-    const server = spawn(cmd!, [...pre, "vite", "preview", "--port", port, "--strictPort"], { cwd: app, stdio: "ignore" })
+    const server = execa(cmd!, [...pre, "vite", "preview", "--port", port, "--strictPort"], { cwd: app, stdio: "ignore", reject: false })
     try {
       const url = `http://localhost:${port}/`
       if (!(await waitForHttp(url))) checks.push({ name: "preview server starts", status: "FAIL" })
@@ -482,8 +565,8 @@ for (const s of selected) {
 const previous = existsSync(values.out!) ? JSON.parse(await readFile(values.out!, "utf8")) : { scenarios: {} }
 for (const r of results) previous.scenarios[r.scenario] = { ...r, date: new Date().toISOString().slice(0, 10) }
 const version = (cmd: string, args = ["--version"]) => {
-  const r = spawnSync(cmd, args, { encoding: "utf8" })
-  return r.status === 0 ? r.stdout.trim().split("\n")[0] : "not found"
+  const r = execaSync(cmd, args, { reject: false })
+  return r.exitCode === 0 ? r.stdout.trim().split("\n")[0] : "not found"
 }
 previous.environment = {
   cli: version("node", [values.cli!, "--version"]),

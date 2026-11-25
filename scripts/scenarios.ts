@@ -1,8 +1,9 @@
-import { spawnSync } from "node:child_process"
 import { createHash } from "node:crypto"
 import { existsSync, readdirSync } from "node:fs"
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join, relative } from "node:path"
+
+import { execaSync } from "execa"
 
 import type { PackageManager } from "../src/adapters/package-manager.ts"
 import type { CliOptions } from "../src/cli/options.ts"
@@ -43,8 +44,8 @@ const cli = (o: Partial<CliOptions>): CliOptions => ({
 })
 
 function run(cmd: string, args: string[], cwd: string) {
-  const r = spawnSync(cmd, args, { cwd, encoding: "utf8" })
-  return { ok: r.status === 0, output: `${r.stdout}${r.stderr}` }
+  const r = execaSync(cmd, args, { cwd, reject: false, all: true })
+  return { ok: r.exitCode === 0, output: r.all ?? "" }
 }
 
 function standalone(name: string, args: string[], o: Partial<CliOptions>, extra: Partial<Scenario> = {}): Scenario {
@@ -374,6 +375,19 @@ export const SCENARIOS: Scenario[] = [
     ["--preset", "minimal", "--features", "+react-router,+tanstack-query,+vitest,+testing-library"],
     { preset: "minimal", features: ["+react-router", "+tanstack-query", "+vitest", "+testing-library"] },
     { deepLinks: ["/examples/todos?filter=open", "/no/such/page"] }
+  ),
+  standalone(
+    "custom-primitives-no-tailwind-tsr",
+    ["--preset", "minimal", "--features", "+tanstack-router,+tanstack-query,+vitest,+testing-library"],
+    { preset: "minimal", features: ["+tanstack-router", "+tanstack-query", "+vitest", "+testing-library"] },
+    { deepLinks: ["/examples/todos?filter=open", "/no/such/page"] }
+  ),
+  // Storybook without Playwright, with each package manager (pnpm is covered by the Enterprise scenarios).
+  ...(["npm", "yarn", "bun"] as const).map((pm) =>
+    standalone(`storybook-${pm}`, ["--package-manager", pm, "--features", "+storybook"], {
+      packageManager: pm,
+      features: ["+storybook"],
+    })
   ),
   standalone(
     "custom-tooling",

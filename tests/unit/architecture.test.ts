@@ -556,6 +556,25 @@ describe("validation scenarios", () => {
       expect(users, marker).not.toEqual([])
     }
   })
+
+  const generated = SCENARIOS.filter((s) => !s.expectExit)
+
+  it("run Storybook with every package manager, and once without Playwright", () => {
+    const storybook = generated.filter((s) => s.features.includes("storybook"))
+    expect(new Set(storybook.map((s) => s.pm))).toEqual(new Set(["pnpm", "npm", "yarn", "bun"]))
+    expect(storybook.some((s) => !s.features.includes("playwright"))).toBe(true)
+  })
+
+  it("run the examples with TanStack Router and without Tailwind", () => {
+    const match = generated.filter(
+      (s) =>
+        s.features.includes("tanstack-router") &&
+        s.features.includes("tanstack-query") &&
+        !s.features.includes("tailwind") &&
+        !s.args.includes("--no-examples")
+    )
+    expect(match.map((s) => s.name)).not.toEqual([])
+  })
 })
 
 describe("validation helpers: design-system colors", () => {
