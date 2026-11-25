@@ -18,10 +18,14 @@ function cli(...args: string[]) {
 }
 
 function cliWithEnv(env: Record<string, string>, ...args: string[]) {
+  const overrides: Record<string, string> = { npm_config_user_agent: "pnpm/11.13.0 node/v26 darwin arm64", CI: "1", ...env }
+  // Windows variable names are case-insensitive: drop inherited spellings (NPM_CONFIG_USER_AGENT, Path) so ours apply.
+  const names = new Set(Object.keys(overrides).map((k) => k.toLowerCase()))
+  const inherited = Object.entries(process.env).filter(([k]) => !names.has(k.toLowerCase()))
   const r = spawnSync(process.execPath, [entry, ...args], {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, npm_config_user_agent: "pnpm/11.13.0 node/v26 darwin arm64", CI: "1", ...env },
+    env: { ...Object.fromEntries(inherited), ...overrides },
   })
   return { code: r.status, out: `${r.stdout}${r.stderr}` }
 }
@@ -82,6 +86,27 @@ describe("create-produx-app CLI", () => {
     const version = cli("--version")
     expect(version.code).toBe(0)
     expect(version.out.trim()).toBe(pkg.version)
+  })
+
+  it("records the verified pnpm instead of one deprecated as broken, and says so", async () => {
+    // cliWithEnv runs as pnpm 11.13.0 (npm_config_user_agent).
+    const r = cli("app", "--yes", "--no-install", "--no-git")
+    expect(r.code).toBe(0)
+    expect(JSON.parse(await readFile(join(cwd, "app", "package.json"), "utf8")).packageManager).toBe("pnpm@11.29.0")
+    expect(stripVTControlCharacters(r.out)).toContain("pnpm 11.13.0 is deprecated as a broken release")
+  })
+
+  it("warns about workspace options that a standalone app ignores", () => {
+    const r = cli("app", "--app-name", "web", "--app-dir", "apps/web", "--yes", "--no-install", "--no-git")
+    expect(r.code).toBe(0)
+    expect(stripVTControlCharacters(r.out)).toContain("--app-name, --app-dir only apply to a monorepo or an existing workspace")
+  })
+
+  it("links the npm page to the repository", () => {
+    // Without "repository" the npm page has no GitHub link and the README's relative links have no base.
+    expect(pkg.repository).toEqual({ type: "git", url: "git+https://github.com/emirue/react-starter-kit.git" })
+    expect(pkg.homepage).toBe("https://github.com/emirue/react-starter-kit#readme")
+    expect(pkg.bugs).toEqual({ url: "https://github.com/emirue/react-starter-kit/issues" })
   })
 
   it("declares the bin in the form npm publish keeps", () => {
@@ -188,6 +213,12 @@ describe("create-produx-app CLI", () => {
     expect(await readFile(join(cwd, "team.json"), "utf8")).toBe("{}")
   })
 
+  it("lists a --save-config file outside the project in the review", () => {
+    const r = cli("app", "--yes", "--no-install", "--no-git", "--save-config", "team.json")
+    expect(r.code).toBe(0)
+    expect(stripVTControlCharacters(r.out)).toMatch(/Also writes:\s+\S*team\.json \(--save-config\)/)
+  })
+
   it("refuses a --save-config path inside the new project", async () => {
     const r = cli("app", "--yes", "--no-install", "--save-config", "app/package.json")
     expect(r.code).toBe(1)
@@ -228,6 +259,37 @@ describe("create-produx-app CLI", () => {
     beforeEach(async () => {
       await writeFile(join(cwd, "package.json"), JSON.stringify({ name: "ws", private: true, packageManager: "pnpm@11.13.0" }))
       await writeFile(join(cwd, "pnpm-workspace.yaml"), "packages:\n- apps/*\n")
+    })
+
+    it("treats a --save-config file inside the workspace as a workspace change", async () => {
+      const args = ["web", "--mode", "existing-workspace", "--preset", "minimal", "--yes", "--no-install", "--save-config", "team.json"]
+      const refused = cli(...args)
+      expect(refused.code).toBe(1)
+      expect(refused.out).toContain("--allow-workspace-changes")
+      expect((await readdir(cwd)).sort()).toEqual(["package.json", "pnpm-workspace.yaml"])
+
+      const approved = cli(...args, "--allow-workspace-changes")
+      expect(approved.code).toBe(0)
+      expect(stripVTControlCharacters(approved.out)).toMatch(/Also writes:\s+\S*team\.json \(--save-config\)/)
+      expect(existsSync(join(cwd, "team.json"))).toBe(true)
+    })
+
+    it("refuses an app directory the workspace excludes, before writing anything", async () => {
+      await writeFile(join(cwd, "pnpm-workspace.yaml"), "packages:\n- apps/*\n- '!apps/excluded'\n")
+      const r = cli(
+        "excluded",
+        "--mode",
+        "existing-workspace",
+        "--app-dir",
+        "apps/excluded",
+        "--preset",
+        "minimal",
+        "--yes",
+        "--no-install"
+      )
+      expect(r.code).toBe(1)
+      expect(r.out).toContain("excluded from the workspace by '!apps/excluded'")
+      expect((await readdir(cwd)).sort()).toEqual(["package.json", "pnpm-workspace.yaml"])
     })
 
     it("requires approval before installing, because install runs workspace code", async () => {

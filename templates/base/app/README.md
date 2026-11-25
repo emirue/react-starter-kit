@@ -87,10 +87,45 @@ src/
 ```
 <!-- @if examples -->
 
+### Removing the examples
+
+Generate with `--no-examples` to start without them. To remove one later, change every file below: type check, lint and tests still pass when a link to it is left behind, and that link leads to the 404 page.
+
 <!-- @if admin-layout -->
-Example pages are the `*-example` slices and `users` in `src/pages`. Delete a slice and its route to remove an example.
+- Its slice in `src/pages` (`*-example` or `users`).
 <!-- @else -->
-Example pages are the `*-example` slices in `src/pages`. Delete a slice and its route to remove an example.
+- Its slice in `src/pages` (`*-example`).
+<!-- @endif -->
+<!-- @if react-router -->
+- Its route in `src/app/router.tsx`.
+<!-- @endif -->
+<!-- @if tanstack-router -->
+- Its route file in `src/routes/examples/`.
+<!-- @endif -->
+<!-- @if tanstack-router && admin-layout -->
+- For `users`: `src/routes/users.tsx`.
+<!-- @endif -->
+<!-- @if !admin-layout -->
+- Its card in `src/pages/home/ui/home-page.tsx` (`EXAMPLES`).
+<!-- @endif -->
+- Its link in `src/app/layouts/examples-layout.tsx`.
+<!-- @if admin-layout -->
+- Its sidebar link in `src/app/layouts/admin-layout.tsx`.
+<!-- @endif -->
+<!-- @if playwright -->
+- Its path in `e2e/smoke.spec.ts` (`ROUTES`).
+<!-- @endif -->
+<!-- @if msw -->
+- Mock data only it uses in `src/mocks/handlers.ts` (optional).
+<!-- @endif -->
+<!-- @if agents-md -->
+- Its line under "Reference implementations" in `AGENTS.md`.
+<!-- @endif -->
+
+<!-- @if admin-layout -->
+To remove all of them, also delete `src/pages/examples`, `src/app/layouts/examples-layout.tsx`, the `/examples` route and the Examples link in `src/app/layouts/admin-layout.tsx`.
+<!-- @else -->
+To remove all of them, also delete `src/pages/examples`, `src/app/layouts/examples-layout.tsx`, the `/examples` route and the Examples link in `src/app/layouts/root-layout.tsx`.
 <!-- @endif -->
 <!-- @endif -->
 <!-- @if storybook -->

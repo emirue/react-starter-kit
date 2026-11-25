@@ -4,7 +4,7 @@ An interactive CLI that creates React + Vite + TypeScript projects with a verifi
 
 It is not a template copier. Each project is assembled from feature modules, installed, and then validated (type check, lint, unit tests, production build) before the CLI reports success.
 
-> **Status: 0.1.0.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
+> **Status: 0.1.1.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
 
 ## Quick start
 
@@ -60,7 +60,7 @@ my-app/
 ├── public/
 ├── src/
 │   ├── app/            app.tsx, providers.tsx, router.tsx, route-error.tsx, layouts/
-│   ├── pages/          home/, not-found/, examples/ and the *-example slices (delete freely)
+│   ├── pages/          home/, not-found/, examples/ and the *-example slices (the generated README lists what to change to remove them)
 │   ├── features/       switch-theme/ (user actions used in several places)
 │   ├── shared/
 │   │   ├── ui/         design system: shadcn/ui, PageHeader, Loading/Error/EmptyState
@@ -158,9 +158,9 @@ Generated projects pin exact versions from [`src/config/dependency-versions.json
 ## Running from a clone
 
 ```bash
-git clone <this repository> && cd <it>
+git clone https://github.com/emirue/react-starter-kit.git && cd react-starter-kit
 pnpm install && pnpm build
-node dist/index.mjs my-app            # or: npm pack, then npx --package ./create-produx-app-0.1.0.tgz create-produx-app my-app
+node dist/index.mjs my-app            # or: npm pack, then npx --package ./create-produx-app-0.1.1.tgz create-produx-app my-app
 ```
 
 ## Troubleshooting

@@ -413,6 +413,12 @@ export const SCENARIOS: Scenario[] = [
     turbo: false,
     features: ["+pkg-shared"],
   }),
+  // An app outside apps/ must still be a workspace package, installed and verified.
+  monorepo("mono-app-dir", ["--app-name", "web", "--app-dir", "web", "--preset", "minimal"], {
+    appName: "web",
+    appDir: "web",
+    preset: "minimal",
+  }),
   // Installing in an existing workspace runs its code, so it needs explicit approval.
   existing("existing-standard", ["web", "--preset", "standard", "--allow-workspace-changes"], { dir: "web", preset: "standard" }),
   existing("existing-install-unapproved", ["web", "--preset", "minimal"], { dir: "web", preset: "minimal" }, { expectExit: 1 }),

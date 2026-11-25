@@ -416,6 +416,28 @@ describe("generated layout: target tree", () => {
   })
 })
 
+describe("removing the examples", () => {
+  // Deleting only the slice and its route passed every check but left links to a 404.
+  const SLICE = /^src\/pages\/(todos-example|sign-up-example|counter-example|users|examples)\//
+  const REFERS = /\/examples\b|"\/users"|todos-example|sign-up-example|counter-example|pages\/users|to: "(todos|sign-up|counter)"/
+
+  it.each([
+    ["standard", {}],
+    ["tanstack-router", { router: "tanstack-router" }],
+    ["admin", { preset: "admin" }],
+    ["admin + tanstack-router", { preset: "admin", router: "tanstack-router" }],
+    ["enterprise", { preset: "enterprise" }],
+    ["no tailwind", { preset: "minimal", features: ["+react-router", "+tanstack-query", "+vitest", "+testing-library"] }],
+  ] as [string, Partial<CliOptions>][])("%s: the README names every file that refers to them", async (_, o) => {
+    const p = await plan(o)
+    const readme = content(p, "README.md")!
+    expect(readme).toContain("--no-examples")
+    const referring = p.files.filter((f) => f.path !== "README.md" && !SLICE.test(f.path) && REFERS.test(f.content)).map((f) => f.path)
+    expect(referring).not.toEqual([])
+    for (const path of referring) expect(readme, path).toContain(path.startsWith("src/routes/examples/") ? "src/routes/examples/" : path)
+  })
+})
+
 describe("generated configuration", () => {
   it.each([
     ["standard", {}],

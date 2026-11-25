@@ -4,18 +4,26 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path"
 
 import * as p from "@clack/prompts"
 
-import { PM, pmFromUserAgent } from "../adapters/package-manager.ts"
+import { PM, pmFromUserAgent, recordedPmVersion } from "../adapters/package-manager.ts"
 import type { CliOptions } from "../cli/options.ts"
 import { promptForOptions } from "../cli/prompts.ts"
 import { ProduxError } from "../utils/errors.ts"
-import { commandVersion, runCommand } from "../utils/exec.ts"
+import { commandVersion, runCommand, stopRunningCommands } from "../utils/exec.ts"
 import { satisfies } from "../utils/node-version.ts"
 import { toValidPackageName, validatePackageName } from "../utils/project-name.ts"
 import { assertWritableTarget, Journal, writeFiles } from "./apply.ts"
 import { CONFIG_FILE_NAME, parseConfigFile, serializeConfig, type ConfigFile } from "./config-schema.ts"
 import { createPlan, NODE_REQUIREMENT, type Target } from "./generate.ts"
-import { resolveConfig, type ProjectConfig } from "./resolve-config.ts"
-import { addWorkspaceGlob, detectWorkspace, ensureAllowBuild, globMatches, isInside, type WorkspaceInfo } from "./workspace.ts"
+import { resolveConfig, withConfigFileAnswers, type ProjectConfig } from "./resolve-config.ts"
+import {
+  addWorkspaceGlob,
+  detectWorkspace,
+  ensureAllowBuild,
+  excludingGlob,
+  globMatches,
+  isInside,
+  type WorkspaceInfo,
+} from "./workspace.ts"
 
 type Status = "passed" | "failed" | "skipped"
 interface StepResult {
@@ -89,7 +97,7 @@ function toConfigFile(config: ProjectConfig): ConfigFile {
 
 const rel = (from: string, to: string) => relative(from, to).split(sep).join("/") || "."
 
-function printReview(config: ProjectConfig, target: Target, files: string[], changes: string[], steps: string[]) {
+function printReview(config: ProjectConfig, target: Target, files: string[], changes: string[], outside: string[], steps: string[]) {
   const modeLabel = { standalone: "Standalone", monorepo: "New monorepo", "existing-workspace": "Existing workspace" }[config.mode]
   const lines = [
     `Project mode:     ${modeLabel}`,
@@ -106,6 +114,7 @@ function printReview(config: ProjectConfig, target: Target, files: string[], cha
     `Examples:         ${config.examples ? "included" : config.features.some((f) => f.endsWith("-router")) ? "not included" : "not included (examples need a router)"}`,
     `Files to create:  ${files.length}`,
     changes.length ? `Existing files to modify:\n${changes.map((c) => `  - ${c}`).join("\n")}` : undefined,
+    outside.length ? `Also writes:      ${outside.join(", ")}` : undefined,
     `Plan:             ${steps.join(" → ")}`,
   ]
   p.note(lines.filter(Boolean).join("\n"), "Review")
@@ -146,7 +155,12 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
 
   const ua = pmFromUserAgent()
   const opts = interactive
-    ? await promptForOptions(o, { detected, defaultPm: ua?.name ?? "pnpm", filePreset: file?.preset, fileFeatures: file?.features })
+    ? await promptForOptions(withConfigFileAnswers(o, file), {
+        detected,
+        defaultPm: ua?.name ?? "pnpm",
+        filePreset: file?.preset,
+        fileFeatures: file?.features,
+      })
     : o
   if (opts.mode === "existing-workspace" && !detected) {
     throw new ProduxError("No workspace detected from the current directory.", "Run inside the workspace or pass --workspace-root <path>.")
@@ -158,6 +172,16 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
       `Monorepo modes are verified with pnpm workspaces only (requested: ${config.packageManager}).`,
       "Use --package-manager pnpm, or create a standalone app."
     )
+  }
+  if (config.mode === "standalone") {
+    const given: [string, unknown][] = [
+      ["--app-name", o.appName],
+      ["--app-dir", o.appDir],
+      ["--turbo/--no-turbo", o.turbo],
+      ["--workspace-root", o.workspaceRoot],
+    ]
+    const ignored = given.filter(([, v]) => v !== undefined).map(([flag]) => flag)
+    if (ignored.length) p.log.warn(`${ignored.join(", ")} only apply to a monorepo or an existing workspace (--mode); ignored.`)
   }
   const target = resolveTarget(config, opts, cwd, detected)
   const writeRoot = config.mode === "existing-workspace" ? target.appDir : target.rootDir
@@ -171,6 +195,15 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
       `${pm} was not found on PATH.`,
       `Install ${pm} (see its official docs) or use --package-manager. create-produx-app never installs package managers globally.`
     )
+  }
+  if (pmVersion) {
+    const recorded = recordedPmVersion(pm, pmVersion)
+    if (recorded.replaced) {
+      p.log.warn(
+        `${pm} ${recorded.replaced} is deprecated as a broken release (CI setup refuses it). The project records ${pm}@${recorded.version}, which ${pm} switches to inside the project. Upgrade ${pm} to remove this warning.`
+      )
+    }
+    pmVersion = recorded.version
   }
 
   const externalConfigPath = typeof opts.saveConfig === "string" ? resolve(cwd, opts.saveConfig) : undefined
@@ -195,6 +228,13 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
   // Existing workspace: register the app when no glob covers it.
   const changes: { path: string; content: string; label: string }[] = []
   const appRel = rel(target.rootDir, target.appDir)
+  const excludedBy = detected && config.mode === "existing-workspace" ? excludingGlob(detected.globs, appRel) : undefined
+  if (excludedBy) {
+    throw new ProduxError(
+      `${appRel} is excluded from the workspace by '${excludedBy}' in ${detected!.configFile}.`,
+      "Choose another --app-dir, or remove that exclusion yourself and run the command again."
+    )
+  }
   if (detected && config.mode === "existing-workspace" && !detected.globs.some((g) => !g.startsWith("!") && globMatches(g, appRel))) {
     const yamlPath = join(detected.root, "pnpm-workspace.yaml")
     if (detected.configFile !== "pnpm-workspace.yaml") {
@@ -254,6 +294,7 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
     target,
     plan.files.map((f) => f.path),
     changeLabels,
+    externalConfigPath ? [`${isInside(cwd, externalConfigPath) ? rel(cwd, externalConfigPath) : externalConfigPath} (--save-config)`] : [],
     steps.filter((s): s is string => Boolean(s))
   )
   for (const s of plan.skipped) p.log.warn(`Not written in an existing workspace: ${s.path} (${s.reason})`)
@@ -270,12 +311,18 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
     if (detected.hasCatalog) p.log.info("The workspace defines pnpm catalogs; the new app pins its own versions and does not use them.")
   }
 
-  if ((changes.length || installRunsWorkspaceCode) && !interactive && !opts.dryRun && !opts.allowWorkspaceChanges) {
+  // A --save-config file inside the existing workspace is a change to that workspace too.
+  const configInWorkspace = Boolean(
+    externalConfigPath && detected && config.mode === "existing-workspace" && isInside(detected.root, externalConfigPath)
+  )
+  if ((changes.length || installRunsWorkspaceCode || configInWorkspace) && !interactive && !opts.dryRun && !opts.allowWorkspaceChanges) {
     throw new ProduxError(
       "Adding this app changes or runs existing workspace files (listed above). --yes does not approve that.",
       changes.length
         ? `Approve with --allow-workspace-changes, run without --yes to confirm interactively, or add '${appRel}' to pnpm-workspace.yaml yourself.`
-        : "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or use --no-install and install yourself."
+        : installRunsWorkspaceCode
+          ? "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or use --no-install and install yourself."
+          : "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or save the configuration outside the workspace."
     )
   }
 
@@ -305,10 +352,13 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
   const onSigint = () => {
     if (cancelling) return
     cancelling = true
-    void journal.rollback().finally(() => {
-      p.cancel("Cancelled. Changes made by this run were rolled back.")
-      process.exit(130)
-    })
+    // Stop the running install or check first: it could otherwise write again after the rollback.
+    void stopRunningCommands()
+      .then(() => journal.rollback())
+      .finally(() => {
+        p.cancel("Cancelled. Changes made by this run were rolled back.")
+        process.exit(130)
+      })
   }
   process.on("SIGINT", onSigint)
 

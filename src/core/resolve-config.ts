@@ -1,3 +1,5 @@
+import { posix } from "node:path"
+
 import type { PackageManager } from "../adapters/package-manager.ts"
 import type { CliOptions } from "../cli/options.ts"
 import { ProduxError } from "../utils/errors.ts"
@@ -57,7 +59,12 @@ export function resolveConfig({ cli, file, detected, userAgentPm }: ResolveInput
       `Drop --package-manager or use ${detected.packageManager}.`
     )
   }
-  const packageManager = (mode === "existing-workspace" ? detected?.packageManager : undefined) ?? requestedPm ?? userAgentPm ?? "pnpm"
+  // npm create/yarn create only say how the CLI was launched; new monorepos are pnpm workspaces.
+  const packageManager =
+    (mode === "existing-workspace" ? detected?.packageManager : undefined) ??
+    requestedPm ??
+    (mode === "monorepo" ? undefined : userAgentPm) ??
+    "pnpm"
 
   const presetId: PresetId = cli.preset ?? file?.preset ?? "standard"
   // An explicit --preset wins over a feature list imported from a config file.
@@ -108,12 +115,33 @@ export function resolveConfig({ cli, file, detected, userAgentPm }: ResolveInput
   }
 
   if (mode !== "standalone") {
-    const appName = cli.appName ?? file?.workspace?.appName ?? (mode === "existing-workspace" ? cli.dir : undefined) ?? "web"
+    // A name given on the command line (or the existing-workspace <directory>) wins over a config file.
+    const cliName = cli.appName ?? (mode === "existing-workspace" ? cli.dir : undefined)
+    const appName = cliName ?? file?.workspace?.appName ?? "web"
+    // Directories never contain the npm scope: @acme/web -> apps/web.
+    const dirName = appName.replace(/^@[^/]+\//, "")
+    const fileDir = file?.workspace?.appDir
     config.workspace = {
       appName,
-      appDir: cli.appDir ?? file?.workspace?.appDir ?? `apps/${appName}`,
+      appDir: cli.appDir ?? (cliName && fileDir ? posix.join(posix.dirname(fileDir), dirName) : fileDir) ?? `apps/${dirName}`,
       turbo: mode === "existing-workspace" ? (detected?.turbo ?? false) : (cli.turbo ?? file?.workspace?.turbo ?? true),
     }
   }
   return config
+}
+
+/**
+ * Interactive mode: values from --config count as answered, so the prompts do not ask again
+ * (their defaults would otherwise win over the file). Command-line options still win.
+ */
+export function withConfigFileAnswers(cli: CliOptions, file: ConfigFile | undefined): CliOptions {
+  if (!file) return cli
+  return {
+    ...cli,
+    mode: cli.mode ?? file.mode,
+    packageManager: cli.packageManager ?? file.packageManager,
+    turbo: cli.turbo ?? file.workspace?.turbo,
+    ui: cli.ui ?? file.ui?.base,
+    examples: cli.examples ?? file.examples,
+  }
 }

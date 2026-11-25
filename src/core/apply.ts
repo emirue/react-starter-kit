@@ -32,7 +32,7 @@ export class Journal {
       if (content === null) await rm(path, { force: true })
       else await writeFile(path, content)
     }
-    for (const dir of [...this.created].reverse()) await rm(dir, { recursive: true, force: true })
+    for (const dir of [...this.created].reverse()) await rm(dir, { recursive: true, force: true, maxRetries: 3 })
     for (const dir of this.filled) {
       for (const entry of await readdir(dir).catch(() => [])) await rm(join(dir, entry), { recursive: true, force: true })
     }

@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest"
 import type { CliOptions } from "../../src/cli/options.ts"
 import { parseConfigFile } from "../../src/core/config-schema.ts"
 import { getPreset } from "../../src/core/presets.ts"
-import { resolveConfig } from "../../src/core/resolve-config.ts"
+import { resolveConfig, withConfigFileAnswers } from "../../src/core/resolve-config.ts"
 
 afterEach(() => vi.unstubAllEnvs())
 
@@ -98,5 +98,54 @@ describe("resolveConfig", () => {
     const c = resolveConfig({ cli: cli({ preset: "minimal" }) })
     expect(c.preset).toBe("minimal")
     expect(resolveConfig({ cli: cli({ features: getPreset("standard").features }) }).preset).toBe("standard")
+  })
+})
+
+describe("review findings after 0.1.0", () => {
+  const detected = { packageManager: "pnpm" as const, turbo: false }
+
+  it("existing workspace: the app name on the command line wins over the config file", () => {
+    const file = parseConfigFile({ schemaVersion: 1, mode: "existing-workspace", workspace: { appName: "first", appDir: "apps/first" } })
+    const c = resolveConfig({ cli: cli({ mode: "existing-workspace", dir: "second" }), file, detected })
+    expect(c.workspace).toMatchObject({ appName: "second", appDir: "apps/second" })
+  })
+
+  it("keeps the config file's parent directory for the new app", () => {
+    const file = parseConfigFile({ schemaVersion: 1, mode: "existing-workspace", workspace: { appName: "first", appDir: "tools/first" } })
+    expect(resolveConfig({ cli: cli({ mode: "existing-workspace", dir: "second" }), file, detected }).workspace!.appDir).toBe(
+      "tools/second"
+    )
+  })
+
+  it("derives the app directory from the unscoped name, so a saved config loads again", () => {
+    const c = resolveConfig({ cli: cli({ mode: "monorepo", appName: "@acme/web" }) })
+    expect(c.workspace!.appDir).toBe("apps/web")
+    expect(() => parseConfigFile({ schemaVersion: 1, mode: "monorepo", workspace: c.workspace })).not.toThrow()
+  })
+
+  it("a new monorepo uses pnpm when npm only launched the CLI (npm create)", () => {
+    expect(resolveConfig({ cli: cli({ mode: "monorepo" }), userAgentPm: "npm" }).packageManager).toBe("pnpm")
+    // An explicit request is kept, and refused later as before.
+    expect(resolveConfig({ cli: cli({ mode: "monorepo", packageManager: "npm" }) }).packageManager).toBe("npm")
+  })
+
+  it("interactive mode takes the config file's answers instead of asking again", () => {
+    const file = parseConfigFile({
+      schemaVersion: 1,
+      mode: "monorepo",
+      packageManager: "pnpm",
+      ui: { base: "radix" },
+      workspace: { turbo: false },
+      examples: false,
+    })
+    expect(withConfigFileAnswers(cli({}), file)).toMatchObject({
+      mode: "monorepo",
+      packageManager: "pnpm",
+      turbo: false,
+      ui: "radix",
+      examples: false,
+    })
+    expect(withConfigFileAnswers(cli({ mode: "standalone" }), file).mode).toBe("standalone")
+    expect(withConfigFileAnswers(cli({}), undefined)).toEqual(cli({}))
   })
 })
