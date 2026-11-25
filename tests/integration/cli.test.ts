@@ -18,10 +18,14 @@ function cli(...args: string[]) {
 }
 
 function cliWithEnv(env: Record<string, string>, ...args: string[]) {
+  const overrides: Record<string, string> = { npm_config_user_agent: "pnpm/11.13.0 node/v26 darwin arm64", CI: "1", ...env }
+  // Windows variable names are case-insensitive: drop inherited spellings (NPM_CONFIG_USER_AGENT, Path) so ours apply.
+  const names = new Set(Object.keys(overrides).map((k) => k.toLowerCase()))
+  const inherited = Object.entries(process.env).filter(([k]) => !names.has(k.toLowerCase()))
   const r = spawnSync(process.execPath, [entry, ...args], {
     cwd,
     encoding: "utf8",
-    env: { ...process.env, npm_config_user_agent: "pnpm/11.13.0 node/v26 darwin arm64", CI: "1", ...env },
+    env: { ...Object.fromEntries(inherited), ...overrides },
   })
   return { code: r.status, out: `${r.stdout}${r.stderr}` }
 }
