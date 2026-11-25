@@ -84,6 +84,21 @@ describe("create-produx-app CLI", () => {
     expect(version.out.trim()).toBe(pkg.version)
   })
 
+  it("records the verified pnpm instead of one deprecated as broken, and says so", async () => {
+    // cliWithEnv runs as pnpm 11.13.0 (npm_config_user_agent).
+    const r = cli("app", "--yes", "--no-install", "--no-git")
+    expect(r.code).toBe(0)
+    expect(JSON.parse(await readFile(join(cwd, "app", "package.json"), "utf8")).packageManager).toBe("pnpm@11.29.0")
+    expect(stripVTControlCharacters(r.out)).toContain("pnpm 11.13.0 is deprecated as a broken release")
+  })
+
+  it("links the npm page to the repository", () => {
+    // Without "repository" the npm page has no GitHub link and the README's relative links have no base.
+    expect(pkg.repository).toEqual({ type: "git", url: "git+https://github.com/emirue/react-starter-kit.git" })
+    expect(pkg.homepage).toBe("https://github.com/emirue/react-starter-kit#readme")
+    expect(pkg.bugs).toEqual({ url: "https://github.com/emirue/react-starter-kit/issues" })
+  })
+
   it("declares the bin in the form npm publish keeps", () => {
     // npm 11 publish dropped "./dist/index.mjs" ("script name dist/index.mjs was invalid and removed"),
     // which would publish a package without the create-produx-app command.

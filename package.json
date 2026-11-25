@@ -3,6 +3,14 @@
   "version": "0.1.0",
   "description": "Interactive CLI that scaffolds verified React + Vite + TypeScript projects, standalone or inside a monorepo.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emirue/react-starter-kit.git"
+  },
+  "homepage": "https://github.com/emirue/react-starter-kit#readme",
+  "bugs": {
+    "url": "https://github.com/emirue/react-starter-kit/issues"
+  },
   "type": "module",
   "bin": {
     "create-produx-app": "dist/index.mjs"

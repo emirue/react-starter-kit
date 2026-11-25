@@ -158,7 +158,7 @@ Generated projects pin exact versions from [`src/config/dependency-versions.json
 ## Running from a clone
 
 ```bash
-git clone <this repository> && cd <it>
+git clone https://github.com/emirue/react-starter-kit.git && cd react-starter-kit
 pnpm install && pnpm build
 node dist/index.mjs my-app            # or: npm pack, then npx --package ./create-produx-app-0.1.0.tgz create-produx-app my-app
 ```
