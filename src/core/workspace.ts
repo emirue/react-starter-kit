@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs"
 import { readdir, readFile } from "node:fs/promises"
-import { dirname, join, relative } from "node:path"
+import { dirname, join, relative, sep } from "node:path"
 
 import { LOCKFILES, type PackageManager } from "../adapters/package-manager.ts"
 import { ProduxError } from "../utils/errors.ts"
@@ -115,6 +115,11 @@ export function globMatches(glob: string, dir: string): boolean {
   return new RegExp(`^${re}$`).test(dir)
 }
 
+/** The negated pattern ("!apps/old") that keeps `dir` out of the workspace, if any: it wins over the positive globs. */
+export function excludingGlob(globs: string[], dir: string): string | undefined {
+  return globs.find((g) => g.startsWith("!") && globMatches(g.slice(1), dir))
+}
+
 async function listPackages(root: string, globs: string[]): Promise<WorkspaceInfo["packages"]> {
   const found: WorkspaceInfo["packages"] = []
   for (const glob of globs.filter((g) => !g.startsWith("!"))) {
@@ -128,6 +133,7 @@ async function listPackages(root: string, globs: string[]): Promise<WorkspaceInf
             () => []
           )
     for (const dir of dirs) {
+      if (excludingGlob(globs, dir.split(sep).join("/"))) continue
       const pkg = await readJson(join(root, dir, "package.json"))
       if (typeof pkg?.name === "string") found.push({ name: pkg.name, dir })
     }

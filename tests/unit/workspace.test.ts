@@ -4,7 +4,14 @@ import { join } from "node:path"
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest"
 
-import { addWorkspaceGlob, detectWorkspace, ensureAllowBuild, globMatches, parsePnpmPackages } from "../../src/core/workspace.ts"
+import {
+  addWorkspaceGlob,
+  detectWorkspace,
+  ensureAllowBuild,
+  excludingGlob,
+  globMatches,
+  parsePnpmPackages,
+} from "../../src/core/workspace.ts"
 import { ProduxError } from "../../src/utils/errors.ts"
 
 let root: string
@@ -73,6 +80,23 @@ describe("globMatches", () => {
     ["apps/*", "tools/web", false],
   ])("%s ~ %s = %s", (glob, dir, expected) => {
     expect(globMatches(glob, dir)).toBe(expected)
+  })
+})
+
+describe("excludingGlob", () => {
+  it("returns the negated pattern that removes a directory from the workspace", () => {
+    const globs = ["apps/*", "!apps/excluded", "!**/fixtures/**"]
+    expect(excludingGlob(globs, "apps/excluded")).toBe("!apps/excluded")
+    expect(excludingGlob(globs, "apps/web/fixtures/demo")).toBe("!**/fixtures/**")
+    expect(excludingGlob(globs, "apps/web")).toBeUndefined()
+  })
+
+  it("leaves excluded directories out of the package list", async () => {
+    await write("pnpm-workspace.yaml", "packages:\n  - 'apps/*'\n  - '!apps/old'\n")
+    await write("package.json", { name: "root", private: true })
+    await write("apps/web/package.json", { name: "web" })
+    await write("apps/old/package.json", { name: "old" })
+    expect((await detectWorkspace(root))!.packages.map((p) => p.name)).toEqual(["web"])
   })
 })
 

@@ -4,7 +4,7 @@ import { basename, dirname, join, relative, resolve, sep } from "node:path"
 
 import * as p from "@clack/prompts"
 
-import { PM, pmFromUserAgent } from "../adapters/package-manager.ts"
+import { PM, pmFromUserAgent, recordedPmVersion } from "../adapters/package-manager.ts"
 import type { CliOptions } from "../cli/options.ts"
 import { promptForOptions } from "../cli/prompts.ts"
 import { ProduxError } from "../utils/errors.ts"
@@ -15,7 +15,15 @@ import { assertWritableTarget, Journal, writeFiles } from "./apply.ts"
 import { CONFIG_FILE_NAME, parseConfigFile, serializeConfig, type ConfigFile } from "./config-schema.ts"
 import { createPlan, NODE_REQUIREMENT, type Target } from "./generate.ts"
 import { resolveConfig, type ProjectConfig } from "./resolve-config.ts"
-import { addWorkspaceGlob, detectWorkspace, ensureAllowBuild, globMatches, isInside, type WorkspaceInfo } from "./workspace.ts"
+import {
+  addWorkspaceGlob,
+  detectWorkspace,
+  ensureAllowBuild,
+  excludingGlob,
+  globMatches,
+  isInside,
+  type WorkspaceInfo,
+} from "./workspace.ts"
 
 type Status = "passed" | "failed" | "skipped"
 interface StepResult {
@@ -89,7 +97,7 @@ function toConfigFile(config: ProjectConfig): ConfigFile {
 
 const rel = (from: string, to: string) => relative(from, to).split(sep).join("/") || "."
 
-function printReview(config: ProjectConfig, target: Target, files: string[], changes: string[], steps: string[]) {
+function printReview(config: ProjectConfig, target: Target, files: string[], changes: string[], outside: string[], steps: string[]) {
   const modeLabel = { standalone: "Standalone", monorepo: "New monorepo", "existing-workspace": "Existing workspace" }[config.mode]
   const lines = [
     `Project mode:     ${modeLabel}`,
@@ -106,6 +114,7 @@ function printReview(config: ProjectConfig, target: Target, files: string[], cha
     `Examples:         ${config.examples ? "included" : config.features.some((f) => f.endsWith("-router")) ? "not included" : "not included (examples need a router)"}`,
     `Files to create:  ${files.length}`,
     changes.length ? `Existing files to modify:\n${changes.map((c) => `  - ${c}`).join("\n")}` : undefined,
+    outside.length ? `Also writes:      ${outside.join(", ")}` : undefined,
     `Plan:             ${steps.join(" → ")}`,
   ]
   p.note(lines.filter(Boolean).join("\n"), "Review")
@@ -172,6 +181,15 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
       `Install ${pm} (see its official docs) or use --package-manager. create-produx-app never installs package managers globally.`
     )
   }
+  if (pmVersion) {
+    const recorded = recordedPmVersion(pm, pmVersion)
+    if (recorded.replaced) {
+      p.log.warn(
+        `${pm} ${recorded.replaced} is deprecated as a broken release (CI setup refuses it). The project records ${pm}@${recorded.version}, which ${pm} switches to inside the project. Upgrade ${pm} to remove this warning.`
+      )
+    }
+    pmVersion = recorded.version
+  }
 
   const externalConfigPath = typeof opts.saveConfig === "string" ? resolve(cwd, opts.saveConfig) : undefined
   if (externalConfigPath && isInside(writeRoot, externalConfigPath)) {
@@ -195,6 +213,13 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
   // Existing workspace: register the app when no glob covers it.
   const changes: { path: string; content: string; label: string }[] = []
   const appRel = rel(target.rootDir, target.appDir)
+  const excludedBy = detected && config.mode === "existing-workspace" ? excludingGlob(detected.globs, appRel) : undefined
+  if (excludedBy) {
+    throw new ProduxError(
+      `${appRel} is excluded from the workspace by '${excludedBy}' in ${detected!.configFile}.`,
+      "Choose another --app-dir, or remove that exclusion yourself and run the command again."
+    )
+  }
   if (detected && config.mode === "existing-workspace" && !detected.globs.some((g) => !g.startsWith("!") && globMatches(g, appRel))) {
     const yamlPath = join(detected.root, "pnpm-workspace.yaml")
     if (detected.configFile !== "pnpm-workspace.yaml") {
@@ -254,6 +279,7 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
     target,
     plan.files.map((f) => f.path),
     changeLabels,
+    externalConfigPath ? [`${isInside(cwd, externalConfigPath) ? rel(cwd, externalConfigPath) : externalConfigPath} (--save-config)`] : [],
     steps.filter((s): s is string => Boolean(s))
   )
   for (const s of plan.skipped) p.log.warn(`Not written in an existing workspace: ${s.path} (${s.reason})`)
@@ -270,12 +296,18 @@ export async function run(o: CliOptions, cwd = process.cwd()): Promise<number> {
     if (detected.hasCatalog) p.log.info("The workspace defines pnpm catalogs; the new app pins its own versions and does not use them.")
   }
 
-  if ((changes.length || installRunsWorkspaceCode) && !interactive && !opts.dryRun && !opts.allowWorkspaceChanges) {
+  // A --save-config file inside the existing workspace is a change to that workspace too.
+  const configInWorkspace = Boolean(
+    externalConfigPath && detected && config.mode === "existing-workspace" && isInside(detected.root, externalConfigPath)
+  )
+  if ((changes.length || installRunsWorkspaceCode || configInWorkspace) && !interactive && !opts.dryRun && !opts.allowWorkspaceChanges) {
     throw new ProduxError(
       "Adding this app changes or runs existing workspace files (listed above). --yes does not approve that.",
       changes.length
         ? `Approve with --allow-workspace-changes, run without --yes to confirm interactively, or add '${appRel}' to pnpm-workspace.yaml yourself.`
-        : "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or use --no-install and install yourself."
+        : installRunsWorkspaceCode
+          ? "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or use --no-install and install yourself."
+          : "Approve with --allow-workspace-changes, run without --yes to confirm interactively, or save the configuration outside the workspace."
     )
   }
 

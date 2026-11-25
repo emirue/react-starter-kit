@@ -188,6 +188,12 @@ describe("create-produx-app CLI", () => {
     expect(await readFile(join(cwd, "team.json"), "utf8")).toBe("{}")
   })
 
+  it("lists a --save-config file outside the project in the review", () => {
+    const r = cli("app", "--yes", "--no-install", "--no-git", "--save-config", "team.json")
+    expect(r.code).toBe(0)
+    expect(stripVTControlCharacters(r.out)).toMatch(/Also writes:\s+\S*team\.json \(--save-config\)/)
+  })
+
   it("refuses a --save-config path inside the new project", async () => {
     const r = cli("app", "--yes", "--no-install", "--save-config", "app/package.json")
     expect(r.code).toBe(1)
@@ -228,6 +234,37 @@ describe("create-produx-app CLI", () => {
     beforeEach(async () => {
       await writeFile(join(cwd, "package.json"), JSON.stringify({ name: "ws", private: true, packageManager: "pnpm@11.13.0" }))
       await writeFile(join(cwd, "pnpm-workspace.yaml"), "packages:\n- apps/*\n")
+    })
+
+    it("treats a --save-config file inside the workspace as a workspace change", async () => {
+      const args = ["web", "--mode", "existing-workspace", "--preset", "minimal", "--yes", "--no-install", "--save-config", "team.json"]
+      const refused = cli(...args)
+      expect(refused.code).toBe(1)
+      expect(refused.out).toContain("--allow-workspace-changes")
+      expect((await readdir(cwd)).sort()).toEqual(["package.json", "pnpm-workspace.yaml"])
+
+      const approved = cli(...args, "--allow-workspace-changes")
+      expect(approved.code).toBe(0)
+      expect(stripVTControlCharacters(approved.out)).toMatch(/Also writes:\s+\S*team\.json \(--save-config\)/)
+      expect(existsSync(join(cwd, "team.json"))).toBe(true)
+    })
+
+    it("refuses an app directory the workspace excludes, before writing anything", async () => {
+      await writeFile(join(cwd, "pnpm-workspace.yaml"), "packages:\n- apps/*\n- '!apps/excluded'\n")
+      const r = cli(
+        "excluded",
+        "--mode",
+        "existing-workspace",
+        "--app-dir",
+        "apps/excluded",
+        "--preset",
+        "minimal",
+        "--yes",
+        "--no-install"
+      )
+      expect(r.code).toBe(1)
+      expect(r.out).toContain("excluded from the workspace by '!apps/excluded'")
+      expect((await readdir(cwd)).sort()).toEqual(["package.json", "pnpm-workspace.yaml"])
     })
 
     it("requires approval before installing, because install runs workspace code", async () => {

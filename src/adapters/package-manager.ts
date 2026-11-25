@@ -1,3 +1,5 @@
+import versions from "../config/dependency-versions.json" with { type: "json" }
+
 export type PackageManager = "pnpm" | "npm" | "yarn" | "bun"
 
 interface PmInfo {
@@ -59,6 +61,14 @@ export const LOCKFILES: Record<string, PackageManager> = {
   "yarn.lock": "yarn",
   "bun.lock": "bun",
   "bun.lockb": "bun",
+}
+
+// Releases deprecated on npm as broken. Recorded in "packageManager", pnpm/action-setup refuses them in CI.
+const BROKEN: Partial<Record<PackageManager, string[]>> = { pnpm: ["11.13.0"] }
+
+/** The version to record in "packageManager" and the Dockerfile: the local one, unless it is known to be broken. */
+export function recordedPmVersion(pm: PackageManager, local: string): { version: string; replaced?: string } {
+  return BROKEN[pm]?.includes(local) ? { version: versions.pnpm, replaced: local } : { version: local }
 }
 
 /** Reads `npm_config_user_agent`, e.g. "pnpm/11.13.0 npm/? node/v26.13.0 darwin arm64". */
