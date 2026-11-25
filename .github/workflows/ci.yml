@@ -17,17 +17,25 @@ concurrency:
 
 jobs:
   verify:
-    name: Verify (Node ${{ matrix.node }})
-    runs-on: ubuntu-latest
+    name: Verify (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest]
         node: ["22.22.2", "26"]
+        # The CLI's own tests on macOS and Windows too.
+        include:
+          - { os: macos-latest, node: "26" }
+          - { os: windows-latest, node: "26" }
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          # Explicit: package.json has no packageManager, and pnpm 11.13.0 is deprecated as broken.
+          version: 11.29.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: ${{ matrix.node }}
@@ -54,6 +62,9 @@ jobs:
         with:
           persist-credentials: false
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          # Explicit: package.json has no packageManager, and pnpm 11.13.0 is deprecated as broken.
+          version: 11.29.0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 26
@@ -66,6 +77,19 @@ jobs:
         with:
           name: validation-${{ matrix.os }}-${{ matrix.scenario }}
           path: validation-${{ matrix.os }}-${{ matrix.scenario }}.json
+      # Generated projects stay in the OS temp directory (as for users: on Windows a short 8.3 path).
+      - if: ${{ failure() }}
+        id: logs
+        shell: bash
+        run: |
+          dir="$(node -p "require('node:os').tmpdir()")"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+          for f in "$dir"/produx-validate-*/*/validate.log; do echo "::group::$f"; tail -n 200 "$f"; echo "::endgroup::"; done
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: logs-${{ matrix.os }}-${{ matrix.scenario }}
+          path: ${{ steps.logs.outputs.dir }}/produx-validate-*/*/validate.log
 
   versions:
     if: github.event_name == 'schedule'

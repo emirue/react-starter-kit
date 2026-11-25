@@ -1,0 +1,42 @@
+import { Meta, ColorPalette, ColorItem, Typeset } from "@storybook/addon-docs/blocks"
+
+<Meta title="Design system/Tokens" />
+
+# Design tokens
+
+All tokens live in `src/index.css` (`:root` for light, `.dark` for dark) and are exposed to Tailwind as semantic classes.
+Use the classes below in components; do not use raw palette classes (`bg-gray-500`) or hex colors.
+Switch the toolbar theme to see the dark values.
+
+## Colors
+
+<ColorPalette>
+  <ColorItem title="background / foreground" subtitle="bg-background, text-foreground" colors={["var(--background)", "var(--foreground)"]} />
+  <ColorItem title="card" subtitle="bg-card, text-card-foreground" colors={["var(--card)", "var(--card-foreground)"]} />
+  <ColorItem title="primary" subtitle="bg-primary, text-primary-foreground" colors={["var(--primary)", "var(--primary-foreground)"]} />
+  <ColorItem title="secondary" subtitle="bg-secondary, text-secondary-foreground" colors={["var(--secondary)", "var(--secondary-foreground)"]} />
+  <ColorItem title="muted" subtitle="bg-muted, text-muted-foreground" colors={["var(--muted)", "var(--muted-foreground)"]} />
+  <ColorItem title="accent" subtitle="bg-accent, text-accent-foreground" colors={["var(--accent)", "var(--accent-foreground)"]} />
+  <ColorItem title="destructive" subtitle="text-destructive, bg-destructive/10" colors={["var(--destructive)"]} />
+  <ColorItem title="border / input / ring" subtitle="border, border-input, ring-ring" colors={["var(--border)", "var(--input)", "var(--ring)"]} />
+</ColorPalette>
+
+## Typography
+
+| Use | Classes |
+| --- | --- |
+| Page title (via `PageHeader`) | `text-2xl font-semibold tracking-tight` |
+| Section title | `text-lg font-semibold` |
+| Body | `text-sm` or `text-base` |
+| Secondary text | `text-sm text-muted-foreground` |
+
+<Typeset fontSizes={["0.875rem", "1rem", "1.125rem", "1.5rem", "2.25rem"]} fontWeight={600} sampleText="The quick brown fox" fontFamily="var(--font-sans)" />
+
+## Spacing and radius
+
+- Spacing follows Tailwind's 4 px scale. Pages use `p-4 md:p-6`; stacks use `gap-4` or `gap-6`.
+- Radius comes from `--radius`: `rounded-sm`, `rounded-md`, `rounded-lg` (= `--radius`), `rounded-xl`.
+
+## Breakpoints
+
+Mobile first: `sm` 640 px, `md` 768 px, `lg` 1024 px, `xl` 1280 px. Pages must not scroll horizontally at 375 px; wide tables scroll inside their own container.

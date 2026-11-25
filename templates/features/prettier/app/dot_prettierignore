@@ -12,7 +12,7 @@ src/routeTree.gen.ts
 public/mockServiceWorker.js
 # @endif
 # @if orval
-src/api/generated
+src/shared/api/generated
 # @endif
 # @if playwright
 playwright-report

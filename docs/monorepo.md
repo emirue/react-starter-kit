@@ -23,7 +23,7 @@ my-project/
 - Shared packages build with `tsc -b` to `dist/` with type declarations and are consumed through `exports` and `workspace:*`, so TypeScript, Vite, Vitest and Node.js resolve them the same way. Path aliases are not used to fake package resolution.
 - `packages/shared` and `packages/types` have no DOM or Node.js types; importing `node:*` there fails the type check, which keeps server-only code out of the frontend.
 - The app scans `packages/ui/src` with Tailwind's `@source`, so classes used in shared components are generated.
-- shadcn/ui components stay in the app (`apps/web/src/components/ui`); `packages/ui` holds plain React components.
+- shadcn/ui components stay in the app (`apps/web/src/shared/ui`); `packages/ui` holds plain React components.
 
 Root commands:
 

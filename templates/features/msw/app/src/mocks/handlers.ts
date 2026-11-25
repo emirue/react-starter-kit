@@ -1,11 +1,7 @@
 import { http, HttpResponse } from "msw"
 
-// @if tanstack-query && examples
-interface Todo {
-  id: string
-  title: string
-  done: boolean
-}
+// @if tanstack-query && example-pages
+import type { Todo } from "@/pages/todos-example"
 
 const SEED: Todo[] = [
   { id: "1", title: "Read the generated README", done: true },

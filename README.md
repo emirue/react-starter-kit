@@ -4,7 +4,7 @@ An interactive CLI that creates React + Vite + TypeScript projects with a verifi
 
 It is not a template copier. Each project is assembled from feature modules, installed, and then validated (type check, lint, unit tests, production build) before the CLI reports success.
 
-> **Status: 0.1.0, not published to npm yet.** The `npm create produx-app` commands below work once the package is published. Until then, run it from a clone or a packed tarball (see [Running before publication](#running-before-publication)).
+> **Status: 0.1.0.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
 
 ## Quick start
 
@@ -39,17 +39,17 @@ pnpm create produx-app@latest my-app --mode standalone --preset standard --packa
 
 ### Presets
 
-|                                                                                                | Minimal | Standard (default) | Admin | Enterprise |
-| ---------------------------------------------------------------------------------------------- | :-----: | :----------------: | :---: | :--------: |
-| React 19, Vite 8, TypeScript 6 (strict), `@/` alias                                            |    ✓    |         ✓          |   ✓   |     ✓      |
-| ESLint 10 (flat config, React Hooks, React Refresh)                                            |    ✓    |         ✓          |   ✓   |     ✓      |
-| Tailwind CSS 4, shadcn/ui (Base UI or Radix), Lucide, light/dark/system theme                  |         |         ✓          |   ✓   |     ✓      |
-| TanStack Query + Devtools, Zustand                                                             |         |         ✓          |   ✓   |     ✓      |
-| React Router 8 (or TanStack Router), Axios (or Fetch) API client                               |         |         ✓          |   ✓   |     ✓      |
-| React Hook Form + Zod + resolvers                                                              |         |         ✓          |   ✓   |     ✓      |
-| Vitest + React Testing Library, Prettier, CLAUDE.md, AGENTS.md                                 |         |         ✓          |   ✓   |     ✓      |
-| Admin layout: sidebar, header, dashboard, data table (TanStack Table), dialog, toasts          |         |                    |   ✓   |     ✓      |
-| Orval, MSW, Playwright, Docker + Nginx, GitHub Actions, CodeQL, env validation, error boundary |         |                    |       |     ✓      |
+|                                                                                                           | Minimal | Standard (default) | Admin | Enterprise |
+| --------------------------------------------------------------------------------------------------------- | :-----: | :----------------: | :---: | :--------: |
+| React 19, Vite 8, TypeScript 6 (strict), `@/` alias                                                       |    ✓    |         ✓          |   ✓   |     ✓      |
+| ESLint 10 (flat config, React Hooks, React Refresh)                                                       |    ✓    |         ✓          |   ✓   |     ✓      |
+| Tailwind CSS 4, shadcn/ui (Base UI or Radix), Lucide, light/dark/system theme                             |         |         ✓          |   ✓   |     ✓      |
+| TanStack Query + Devtools, Zustand                                                                        |         |         ✓          |   ✓   |     ✓      |
+| React Router 8 (or TanStack Router), Axios (or Fetch) API client                                          |         |         ✓          |   ✓   |     ✓      |
+| React Hook Form + Zod + resolvers                                                                         |         |         ✓          |   ✓   |     ✓      |
+| Vitest + React Testing Library, Prettier, CLAUDE.md, AGENTS.md                                            |         |         ✓          |   ✓   |     ✓      |
+| Admin layout: sidebar, header, dashboard, data table (TanStack Table), dialog, toasts                     |         |                    |   ✓   |     ✓      |
+| Orval, MSW, Playwright, Storybook, Docker + Nginx, GitHub Actions, CodeQL, env validation, error boundary |         |                    |       |     ✓      |
 
 `Custom` starts from Standard and lets you pick features. Details: [docs/presets.md](docs/presets.md) and [docs/features.md](docs/features.md).
 
@@ -59,15 +59,16 @@ pnpm create produx-app@latest my-app --mode standalone --preset standard --packa
 my-app/
 ├── public/
 ├── src/
-│   ├── app/            providers.tsx, router.tsx
-│   ├── components/     theme/, ui/ (shadcn/ui)
-│   ├── config/         env.ts (the only reader of import.meta.env)
-│   ├── features/       todos/, sign-up/, counter/ (examples; delete freely)
-│   ├── layouts/
-│   ├── lib/            api-client.ts, api-error.ts, query-client.ts, utils.ts
-│   ├── pages/
-│   ├── test/setup.ts
-│   ├── App.tsx
+│   ├── app/            app.tsx, providers.tsx, router.tsx, route-error.tsx, layouts/
+│   ├── pages/          home/, not-found/, examples/ and the *-example slices (delete freely)
+│   ├── features/       switch-theme/ (user actions used in several places)
+│   ├── shared/
+│   │   ├── ui/         design system: shadcn/ui, PageHeader, Loading/Error/EmptyState
+│   │   ├── api/        http-client.ts, api-error.ts, query-client.ts
+│   │   ├── lib/        theme/, utils.ts
+│   │   └── config/     env.ts (the only reader of import.meta.env)
+│   ├── test/           setup.ts, render.tsx
+│   ├── index.css       design tokens
 │   └── main.tsx
 ├── .env.example
 ├── AGENTS.md, CLAUDE.md
@@ -78,6 +79,8 @@ my-app/
 ```
 
 Only selected features produce files and dependencies; the validation suite checks that unselected packages never appear.
+
+Generated apps follow one architecture: Feature-Sliced Design layers (`app` → `pages` → `features` → `entities` → `shared`) with slice public APIs, enforced by `eslint-plugin-boundaries` in `lint`, plus a token-based design system and responsive and accessibility rules. See [docs/architecture/frontend-architecture.md](docs/architecture/frontend-architecture.md).
 
 ## CLI options
 
@@ -132,25 +135,27 @@ Recommended: the current Node.js LTS (26.x).
 
 Everything below was run end to end (generate → install → type check → lint → unit tests → build, plus browser checks); see [docs/validation-report.md](docs/validation-report.md) for commands, exit codes and dates.
 
-|                                                            | Status                                                                |
-| ---------------------------------------------------------- | --------------------------------------------------------------------- |
-| macOS (arm64), Node.js 22.23.2 / 24.21.0 / 26.13.0         | PASS                                                                  |
-| Linux, Windows                                             | NOT TESTED locally (CI matrix provided in `.github/workflows/ci.yml`) |
-| pnpm 11.13.0: standalone, new monorepo, existing workspace | PASS                                                                  |
-| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard       | PASS                                                                  |
-| npm, Yarn, Bun: monorepo modes                             | Not supported in this release (pnpm only)                             |
-| pnpm 12, Yarn 4                                            | NOT TESTED                                                            |
-| GitHub Actions / CodeQL workflows                          | Generated and checked with actionlint; not executed on GitHub         |
+|                                                                                                                                        | Status                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| macOS (arm64), Node.js 26: full matrix                                                                                                 | PASS                                                          |
+| Linux (arm64, Docker), Node.js 22.23.2 / 24.21.0: 9 scenarios with browser checks (8 before the last two fixes, Enterprise also after) | PASS                                                          |
+| Linux x64, macOS, Windows x64 (GitHub Actions), Node.js 26: Minimal, Standard, Turborepo monorepo                                      | PASS (no browser checks)                                      |
+| Windows with Playwright, Storybook, npm, Yarn or Bun                                                                                   | NOT TESTED                                                    |
+| pnpm 11.13.0 (macOS) and 11.29.0 (Linux, CI): standalone, new monorepo, existing workspace                                             | PASS                                                          |
+| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard, and Standard + Storybook (macOS)                                                 | PASS                                                          |
+| npm, Yarn, Bun: monorepo modes                                                                                                         | Not supported in this release (pnpm only)                     |
+| pnpm 12, Yarn 4                                                                                                                        | NOT TESTED                                                    |
+| GitHub Actions / CodeQL workflows                                                                                                      | Generated and checked with actionlint; not executed on GitHub |
 
 ## Backend integration
 
-The CLI never generates a backend. Generated apps call APIs through one client (`src/lib/api-client.ts`, Fetch or Axios) with a configurable base URL, timeouts, cancellation and a single `ApiError` type, and can proxy `/api` to a local backend in development. Monorepos can share types with TypeScript backends (NestJS, Express) through `packages/types`; non-TypeScript backends (ASP.NET Core, ...) connect over HTTP and OpenAPI (Orval). See [docs/backend-integration.md](docs/backend-integration.md).
+The CLI never generates a backend. Generated apps call APIs through one client (`src/shared/api/http-client.ts`, Fetch or Axios) with a configurable base URL, timeouts, cancellation and a single `ApiError` type, and can proxy `/api` to a local backend in development. Monorepos can share types with TypeScript backends (NestJS, Express) through `packages/types`; non-TypeScript backends (ASP.NET Core, ...) connect over HTTP and OpenAPI (Orval). See [docs/backend-integration.md](docs/backend-integration.md).
 
 ## Dependency version policy
 
 Generated projects pin exact versions from [`src/config/dependency-versions.json`](src/config/dependency-versions.json), verified for this CLI release. The CLI never installs unverified `latest` versions. Updates go through Renovate and the validation matrix ([docs/releasing.md](docs/releasing.md)). Deliberate exceptions, such as TypeScript 6.0.x instead of 7, are explained in [docs/dependency-compatibility.md](docs/dependency-compatibility.md).
 
-## Running before publication
+## Running from a clone
 
 ```bash
 git clone <this repository> && cd <it>
@@ -165,17 +170,19 @@ node dist/index.mjs my-app            # or: npm pack, then npx --package ./creat
 | `ERR_PNPM_IGNORED_BUILDS`                                            | pnpm 11+ blocks dependency build scripts. Generated projects approve only what they need in `pnpm-workspace.yaml` → `allowBuilds`. |
 | `pnpm-workspace.yaml` gains `minimumReleaseAgeExclude` after install | pnpm records packages published less than a day ago. Review and commit it, or reinstall later.                                     |
 | `The engine "node" is incompatible` (Yarn)                           | Yarn 1 enforces `engines`; use a Node.js version from the table above.                                                             |
-| `test:e2e` cannot find a browser                                     | Run `pnpm exec playwright install chromium` once (not done automatically: large download).                                         |
+| `test:e2e` or `test:storybook` cannot find a browser                 | Run `pnpm exec playwright install chromium` once (not done automatically: large download).                                         |
 | `Generated projects need Node.js …` warning                          | Your Node.js is older than the generated project needs; switch versions before installing.                                         |
+| CI: `pnpm v11.13.0 is a broken release and cannot be installed`      | pnpm 11.13.0 is deprecated on npm. Upgrade pnpm, then update `packageManager` in `package.json`.                                   |
 
 ## Known limitations
 
 - shadcn/ui ships the `nova` style only (Base UI and Radix); other shadcn presets are not offered yet.
 - Monorepo modes are pnpm-only. Shared packages (`packages/shared`, `types`, `ui`) are created in new monorepos only.
 - The shared UI package holds plain React components; shadcn/ui components stay app-local.
-- Orval is supported in TanStack Query mode only.
+- Orval generates request functions (`axios-functions` or `fetch` client) wrapped by the page's own query options; it requires TanStack Query and MSW (the sample spec is served by MSW).
+- Example pages need a router; `--router none` generates no examples.
 - Docker images are supported for standalone apps and new monorepos with pnpm or npm.
-- Windows and Linux have not been run locally.
+- On Windows only Minimal, Standard and a Turborepo monorepo are verified (GitHub Actions, without browser checks).
 
 ## Contributing
 

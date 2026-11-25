@@ -19,6 +19,9 @@ blob-report
 # @if vitest
 coverage
 # @endif
+# @if storybook
+storybook-static
+# @endif
 
 # Local environment files (may contain secrets)
 .env.local

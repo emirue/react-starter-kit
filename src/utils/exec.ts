@@ -24,6 +24,7 @@ export async function runCommand(file: string, args: string[], cwd: string, env:
 }
 
 export async function commandVersion(file: string): Promise<string | undefined> {
-  const r = await runCommand(file, ["--version"], process.cwd())
-  return r.ok ? /\d+\.\d+\.\d+\S*/.exec(r.output)?.[0] : undefined
+  const r = await execa(file, ["--version"], { reject: false, stdin: "ignore" })
+  // stdout only: Corepack prints download notices with versioned URLs (pnpm-12.23.0.tgz) on stderr.
+  return r.failed ? undefined : /^v?(\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)*)\s*$/m.exec(r.stdout)?.[1]
 }

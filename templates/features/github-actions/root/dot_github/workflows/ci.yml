@@ -63,6 +63,16 @@ jobs:
           path: {{appDir}}/playwright-report/
           retention-days: 14
       # @endif
+      # @if storybook && !playwright
+      - run: {{pmExec}} playwright install --with-deps chromium
+        working-directory: {{appDir}}
+      # @endif
+      # @if storybook
+      - run: {{pmRun}} test:storybook
+        working-directory: {{appDir}}
+      - run: {{pmRun}} build-storybook
+        working-directory: {{appDir}}
+      # @endif
       # @if pm-pnpm
       - name: Audit dependencies
         run: pnpm audit --audit-level high

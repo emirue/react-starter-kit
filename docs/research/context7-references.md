@@ -1169,6 +1169,47 @@ allowBuilds:
 
 ---
 
+## Architecture refactor (2026-11-24)
+
+Context7's monthly quota was exhausted; these facts come from the installed packages of a generated Enterprise app (`node_modules`, `.d.ts`, templates) and from runs in that app. Background research on Feature-Sliced Design and the enforcement tools was done from official sources and recorded during the analysis.
+
+### Storybook 10.6.8 with Vitest 5.1.1
+
+- `@storybook/addon-vitest@10.6.8` peers: `vitest ^4 || ^5`, `@vitest/browser ^4 || ^5`, `@vitest/browser-playwright ^4 || ^5`, `storybook ^10.6.8` (`npm view`). `@vitest/browser` is therefore pinned explicitly (5.1.1).
+- The addon's own setup template for Vitest 4+ (`node_modules/@storybook/addon-vitest/templates/vitest.config.4.template.ts`) adds a `test.projects` entry with `extends: true`, `storybookTest({ configDir })` and `browser: { enabled: true, headless: true, provider: playwright({}), instances: [{ browser: "chromium" }] }`. It has no `setupFiles`: project annotations are applied by the plugin. Generated apps follow that shape inside `vite.config.ts`, next to a `unit` project, so the Storybook UI's test runner finds it.
+- `storybook build` and the story tests used the app's `vite.config.ts` plugins and `@/` alias without extra `viteFinal` configuration (measured: build and 20 story tests passed, including stories importing `@/shared/lib/theme`).
+- `parameters.a11y.test: "error"` makes axe violations fail story tests (measured: the `destructive` button and badge failed at 4.0:1 contrast until the token was changed).
+- `core.disableTelemetry: true` turns off usage telemetry (the build otherwise prints the telemetry notice).
+
+### eslint-plugin-boundaries 7.4.4
+
+- Element descriptors' `mode` option is deprecated (`@boundaries/elements` 3.3.4 `dist/index.d.mts`: "For element descriptors, the mode is always folder"); a run with `mode: "file"` printed a deprecation warning. Single files (`src/main.tsx`, `src/vite-env.d.ts`) are therefore listed in `boundaries/ignore` instead of being an element.
+- Element patterns use the default right-to-left `partialMatch`, but paths are taken relative to `boundaries/root-path`, which defaults to `process.cwd()` (`dist/Settings/Settings.js`, `getNormalizedRootPath`; an absolute setting is used as is). Measured from a monorepo root: `boundaries/ignore` entries such as `src/main.tsx` no longer matched and every app file was reported by `no-unknown-files`. Generated configs set `"boundaries/root-path": import.meta.dirname` (see 2026-11-25 below).
+- Measured with a canary file in a generated app: deep imports into another page, imports of another page's index, a page importing `app`, `shared` importing a page, a relative import into another slice, an app-level deep import and a dynamic `import()` of a page's internal file were all reported; a file outside every layer was reported by `boundaries/no-unknown-files`.
+
+### Orval 8.49.0 function clients
+
+Generated in a scratch copy with the app's mutator:
+
+- `client: "axios-functions"` with a mutator: `listTodos(params?, options?)` returns `orvalRequest<Todo[]>(...)`, i.e. the data.
+- `client: "fetch"` with a mutator: `listTodos(params?, options?: RequestInit)` returns `{ data, status, headers }` (`listTodosResponse`); non-2xx variants are part of the union (`updateTodoResponse404`).
+- Models are written to `schemas` with an `index.ts` (`Todo`, `NewTodo`, `TodoPatch`, `ListTodosParams`, ...).
+
+### TanStack Router 1.170.46: missing chunks
+
+`dist/esm/lazyRouteComponent.js` reloads the page once when a lazy route module fails to load (`isModuleNotFoundError`, guarded by a `sessionStorage` key `tanstack_router_reload:<message>`); the second failure is thrown to the route's error component. React Router shows the route `ErrorBoundary` on the first failure.
+
+## Cross-platform validation (2026-11-25)
+
+Facts from the installed packages, the pinned actions' sources and the runs on GitHub Actions and in Docker (Context7 quota still exhausted).
+
+- **pnpm/action-setup v6.1.1** (README at the pinned SHA): `version` may be omitted only when `package.json` declares pnpm 11+ in `packageManager` or `devEngines.packageManager`. **pnpm 11.13.0** is deprecated on npm ("This is a broken version. Please install pnpm v11.13.1 or newer", `npm view pnpm@11.13.0 deprecated`); the action's self-installer refuses it with `ERR_PNPM_BROKEN_PNPM_RELEASE`.
+- **Corepack** (bundled with Node 22.23.2, Debian container): on first use it prints `! Corepack is about to download https://registry.npmjs.org/pnpm/-/pnpm-<version>.tgz` on stderr before running the command.
+- **execa 10.2.1** (`lib/arguments/command-file.js`): on Windows it resolves the command through `PATH` and `PATHEXT` and escapes arguments for `cmd.exe`, so `.cmd` shims (pnpm, npm) run without a shell; `node:child_process` resolves neither.
+- **@testing-library/jest-dom 8.0.0**: the `./vitest` entry (`dist/vitest.mjs`) runs `import { expect } from 'vitest'; expect.extend(...)`; `./matchers` does not import vitest. The README documents `import * as matchers from '@testing-library/jest-dom/matchers'` + `expect.extend(matchers)` for other `expect`s.
+- **Windows short paths** (measured on `windows-latest`): `os.tmpdir()` is `C:\Users\RUNNER~1\AppData\Local\Temp`. A project run from there with the alias based on `import.meta.dirname` failed in Vitest: test files were loaded by the long path (`C:/Users/runneradmin/...`), `@/` imports by the short one (`ERR_MODULE_NOT_FOUND`). With the alias on `realpathSync.native(...)` the modules loaded, but every jest-dom matcher was `Invalid Chai property`, also after making Vite's `root` the real path. Only registering the matchers on the setup file's own `expect` made the scenario pass. That jest-dom's `./vitest` entry had extended a second copy of Vitest's `expect` is an inference from that sequence, not a measurement.
+- **Debian containers** (measured in `node:22.23.2-bookworm`): `vite preview` listened on 127.0.0.1 while Node's `fetch("http://localhost:…")` connected to `::1` (`ECONNREFUSED`; `curl` succeeded by falling back).
+
 ## Selected versions without a dedicated section
 
 | Package                            | Selected     | Where the research touches it                                                     |
@@ -1190,7 +1231,7 @@ The shadcn registry packages (`cn`, `class-variance-authority`, `tw-animate-css`
 
 ## Unconfirmed and open items
 
-1. **Ctrl+C and Node coverage:** for the clack spinner, the docs and the measurement disagree. Linux, Windows, external SIGINT and Node 26 were not run, and Vitest with jsdom 31 was not run on Node 24.15+.
+1. **Ctrl+C and Node coverage:** for the clack spinner, the docs and the measurement disagree. Ctrl+C was measured on macOS only (`scripts/interactive-check.py`), not on Linux, Windows or with an external SIGINT. Vitest with jsdom 31 ran on Node 22.23.2 and 24.21.0 (Linux, Docker) and 26 (macOS, GitHub Actions on Linux, macOS and Windows).
 2. **Unmeasured CLI paths:** clack `validate` with a zod 4 schema, and a tsdown shebang injected through `banner`.
 3. **shadcn `init` output** was not measured in the quality-tool research. Still open: whether it runs without prompts, whether `-t vite` adds `button`, whether `shadcn@latest` is written to dependencies, and which dark variant the CSS uses.
 4. **Hooks and docs versions:** no husky or lint-staged hook was run on a real commit. The Tailwind docs came from `main`, and Prettier 3.10 changes were not researched.

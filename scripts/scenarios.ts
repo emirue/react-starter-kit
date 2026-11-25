@@ -1,8 +1,9 @@
-import { spawnSync } from "node:child_process"
 import { createHash } from "node:crypto"
-import { existsSync } from "node:fs"
+import { existsSync, readdirSync } from "node:fs"
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join, relative } from "node:path"
+
+import { execaSync } from "execa"
 
 import type { PackageManager } from "../src/adapters/package-manager.ts"
 import type { CliOptions } from "../src/cli/options.ts"
@@ -43,8 +44,8 @@ const cli = (o: Partial<CliOptions>): CliOptions => ({
 })
 
 function run(cmd: string, args: string[], cwd: string) {
-  const r = spawnSync(cmd, args, { cwd, encoding: "utf8" })
-  return { ok: r.status === 0, output: `${r.stdout}${r.stderr}` }
+  const r = execaSync(cmd, args, { cwd, reject: false, all: true })
+  return { ok: r.exitCode === 0, output: r.all ?? "" }
 }
 
 function standalone(name: string, args: string[], o: Partial<CliOptions>, extra: Partial<Scenario> = {}): Scenario {
@@ -236,6 +237,47 @@ function monorepo(name: string, args: string[], o: Partial<CliOptions>, extra: P
   }
 }
 
+const PALETTE =
+  /\b(?:bg|text|border|ring|fill|stroke|from|to|via)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b|\b(?:bg|text)-(?:white|black)\b/g
+// Tailwind arbitrary colors: bg-[#fff], text-[rgb(0_0_0)], [color:#000].
+const ARBITRARY_COLOR = /\[(?:[a-z-]+:)?(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\()[^\]]*\]/g
+
+/** Raw color classes in a source file. Generated code uses design tokens only (docs/architecture/frontend-architecture.md). */
+export function rawColorClasses(source: string): string[] {
+  return [...source.matchAll(PALETTE), ...source.matchAll(ARBITRARY_COLOR)].map((m) => m[0])
+}
+
+/**
+ * Generated paths of vendored shadcn/ui files, which are exempt from the color rule.
+ * Names come from the templates; the pre-refactor components/ui location is accepted too.
+ */
+export function vendoredUiFiles(features: string[]): Set<string> {
+  const templates = join(import.meta.dirname, "..", "templates", "features")
+  const names = ["shadcn", "admin-layout"]
+    .filter((id) => features.includes(id))
+    .flatMap((id) =>
+      ["base", "radix"].flatMap((ui) => ["shared/ui", "components/ui"].map((dir) => join(templates, id, `when-ui-${ui}`, "app/src", dir)))
+    )
+    .flatMap((dir) => (existsSync(dir) ? readdirSync(dir) : []))
+  return new Set(names.flatMap((name) => [`src/shared/ui/${name}`, `src/components/ui/${name}`]))
+}
+
+/** Examples need a router: without one, no example page slices may be generated. */
+function noExamplePages(name: string) {
+  return async (dir: string): Promise<Result[]> => {
+    const pages = join(dir, name, "src", "pages")
+    const slices = existsSync(pages) ? await readdir(pages) : []
+    const examples = slices.filter((slice) => slice === "examples" || slice.endsWith("-example"))
+    return [
+      {
+        name: "no example pages without a router",
+        status: examples.length || !slices.includes("home") ? "FAIL" : "PASS",
+        detail: `src/pages: ${slices.join(", ") || "missing"}`,
+      },
+    ]
+  }
+}
+
 const ROOT_SCRIPTS = { postinstall: `node -e "require('fs').appendFileSync('postinstall.log', 'ran')"` }
 
 const CUSTOM_TOOLING = [
@@ -271,6 +313,12 @@ export const SCENARIOS: Scenario[] = [
   standalone("minimal", ["--preset", "minimal"], { preset: "minimal" }),
   standalone("standard", [], {}, { deepLinks: ["/examples/todos?filter=open", "/examples/sign-up", "/no/such/page"] }),
   standalone("standard-no-examples", ["--no-examples"], { examples: false }, { deepLinks: ["/no/such/page"] }),
+  standalone(
+    "router-none-examples",
+    ["--router", "none", "--examples"],
+    { router: "none", examples: true },
+    { verify: noExamplePages("router-none-examples") }
+  ),
   standalone(
     "standard-radix-tsr-fetch",
     ["--ui", "radix", "--router", "tanstack-router", "--features", "+fetch,-axios"],
@@ -315,6 +363,32 @@ export const SCENARIOS: Scenario[] = [
     { preset: "admin", examples: false },
     { deepLinks: ["/settings"] }
   ),
+  // Without shadcn/ui, shared/ui holds stand-ins: with Tailwind, and without it (plain CSS).
+  standalone(
+    "custom-tailwind-primitives",
+    ["--preset", "minimal", "--features", "+tailwind,+react-router,+tanstack-query,+vitest,+testing-library"],
+    { preset: "minimal", features: ["+tailwind", "+react-router", "+tanstack-query", "+vitest", "+testing-library"] },
+    { deepLinks: ["/examples/todos?filter=open", "/no/such/page"] }
+  ),
+  standalone(
+    "custom-primitives-no-tailwind",
+    ["--preset", "minimal", "--features", "+react-router,+tanstack-query,+vitest,+testing-library"],
+    { preset: "minimal", features: ["+react-router", "+tanstack-query", "+vitest", "+testing-library"] },
+    { deepLinks: ["/examples/todos?filter=open", "/no/such/page"] }
+  ),
+  standalone(
+    "custom-primitives-no-tailwind-tsr",
+    ["--preset", "minimal", "--features", "+tanstack-router,+tanstack-query,+vitest,+testing-library"],
+    { preset: "minimal", features: ["+tanstack-router", "+tanstack-query", "+vitest", "+testing-library"] },
+    { deepLinks: ["/examples/todos?filter=open", "/no/such/page"] }
+  ),
+  // Storybook without Playwright, with each package manager (pnpm is covered by the Enterprise scenarios).
+  ...(["npm", "yarn", "bun"] as const).map((pm) =>
+    standalone(`storybook-${pm}`, ["--package-manager", pm, "--features", "+storybook"], {
+      packageManager: pm,
+      features: ["+storybook"],
+    })
+  ),
   standalone(
     "custom-tooling",
     ["--features", CUSTOM_TOOLING.join(",")],
@@ -325,15 +399,14 @@ export const SCENARIOS: Scenario[] = [
     "mono-turbo",
     ["--app-name", "web", "--features", "+pkg-shared,+pkg-types,+pkg-ui"],
     { appName: "web", features: ["+pkg-shared", "+pkg-types", "+pkg-ui"] },
-    {
-      cssMustContain: "border-dashed",
-    }
+    // A class only packages/ui uses: the app's CSS must pick up the shared package's sources.
+    { cssMustContain: "border-l-4" }
   ),
   monorepo(
     "mono-enterprise",
     ["--app-name", "web", "--preset", "enterprise", "--features", "+pkg-shared,+pkg-ui"],
     { appName: "web", preset: "enterprise", features: ["+pkg-shared", "+pkg-ui"] },
-    { cssMustContain: "border-dashed" }
+    { cssMustContain: "border-l-4" }
   ),
   monorepo("mono-no-turbo", ["--app-name", "web", "--no-turbo", "--features", "+pkg-shared"], {
     appName: "web",

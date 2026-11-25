@@ -9,7 +9,7 @@
     <script>
       // Apply the saved theme before the first paint to avoid a flash.
       try {
-        const saved = localStorage.getItem("theme")
+        const saved = localStorage.getItem("{{appName}}:theme")
         const dark =
           saved === "dark" ||
           (saved !== "light" && matchMedia("(prefers-color-scheme: dark)").matches)

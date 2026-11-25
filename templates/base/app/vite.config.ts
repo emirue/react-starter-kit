@@ -1,8 +1,12 @@
 // @if vitest
 /// <reference types="vitest/config" />
 // @endif
+import { realpathSync } from "node:fs"
 import { resolve } from "node:path"
 
+// @if storybook
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin"
+// @endif
 // @if tanstack-router
 import { tanstackRouter } from "@tanstack/router-plugin/vite"
 // @endif
@@ -10,17 +14,25 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite"
 import tailwindcss from "@tailwindcss/vite"
 // @endif
 import react from "@vitejs/plugin-react"
+// @if storybook
+import { playwright } from "@vitest/browser-playwright"
+// @endif
 // @if vite-proxy
 import { defineConfig, loadEnv } from "vite"
 // @else
 import { defineConfig } from "vite"
 // @endif
 
+// The project directory by its real path. From a short (8.3) Windows path such as C:\Users\RUNNER~1,
+// Vitest would otherwise load test files by their long path and setup files and "@/" imports by the short one.
+const root = realpathSync.native(import.meta.dirname)
+
 // https://vite.dev/config/
 // @if vite-proxy
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, import.meta.dirname, "VITE_")
+  const env = loadEnv(mode, root, "VITE_")
   return {
+    root,
     // @if tanstack-router
     plugins: [
       tanstackRouter({ target: "react", autoCodeSplitting: true }),
@@ -38,7 +50,7 @@ export default defineConfig(({ mode }) => {
     // @endif
     resolve: {
       alias: {
-        "@": resolve(import.meta.dirname, "./src"),
+        "@": resolve(root, "src"),
       },
     },
     server: {
@@ -51,7 +63,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    // @if vitest
+    // @if vitest && !storybook
     test: {
       environment: "jsdom",
       // @if testing-library || msw || theme
@@ -62,10 +74,40 @@ export default defineConfig(({ mode }) => {
       passWithNoTests: true,
     },
     // @endif
+    // @if storybook
+    test: {
+      passWithNoTests: true,
+      projects: [
+        {
+          // `test` and `test:run`: unit and component tests in jsdom.
+          extends: true,
+          test: {
+            name: "unit",
+            environment: "jsdom",
+            // @if testing-library || msw || theme
+            setupFiles: ["./src/test/setup.ts"],
+            // @endif
+            include: ["src/**/*.test.{ts,tsx}"],
+            css: true,
+          },
+        },
+        {
+          // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
+          extends: true,
+          plugins: [storybookTest({ configDir: resolve(root, ".storybook") })],
+          test: {
+            name: "storybook",
+            browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
+          },
+        },
+      ],
+    },
+    // @endif
   }
 })
 // @else
 export default defineConfig({
+  root,
   // @if tanstack-router
   plugins: [
     tanstackRouter({ target: "react", autoCodeSplitting: true }),
@@ -83,10 +125,10 @@ export default defineConfig({
   // @endif
   resolve: {
     alias: {
-      "@": resolve(import.meta.dirname, "./src"),
+      "@": resolve(root, "src"),
     },
   },
-  // @if vitest
+  // @if vitest && !storybook
   test: {
     environment: "jsdom",
     // @if testing-library || msw || theme
@@ -95,6 +137,35 @@ export default defineConfig({
     include: ["src/**/*.test.{ts,tsx}"],
     css: true,
     passWithNoTests: true,
+  },
+  // @endif
+  // @if storybook
+  test: {
+    passWithNoTests: true,
+    projects: [
+      {
+        // `test` and `test:run`: unit and component tests in jsdom.
+        extends: true,
+        test: {
+          name: "unit",
+          environment: "jsdom",
+          // @if testing-library || msw || theme
+          setupFiles: ["./src/test/setup.ts"],
+          // @endif
+          include: ["src/**/*.test.{ts,tsx}"],
+          css: true,
+        },
+      },
+      {
+        // `test:storybook`: every story renders in Chromium; play functions and a11y checks must pass.
+        extends: true,
+        plugins: [storybookTest({ configDir: resolve(root, ".storybook") })],
+        test: {
+          name: "storybook",
+          browser: { enabled: true, headless: true, provider: playwright(), instances: [{ browser: "chromium" }] },
+        },
+      },
+    ],
   },
   // @endif
 })

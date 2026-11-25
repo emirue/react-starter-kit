@@ -19,6 +19,9 @@ const SCRIPT_ORDER = [
   "test",
   "test:run",
   "test:e2e",
+  "storybook",
+  "build-storybook",
+  "test:storybook",
   "api:generate",
   "prepare",
 ]
@@ -67,6 +70,8 @@ export function appPackageJson(config: ProjectConfig, target: Target, opts: Gene
     scripts = { ...scripts, ...feature.scripts }
   }
   if (config.features.includes("shadcn")) deps.push(config.ui.base === "base" ? "@base-ui/react" : "radix-ui")
+  // Story lint rules only make sense when both tools are there.
+  if (config.features.includes("storybook") && config.features.includes("eslint")) devDeps.push("eslint-plugin-storybook")
 
   const workspaceDeps = Object.fromEntries(
     selectedPackages(config).map((id) => [`@${target.projectName}/${WORKSPACE_PACKAGES[id]}`, "workspace:*"])

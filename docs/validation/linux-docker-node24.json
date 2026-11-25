@@ -1,0 +1,1244 @@
+{
+  "scenarios": {
+    "minimal": {
+      "scenario": "minimal",
+      "args": [
+        "minimal",
+        "--preset",
+        "minimal"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app minimal --preset minimal --yes",
+          "exitCode": 0,
+          "ms": 18292
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 773
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 721
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 731
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 733
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "minimal"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "standard": {
+      "scenario": "standard",
+      "args": [
+        "standard"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard --yes",
+          "exitCode": 0,
+          "ms": 38070
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 699
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1243
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1210
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1250
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1199
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1304
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=open",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/sign-up",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "4 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "standard-radix-tsr-fetch": {
+      "scenario": "standard-radix-tsr-fetch",
+      "args": [
+        "standard-radix-tsr-fetch",
+        "--ui",
+        "radix",
+        "--router",
+        "tanstack-router",
+        "--features",
+        "+fetch,-axios"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app standard-radix-tsr-fetch --ui radix --router tanstack-router --features +fetch,-axios --yes",
+          "exitCode": 0,
+          "ms": 22110
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 755
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1385
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1349
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1258
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1577
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1321
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "standard-radix-tsr-fetch"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=done",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "admin-base-react-router": {
+      "scenario": "admin-base-react-router",
+      "args": [
+        "admin-base-react-router",
+        "--preset",
+        "admin",
+        "--ui",
+        "base",
+        "--router",
+        "react-router"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app admin-base-react-router --preset admin --ui base --router react-router --yes",
+          "exitCode": 0,
+          "ms": 17479
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 791
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1617
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1585
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1567
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1511
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1482
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /settings",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "5 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "5 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "enterprise": {
+      "scenario": "enterprise",
+      "args": [
+        "enterprise",
+        "--preset",
+        "enterprise"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app enterprise --preset enterprise --yes",
+          "exitCode": 0,
+          "ms": 110615
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 828
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1602
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1587
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1607
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/dashboard/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1566
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1554
+        },
+        {
+          "name": "test:e2e (Playwright)",
+          "status": "PASS",
+          "command": "pnpm run test:e2e",
+          "exitCode": 0,
+          "ms": 14872
+        },
+        {
+          "name": "build-storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run build-storybook",
+          "exitCode": 0,
+          "ms": 3269
+        },
+        {
+          "name": "test:storybook (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run test:storybook",
+          "exitCode": 0,
+          "ms": 9916
+        },
+        {
+          "name": "test:storybook in the dark theme (Storybook)",
+          "status": "PASS",
+          "command": "pnpm run test:storybook  (defaultTheme \"dark\", with a canary story)",
+          "exitCode": 0,
+          "ms": 6318,
+          "detail": "29 tests"
+        },
+        {
+          "name": "docker build + run",
+          "status": "SKIPPED",
+          "detail": "docker is not available here"
+        },
+        {
+          "name": "actionlint (GitHub workflows)",
+          "status": "SKIPPED",
+          "detail": "docker is not available here"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "Dashboard"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: direct URL /users",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /examples/todos",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS",
+          "detail": "not counted (no backend): Failed to load resource: the server responded with a status of 404 (Not Found) (http://127.0.0.1:4313/api/todos?filter=all)"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "4 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "4 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "custom-primitives-no-tailwind-tsr": {
+      "scenario": "custom-primitives-no-tailwind-tsr",
+      "args": [
+        "custom-primitives-no-tailwind-tsr",
+        "--preset",
+        "minimal",
+        "--features",
+        "+tanstack-router,+tanstack-query,+vitest,+testing-library"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app custom-primitives-no-tailwind-tsr --preset minimal --features +tanstack-router,+tanstack-query,+vitest,+testing-library --yes",
+          "exitCode": 0,
+          "ms": 10499
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1223
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1279
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1137
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/home/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1140
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1127
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "custom-primitives-no-tailwind-tsr"
+        },
+        {
+          "name": "browser: direct URL /examples/todos?filter=open",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: direct URL /no/such/page",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "3 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "3 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "storybook-npm": {
+      "scenario": "storybook-npm",
+      "args": [
+        "storybook-npm",
+        "--package-manager",
+        "npm",
+        "--features",
+        "+storybook"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app storybook-npm --package-manager npm --features +storybook --yes",
+          "exitCode": 0,
+          "ms": 150693
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "npm run format:check",
+          "exitCode": 0,
+          "ms": 475
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1016
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 971
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "npm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 978
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "npm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 958
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "npm run lint",
+          "exitCode": 0,
+          "ms": 1004
+        },
+        {
+          "name": "build-storybook (Storybook)",
+          "status": "PASS",
+          "command": "npm run build-storybook",
+          "exitCode": 0,
+          "ms": 2611
+        },
+        {
+          "name": "test:storybook (Storybook)",
+          "status": "PASS",
+          "command": "npm run test:storybook",
+          "exitCode": 0,
+          "ms": 6688
+        },
+        {
+          "name": "test:storybook in the dark theme (Storybook)",
+          "status": "PASS",
+          "command": "npm run test:storybook  (defaultTheme \"dark\", with a canary story)",
+          "exitCode": 0,
+          "ms": 4243,
+          "detail": "24 tests"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "storybook-npm"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "mono-turbo": {
+      "scenario": "mono-turbo",
+      "args": [
+        "mono-turbo",
+        "--mode",
+        "monorepo",
+        "--app-name",
+        "web",
+        "--features",
+        "+pkg-shared,+pkg-types,+pkg-ui"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app mono-turbo --mode monorepo --app-name web --features +pkg-shared,+pkg-types,+pkg-ui --yes",
+          "exitCode": 0,
+          "ms": 89740
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "single root lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "filtered build (pnpm --filter web build)",
+          "status": "PASS"
+        },
+        {
+          "name": "Turborepo cache hit on rebuild",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 690
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1246
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1206
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1217
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1212
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1398
+        },
+        {
+          "name": "ESLint from the workspace root passes",
+          "status": "PASS",
+          "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
+          "exitCode": 0,
+          "ms": 953
+        },
+        {
+          "name": "ESLint from the workspace root rejects an upward import",
+          "status": "PASS",
+          "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 959,
+          "detail": "\n/tmp/produx-validate-9AoaFJ/mono-turbo/mono-turbo/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: CSS contains .border-l-4",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    },
+    "existing-standard": {
+      "scenario": "existing-standard",
+      "args": [
+        "--mode",
+        "existing-workspace",
+        "web",
+        "--preset",
+        "standard",
+        "--allow-workspace-changes"
+      ],
+      "checks": [
+        {
+          "name": "CLI generate + install + verify",
+          "status": "PASS",
+          "command": "create-produx-app --mode existing-workspace web --preset standard --allow-workspace-changes --yes",
+          "exitCode": 0,
+          "ms": 21615
+        },
+        {
+          "name": "Type checking passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Lint passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Unit tests passed",
+          "status": "PASS"
+        },
+        {
+          "name": "Production build passed",
+          "status": "PASS"
+        },
+        {
+          "name": "no files outside the app changed (except the lockfile)",
+          "status": "PASS",
+          "detail": "pnpm install added minimumReleaseAgeExclude to pnpm-workspace.yaml"
+        },
+        {
+          "name": "existing TypeScript backend still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "existing app still builds",
+          "status": "PASS"
+        },
+        {
+          "name": "no nested git repository",
+          "status": "PASS"
+        },
+        {
+          "name": "no app-level lockfile",
+          "status": "PASS"
+        },
+        {
+          "name": "existing AGENTS.md kept",
+          "status": "PASS"
+        },
+        {
+          "name": "no packages of unselected features",
+          "status": "PASS"
+        },
+        {
+          "name": "design system: no raw color classes",
+          "status": "PASS"
+        },
+        {
+          "name": "format:check",
+          "status": "PASS",
+          "command": "pnpm run format:check",
+          "exitCode": 0,
+          "ms": 623
+        },
+        {
+          "name": "lint rejects upward import (shared -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1166
+        },
+        {
+          "name": "lint rejects public API bypass (deep import into a page)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/app/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1148
+        },
+        {
+          "name": "lint rejects file outside the layers",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/utils/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1154
+        },
+        {
+          "name": "lint rejects sibling slice import (pages -> pages)",
+          "status": "PASS",
+          "command": "pnpm run lint  (with src/pages/examples/ui/__canary.ts)",
+          "exitCode": 1,
+          "ms": 1125
+        },
+        {
+          "name": "lint passes again without the canaries",
+          "status": "PASS",
+          "command": "pnpm run lint",
+          "exitCode": 0,
+          "ms": 1133
+        },
+        {
+          "name": "ESLint from the workspace root passes",
+          "status": "PASS",
+          "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)",
+          "exitCode": 0,
+          "ms": 868
+        },
+        {
+          "name": "ESLint from the workspace root rejects an upward import",
+          "status": "PASS",
+          "command": "node apps/web/node_modules/eslint/bin/eslint.js apps/web  (from the workspace root)  (with src/shared/lib/__canary.ts)",
+          "exitCode": 1,
+          "ms": 900,
+          "detail": "\n/tmp/produx-validate-9AoaFJ/existing-standard/ws/apps/web/src/shared/lib/__canary.ts\n  1:8  error  There is no policy allowing dependencies from elements of type \"shared\" to elements of type \"pages\" and captured values: slice=\"counter-example\"  boundaries/dependencies\n\n✖ 1 problem (1 error, 0 warnings)\n"
+        },
+        {
+          "name": "preview server starts",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: renders heading",
+          "status": "PASS",
+          "detail": "web"
+        },
+        {
+          "name": "browser: Tailwind styles applied",
+          "status": "PASS",
+          "detail": "body background oklch(1 0 0)"
+        },
+        {
+          "name": "browser: no console errors",
+          "status": "PASS"
+        },
+        {
+          "name": "browser: no axe violations (light)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no axe violations (dark)",
+          "status": "PASS",
+          "detail": "1 routes"
+        },
+        {
+          "name": "browser: no horizontal overflow at 375 px",
+          "status": "PASS",
+          "detail": "1 routes"
+        }
+      ],
+      "date": "2026-11-25"
+    }
+  },
+  "environment": {
+    "cli": "0.1.0",
+    "cliPath": "/work/dist/index.mjs",
+    "node": "v24.21.0",
+    "platform": "linux arm64",
+    "pnpm": "11.29.0",
+    "npm": "11.19.0",
+    "yarn": "1.22.22",
+    "bun": "not found",
+    "docker": "not found"
+  },
+  "note": "Debian bookworm container (node:24.21.0-bookworm), linux/arm64 on Docker Desktop for macOS. Scenarios at commit 6416198; enterprise re-run at a8142aa (final code). Docker checks are SKIPPED: no Docker daemon inside the container."
+}

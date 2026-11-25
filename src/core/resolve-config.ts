@@ -103,7 +103,8 @@ export function resolveConfig({ cli, file, detected, userAgentPm }: ResolveInput
     features: resolved.features,
     added: resolved.added,
     ui: { base: cli.ui ?? file?.ui?.base ?? "base", style: file?.ui?.style ?? "nova" },
-    examples: cli.examples ?? file?.examples ?? true,
+    // Example pages are routes, so they need a router (docs/architecture/frontend-architecture.md).
+    examples: (cli.examples ?? file?.examples ?? true) && resolved.features.some((f) => ROUTER_FEATURES.includes(f)),
   }
 
   if (mode !== "standalone") {

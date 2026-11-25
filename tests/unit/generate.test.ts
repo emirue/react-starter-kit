@@ -25,6 +25,13 @@ const file = (p: Awaited<ReturnType<typeof plan>>, path: string) => p.files.find
 const pkgJson = (p: Awaited<ReturnType<typeof plan>>, path = "package.json") => JSON.parse(file(p, path)!)
 
 describe("createPlan", () => {
+  it("falls back to pnpm 11.29.0 in the Dockerfile when the local pnpm version is unknown", async () => {
+    // 11.13.0 is deprecated on npm as broken; 11.29.0 ran the Linux, macOS and Windows CI scenarios.
+    const p = await createPlan(resolveConfig({ cli: cli({ features: ["+docker"] }) }), standalone, {})
+    expect(file(p, "Dockerfile")).toContain("npm install -g pnpm@11.29.0")
+    expect(versions.pnpm).toBe("11.29.0")
+  })
+
   it("generates a minimal standalone project with pinned versions", async () => {
     const p = await plan({ preset: "minimal" })
     const pkg = pkgJson(p)

@@ -22,7 +22,8 @@ export function contextFlags(config: ProjectConfig): Set<string> {
     ["providers", has("tanstack-query", "theme", "admin-layout")],
     ["forms-example", has("hookform-resolvers")],
   ]
-  const usesUi = has("theme") || (config.examples && has("tanstack-query", "hookform-resolvers", "zustand"))
+  // shared/ui always exists with Tailwind (the design system); without shadcn it holds stand-ins.
+  const usesUi = has("tailwind", "theme") || (config.examples && has("tanstack-query", "hookform-resolvers", "zustand"))
   derived.push(["ui-primitives", !has("shadcn") && usesUi])
   derived.push([
     "example-pages",

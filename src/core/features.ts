@@ -127,10 +127,10 @@ export const FEATURES: FeatureDef[] = [
   {
     id: "orval",
     name: "Orval",
-    description: "Typed TanStack Query hooks generated from a local OpenAPI spec",
+    description: "Typed API functions generated from a local OpenAPI spec",
     group: "api",
-    // This release verifies the TanStack Query output only.
-    requires: ["tanstack-query"],
+    // The sample client calls the local spec, which only MSW serves.
+    requires: ["tanstack-query", "msw"],
     requiresOneOf: [["fetch", "axios"]],
     devDependencies: ["orval"],
     scripts: { "api:generate": "orval" },
@@ -199,6 +199,32 @@ export const FEATURES: FeatureDef[] = [
     devDependencies: ["msw"],
   },
   {
+    id: "storybook",
+    name: "Storybook",
+    description: "Design-system workshop: stories, docs, a11y checks and story tests in the browser",
+    group: "testing",
+    requires: ["shadcn", "vitest"],
+    devDependencies: [
+      "storybook",
+      "@storybook/react-vite",
+      "@storybook/addon-docs",
+      "@storybook/addon-a11y",
+      "@storybook/addon-themes",
+      "@storybook/addon-vitest",
+      "@vitest/browser",
+      "@vitest/browser-playwright",
+      "playwright",
+    ],
+    scripts: {
+      // Unit tests stay in jsdom; story tests run in a real browser on their own.
+      test: "vitest --project unit",
+      "test:run": "vitest run --project unit",
+      storybook: "storybook dev -p 6006",
+      "build-storybook": "storybook build",
+      "test:storybook": "vitest run --project storybook",
+    },
+  },
+  {
     id: "playwright",
     name: "Playwright",
     description: "End-to-end smoke tests against the production preview",
@@ -212,7 +238,17 @@ export const FEATURES: FeatureDef[] = [
     name: "ESLint",
     description: "ESLint flat config with TypeScript, React Hooks and React Refresh rules",
     group: "quality",
-    devDependencies: ["eslint", "@eslint/js", "typescript-eslint", "eslint-plugin-react-hooks", "eslint-plugin-react-refresh", "globals"],
+    devDependencies: [
+      "eslint",
+      "@eslint/js",
+      "typescript-eslint",
+      "eslint-plugin-react-hooks",
+      "eslint-plugin-react-refresh",
+      "globals",
+      // Architecture rules: docs/architecture/frontend-architecture.md
+      "eslint-plugin-boundaries",
+      "eslint-import-resolver-typescript",
+    ],
     scripts: { lint: "eslint ." },
   },
   {
