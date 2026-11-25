@@ -60,7 +60,7 @@ my-app/
 ├── public/
 ├── src/
 │   ├── app/            app.tsx, providers.tsx, router.tsx, route-error.tsx, layouts/
-│   ├── pages/          home/, not-found/, examples/ and the *-example slices (delete freely)
+│   ├── pages/          home/, not-found/, examples/ and the *-example slices (the generated README lists what to change to remove them)
 │   ├── features/       switch-theme/ (user actions used in several places)
 │   ├── shared/
 │   │   ├── ui/         design system: shadcn/ui, PageHeader, Loading/Error/EmptyState
