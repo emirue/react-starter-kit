@@ -135,17 +135,17 @@ Recommended: the current Node.js LTS (26.x).
 
 Everything below was run end to end (generate → install → type check → lint → unit tests → build, plus browser checks); see [docs/validation-report.md](docs/validation-report.md) for commands, exit codes and dates.
 
-|                                                                                                   | Status                                                        |
-| ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| macOS (arm64), Node.js 26: full matrix                                                            | PASS                                                          |
-| Linux (arm64, Docker), Node.js 22.23.2 / 24.21.0: 9 scenarios with browser checks                 | PASS                                                          |
-| Linux x64, macOS, Windows x64 (GitHub Actions), Node.js 26: Minimal, Standard, Turborepo monorepo | PASS (no browser checks)                                      |
-| Windows with Playwright, Storybook, npm, Yarn or Bun                                              | NOT TESTED                                                    |
-| pnpm 11.13.0 (macOS) and 11.29.0 (Linux, CI): standalone, new monorepo, existing workspace        | PASS                                                          |
-| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard, and Standard + Storybook (macOS)            | PASS                                                          |
-| npm, Yarn, Bun: monorepo modes                                                                    | Not supported in this release (pnpm only)                     |
-| pnpm 12, Yarn 4                                                                                   | NOT TESTED                                                    |
-| GitHub Actions / CodeQL workflows                                                                 | Generated and checked with actionlint; not executed on GitHub |
+|                                                                                                                                        | Status                                                        |
+| -------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| macOS (arm64), Node.js 26: full matrix                                                                                                 | PASS                                                          |
+| Linux (arm64, Docker), Node.js 22.23.2 / 24.21.0: 9 scenarios with browser checks (8 before the last two fixes, Enterprise also after) | PASS                                                          |
+| Linux x64, macOS, Windows x64 (GitHub Actions), Node.js 26: Minimal, Standard, Turborepo monorepo                                      | PASS (no browser checks)                                      |
+| Windows with Playwright, Storybook, npm, Yarn or Bun                                                                                   | NOT TESTED                                                    |
+| pnpm 11.13.0 (macOS) and 11.29.0 (Linux, CI): standalone, new monorepo, existing workspace                                             | PASS                                                          |
+| npm 11, Bun 1.4.4, Yarn 1.22.22: standalone Standard, and Standard + Storybook (macOS)                                                 | PASS                                                          |
+| npm, Yarn, Bun: monorepo modes                                                                                                         | Not supported in this release (pnpm only)                     |
+| pnpm 12, Yarn 4                                                                                                                        | NOT TESTED                                                    |
+| GitHub Actions / CodeQL workflows                                                                                                      | Generated and checked with actionlint; not executed on GitHub |
 
 ## Backend integration
 

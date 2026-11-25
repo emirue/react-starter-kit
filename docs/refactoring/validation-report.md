@@ -38,10 +38,10 @@ New scenarios: `router-none-examples`, `custom-tailwind-primitives` (Tailwind wi
 
 ### Other platforms
 
-| Where                                                        | What ran                                                                                                | Result                                                                                     |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| Linux arm64 (Docker, Debian bookworm), Node 22.23.2, 24.21.0 | 9 scenarios with `--browser`, including Enterprise (e2e, Storybook, dark-theme stories) and a monorepo  | PASS; Docker checks SKIPPED (no daemon in the container). [../validation/](../validation/) |
-| GitHub Actions: Ubuntu, macOS, Windows (Node 26)             | Repository gates on Node 22.22.2 and 26; Minimal, Standard and a Turborepo monorepo without `--browser` | PASS, Windows from its default short (8.3) temp path                                       |
+| Where                                                        | What ran                                                                                                                                                                    | Result                                                                                     |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| Linux arm64 (Docker, Debian bookworm), Node 22.23.2, 24.21.0 | 9 scenarios with `--browser`, including Enterprise (e2e, Storybook, dark-theme stories) and a monorepo; 8 ran before the last two fixes, Enterprise again on the final code | PASS; Docker checks SKIPPED (no daemon in the container). [../validation/](../validation/) |
+| GitHub Actions: Ubuntu, macOS, Windows (Node 26)             | Repository gates on Node 22.22.2 and 26; Minimal, Standard and a Turborepo monorepo without `--browser`                                                                     | PASS, Windows from its default short (8.3) temp path                                       |
 
 ## Manual checks during implementation
 
