@@ -4,6 +4,27 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-11-26
+
+### Added
+
+- Generated projects with Tailwind CSS and ESLint reject raw colors in `.ts`
+  and `.tsx` files outside `src/shared/ui`: any utility with a palette color
+  (`bg-gray-500`, `divide-mauve-200`, `shadow-black/10`) and arbitrary color
+  values (`text-[#fff]`, `bg-[oklch(...)]`). Pages and features keep using the
+  design tokens after generation; until now only this repository's validation
+  checked it, once. Named colors in brackets (`bg-[red]`) are not detected.
+
+### Fixed
+
+- Ctrl+C on Windows waits until every process of the command tree has exited
+  before rolling back: the tree is listed (Win32_Process) before
+  `taskkill /T /F`, which returns while the processes are still ending (a
+  test saw a grandchild write after the call had returned).
+- The `Try "..."` hint after an invalid project name is always a name the CLI
+  accepts: reserved names (`node_modules`) and names over 214 characters were
+  suggested unchanged. Found by new property-based tests.
+
 ## [0.1.1] - 2026-11-25
 
 ### Fixed

@@ -5,7 +5,7 @@ import { join, posix, relative, sep } from "node:path"
 
 import { describe, expect, it } from "vitest"
 
-import { rawColorClasses, SCENARIOS, vendoredUiFiles } from "../../scripts/scenarios.ts"
+import { RAW_COLOR_SAMPLES, rawColorClasses, SCENARIOS, TOKEN_SAMPLES, vendoredUiFiles } from "../../scripts/scenarios.ts"
 import type { CliOptions } from "../../src/cli/options.ts"
 import versionsJson from "../../src/config/dependency-versions.json" with { type: "json" }
 import { createPlan, type Plan, type Target } from "../../src/core/generate.ts"
@@ -479,6 +479,34 @@ describe("generated configuration", () => {
   it("Storybook and the Vite proxy resolve paths from the real project root", async () => {
     expect(content(await plan({ preset: "enterprise" }), "vite.config.ts")).toContain('configDir: resolve(root, ".storybook")')
     expect(content(await plan({ features: ["+vite-proxy"] }), "vite.config.ts")).toContain('loadEnv(mode, root, "VITE_")')
+  })
+
+  it("lints raw color classes outside src/shared/ui when Tailwind is used", async () => {
+    // Raw colors were checked only by this repository's harness at generation time; afterwards
+    // nothing stopped `bg-gray-500` in a page.
+    const config = content(await plan({}), "eslint.config.js")!
+    const pattern = /^const RAW_COLOR = String\.raw`(.*)`$/m.exec(config)?.[1]
+    expect(pattern, "RAW_COLOR in eslint.config.js").toBeDefined()
+    // The first version missed most of these (an independent review: new palettes, other color utilities,
+    // white/black with other prefixes, color functions).
+    const raw = new RegExp(pattern!)
+    expect(
+      RAW_COLOR_SAMPLES.filter((c) => !raw.test(c)),
+      "raw colors not matched"
+    ).toEqual([])
+    expect(
+      TOKEN_SAMPLES.filter((c) => raw.test(c)),
+      "tokens matched"
+    ).toEqual([])
+    // No "/" in the pattern: ESLint's selector parser ends a regular expression at the first "/".
+    expect(pattern).not.toContain("/")
+    expect(config).toContain("selector: `Literal[value=/${RAW_COLOR}/]`")
+    expect(config).toContain("selector: `TemplateElement[value.raw=/${RAW_COLOR}/]`")
+    expect(config).toContain('ignores: ["src/shared/ui/**"]')
+  })
+
+  it("has no color rule without Tailwind", async () => {
+    expect(content(await plan({ preset: "minimal" }), "eslint.config.js")).not.toContain("RAW_COLOR")
   })
 
   it("components.json points shadcn/ui at shared/ui and shared/lib", async () => {

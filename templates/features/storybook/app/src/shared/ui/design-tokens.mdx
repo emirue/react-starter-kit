@@ -6,6 +6,9 @@ import { Meta, ColorPalette, ColorItem, Typeset } from "@storybook/addon-docs/bl
 
 All tokens live in `src/index.css` (`:root` for light, `.dark` for dark) and are exposed to Tailwind as semantic classes.
 Use the classes below in components; do not use raw palette classes (`bg-gray-500`) or hex colors.
+{/* @if eslint */}
+`lint` rejects raw colors outside `src/shared/ui`.
+{/* @endif */}
 Switch the toolbar theme to see the dark values.
 
 ## Colors

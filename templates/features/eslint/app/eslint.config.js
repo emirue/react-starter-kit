@@ -21,6 +21,15 @@ const BELOW = {
   features: ["entities"],
   entities: [],
 }
+// @if tailwind
+
+// Raw colors: any utility with a Tailwind palette color (bg-gray-500, divide-mauve-200, shadow-black/10) and
+// arbitrary color values (text-[#fff], bg-[oklch(...)], text-[color:red]). Colors come from the design tokens
+// in src/index.css. Not covered: named colors in brackets (bg-[red]).
+const RAW_COLOR = String.raw`\b(?:[a-z]+-)+(?:slate|gray|zinc|neutral|stone|mauve|olive|mist|taupe|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-(?:50|[1-9]00|950)\b|\b(?:[a-z]+-)+(?:white|black)\b|\[(?:[a-z-]+:)?(?:#[0-9a-fA-F]{3,8}|(?:rgba?|hsla?|hwb|lab|lch|oklab|oklch|color|color-mix)\()[^\]]*\]|\[color:(?!var\()[^\]]+\]`
+const RAW_COLOR_MESSAGE =
+  "Use a design token class from src/index.css (bg-primary, text-muted-foreground, border, ...) instead of a raw color. Raw colors belong in src/shared/ui."
+// @endif
 
 export default defineConfig([
   globalIgnores([
@@ -108,6 +117,21 @@ export default defineConfig([
       ],
     },
   },
+  // @if tailwind
+  {
+    // Pages, features and the app use design tokens; src/shared/ui is the design system itself
+    // (vendored shadcn/ui uses a few raw colors, such as the bg-black/10 overlay).
+    files: ["src/**/*.{ts,tsx}"],
+    ignores: ["src/shared/ui/**"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        { selector: `Literal[value=/${RAW_COLOR}/]`, message: RAW_COLOR_MESSAGE },
+        { selector: `TemplateElement[value.raw=/${RAW_COLOR}/]`, message: RAW_COLOR_MESSAGE },
+      ],
+    },
+  },
+  // @endif
   // @if storybook
   ...storybook.configs["flat/recommended"],
   {

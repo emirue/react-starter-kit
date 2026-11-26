@@ -1210,6 +1210,17 @@ Facts from the installed packages, the pinned actions' sources and the runs on G
 - **Windows short paths** (measured on `windows-latest`): `os.tmpdir()` is `C:\Users\RUNNER~1\AppData\Local\Temp`. A project run from there with the alias based on `import.meta.dirname` failed in Vitest: test files were loaded by the long path (`C:/Users/runneradmin/...`), `@/` imports by the short one (`ERR_MODULE_NOT_FOUND`). With the alias on `realpathSync.native(...)` the modules loaded, but every jest-dom matcher was `Invalid Chai property`, also after making Vite's `root` the real path. Only registering the matchers on the setup file's own `expect` made the scenario pass. That jest-dom's `./vitest` entry had extended a second copy of Vitest's `expect` is an inference from that sequence, not a measurement.
 - **Debian containers** (measured in `node:22.23.2-bookworm`): `vite preview` listened on 127.0.0.1 while Node's `fetch("http://localhost:…")` connected to `::1` (`ECONNREFUSED`; `curl` succeeded by falling back).
 
+## Verification tooling (2026-11-26)
+
+Context7 quota still exhausted: fast-check from its installed `.d.ts`, Claude Code from code.claude.com/docs (permissions, hooks, skills, sandboxing, code-review-customize) and measurements in this repository.
+
+- **fast-check 4.11.0** (`lib/fast-check.d.ts`; ESM default export `fc`): `fc.assert(property, params?)` throws on failure; `fc.property(...arbitraries, predicate)` fails when the predicate throws or returns `false`. A predicate written as `(x) => expect(...).toBe(...)` returned a falsy value under Vitest 5.1.1 and failed every run, so predicates use a block body. `fc.string({ unit, minLength, maxLength })` (`unit` defaults to `"grapheme-ascii"`); `fc.oneof` takes `{ weight, arbitrary }` entries; `fc.option(arb, { nil: undefined })`; `fc.subarray`; `numRuns` defaults to 100.
+- **Claude Code 2.1.332, permissions**: `Read(.env)` matches `.env` at any depth (`./.env` only in the current directory) and also blocks Edit and Write of that path. Measured in a bypass-permissions session: the Read tool and `cat` were refused for `sub/.env` and `.env.local`.
+- **Hooks**: a hook added to `.claude/settings.json` during a session ran on the next tool call. PostToolUse input has `tool_input.file_path`, `session_id`, `transcript_path`, `cwd`; exit 2 shows stderr to Claude. A Stop hook's exit 2 kept a headless session working and its stderr reached Claude; the documented cap is eight consecutive Stop blocks. A PreToolUse `"if": "Bash(git commit *)"` still ran the hook for compound commands that were not commits (measured), so the gate also matches the command itself.
+- **Skills**: a project skill named `verify` replaces the bundled `/verify` (docs). A skill directory created during a session was not available to the Skill tool in that session (the bundled skill answered); a new headless session listed the project skill.
+- **REVIEW.md**: read by the managed GitHub Code Review from the base branch, never from the pull request; the local `/code-review` reads `CLAUDE.md`, not `REVIEW.md` (docs).
+- **Sandbox**: off by default; `docker` is documented as incompatible; in bypass-permissions mode a domain outside `allowedDomains` is allowed without a prompt (docs). Not enabled here.
+
 ## Selected versions without a dedicated section
 
 | Package                            | Selected     | Where the research touches it                                                     |
