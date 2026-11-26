@@ -119,7 +119,7 @@ Point AI agents and new contributors at these when adding code of the same kind:
 
 ## Design system
 
-- **Tokens** live in `src/index.css` (`:root` and `.dark`): colors (oklch), radius scale, fonts. Components use semantic classes only (`bg-background`, `text-muted-foreground`, `border`, `bg-primary`, …). Raw palette classes (`bg-gray-500`, `text-red-600`, hex/rgb colors in className) are not used outside `src/index.css`.
+- **Tokens** live in `src/index.css` (`:root` and `.dark`): colors (oklch), radius scale, fonts. Components use semantic classes only (`bg-background`, `text-muted-foreground`, `border`, `bg-primary`, …). Raw palette classes (`bg-gray-500`, `text-red-600`, hex/rgb colors in className) are not used outside `src/index.css` and the vendored shadcn/ui files. With Tailwind and ESLint, `no-restricted-syntax` in `eslint.config.js` rejects them in every file outside `src/shared/ui`, so pages, features and the app stay on tokens after generation; a new color is a new token.
 - **Typography**: page title `text-2xl font-semibold tracking-tight` (via `PageHeader`), section title `text-lg font-semibold`, body `text-sm`/`text-base`, secondary text `text-muted-foreground`.
 - **Spacing**: Tailwind's 4 px scale; page padding `p-4 md:p-6`, stacks `gap-4`/`gap-6`, cards from `shared/ui/card`.
 - **Components** come from `shared/ui` (shadcn/ui + `PageHeader`, `LoadingState`/`ErrorState`/`EmptyState`, `ErrorFallback`, `PageLoader`). Variants are expressed with `cva` in the component, not with ad-hoc class strings in pages.

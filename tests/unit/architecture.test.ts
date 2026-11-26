@@ -481,6 +481,24 @@ describe("generated configuration", () => {
     expect(content(await plan({ features: ["+vite-proxy"] }), "vite.config.ts")).toContain('loadEnv(mode, root, "VITE_")')
   })
 
+  it("lints raw color classes outside src/shared/ui when Tailwind is used", async () => {
+    // Raw colors were checked only by this repository's harness at generation time; afterwards
+    // nothing stopped `bg-gray-500` in a page.
+    const config = content(await plan({}), "eslint.config.js")!
+    const pattern = /^const RAW_COLOR = String\.raw`(.*)`$/m.exec(config)?.[1]
+    expect(pattern, "RAW_COLOR in eslint.config.js").toBeDefined()
+    // The same classes as the harness check.
+    const sample = `<div className="bg-gray-500 hover:text-red-600 bg-white border-[#fff] text-[rgb(0_0_0)] bg-black/10 bg-primary text-muted-foreground bg-destructive/10" />`
+    expect(sample.match(new RegExp(pattern!, "g"))?.sort()).toEqual(rawColorClasses(sample).sort())
+    expect(config).toContain("selector: `Literal[value=/${RAW_COLOR}/]`")
+    expect(config).toContain("selector: `TemplateElement[value.raw=/${RAW_COLOR}/]`")
+    expect(config).toContain('ignores: ["src/shared/ui/**"]')
+  })
+
+  it("has no color rule without Tailwind", async () => {
+    expect(content(await plan({ preset: "minimal" }), "eslint.config.js")).not.toContain("RAW_COLOR")
+  })
+
   it("components.json points shadcn/ui at shared/ui and shared/lib", async () => {
     for (const o of [{}, { preset: "admin", ui: "radix" }] as Partial<CliOptions>[]) {
       expect(JSON.parse(content(await plan(o), "components.json")!).aliases).toEqual({

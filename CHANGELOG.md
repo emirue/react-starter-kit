@@ -4,6 +4,21 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] - 2026-11-26
+
+### Added
+
+- Generated projects with Tailwind CSS and ESLint reject raw palette classes and
+  arbitrary colors (`bg-gray-500`, `text-[#fff]`) in every file outside
+  `src/shared/ui`, so pages and features keep using the design tokens after
+  generation. Until now only this repository's validation checked it, once.
+
+### Fixed
+
+- The `Try "..."` hint after an invalid project name is always a name the CLI
+  accepts: reserved names (`node_modules`) and names over 214 characters were
+  suggested unchanged. Found by new property-based tests.
+
 ## [0.1.1] - 2026-11-25
 
 ### Fixed

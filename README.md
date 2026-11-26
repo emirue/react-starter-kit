@@ -4,7 +4,7 @@ An interactive CLI that creates React + Vite + TypeScript projects with a verifi
 
 It is not a template copier. Each project is assembled from feature modules, installed, and then validated (type check, lint, unit tests, production build) before the CLI reports success.
 
-> **Status: 0.1.1.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
+> **Status: 0.1.2.** Verified platforms and package managers, and what is not tested yet: [Verified support](#verified-support).
 
 ## Quick start
 
@@ -160,7 +160,7 @@ Generated projects pin exact versions from [`src/config/dependency-versions.json
 ```bash
 git clone https://github.com/emirue/react-starter-kit.git && cd react-starter-kit
 pnpm install && pnpm build
-node dist/index.mjs my-app            # or: npm pack, then npx --package ./create-produx-app-0.1.1.tgz create-produx-app my-app
+node dist/index.mjs my-app            # or: npm pack, then npx --package ./create-produx-app-0.1.2.tgz create-produx-app my-app
 ```
 
 ## Troubleshooting
