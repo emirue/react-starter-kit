@@ -17,6 +17,6 @@
     "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true
   },
-  "include": ["src", "tests", "scripts", "*.config.ts"],
+  "include": ["src", "tests", "scripts", ".claude/hooks", "*.config.ts"],
   "exclude": ["templates", "node_modules", "dist"]
 }
