@@ -12,13 +12,16 @@ export function validatePackageName(name: string): string | undefined {
   return undefined
 }
 
+/** A name validatePackageName accepts (or ""), for the "Try ..." hint after an invalid name. */
 export function toValidPackageName(input: string): string {
-  return input
+  const name = input
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9-~._]+/g, "-")
     .replace(/^[._-]+/, "")
+    .slice(0, 214)
     .replace(/[._-]+$/, "")
+  return RESERVED.has(name) ? `${name}-app` : name
 }
 
 const SAFE_DIR = /^[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*$/
