@@ -20,7 +20,9 @@ if (exec(["prettier", "--check", "--ignore-unknown", rel]).status !== 0) {
   problems.push(`${rel} is not formatted: run pnpm exec prettier --write ${rel}`)
 }
 if ([".ts", ".js", ".mjs"].includes(extname(rel))) {
-  const eslint = exec(["eslint", "--no-warn-ignored", rel])
+  // The root config always: ESLint would otherwise use the nearest eslint.config.js, and templates/ holds one
+  // for generated projects.
+  const eslint = exec(["eslint", "--config", "eslint.config.js", "--no-warn-ignored", rel])
   if (eslint.status !== 0) problems.push(eslint.stdout + eslint.stderr)
 }
 if (problems.length) {
