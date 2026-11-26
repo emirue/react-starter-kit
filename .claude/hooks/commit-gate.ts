@@ -10,30 +10,41 @@ import { resolve } from "node:path"
 import { fileURLToPath } from "node:url"
 
 const VERIFIERS = new Set(["verify", "code-review"])
+const TYPED = /<command-name>\/(verify|code-review)<\/command-name>/
+// `git [-C <dir>] [--option] commit`, anywhere in a compound command; not commit-tree or a mention.
+const COMMIT = /\bgit(?:\s+(?:-[Cc]\s+\S+|--?[\w-]+(?:=\S+)?))*\s+commit(?=\s|$)/
 
-/** Whether the session transcript (JSONL) shows /verify or /code-review: typed by the user or run as a skill. */
-export function ranVerification(transcript: string): boolean {
-  return transcript.split("\n").some((line) => {
-    if (!line.includes("verify") && !line.includes("code-review")) return false
-    try {
-      const entry = JSON.parse(line)
-      const content = entry.message?.content
-      if (entry.type === "assistant" && Array.isArray(content)) {
-        return content.some((c) => c.type === "tool_use" && c.name === "Skill" && VERIFIERS.has(c.input?.skill))
-      }
-      if (entry.type === "user") {
-        const text = typeof content === "string" ? content : Array.isArray(content) ? content.map((c) => c.text ?? "").join("\n") : ""
-        return /<command-name>\/(verify|code-review)<\/command-name>/.test(text)
-      }
-    } catch {
-      // not a JSON line
-    }
-    return false
-  })
+const parse = (line: string) => {
+  try {
+    return JSON.parse(line)
+  } catch {
+    return undefined
+  }
 }
 
-/** Why this commit would be blocked, or undefined when it may proceed. */
+/** Whether the session transcript (JSONL) shows /verify or /code-review: typed by the user, or a Skill call that succeeded. */
+export function ranVerification(transcript: string): boolean {
+  const calls = new Set<string>()
+  for (const line of transcript.split("\n")) {
+    const mayAnswerCall = [...calls].some((id) => line.includes(id))
+    if (!mayAnswerCall && !line.includes("verify") && !line.includes("code-review")) continue
+    const entry = parse(line)
+    const content = entry?.message?.content
+    const parts = typeof content === "string" ? [{ type: "text", text: content }] : Array.isArray(content) ? content : []
+    for (const c of parts) {
+      if (entry.type === "user" && c.type === "text" && TYPED.test(c.text)) return true
+      if (entry.type === "user" && c.type === "tool_result" && calls.has(c.tool_use_id) && !c.is_error) return true
+      if (entry.type === "assistant" && c.type === "tool_use" && c.name === "Skill" && VERIFIERS.has(c.input?.skill)) {
+        calls.add(c.id)
+      }
+    }
+  }
+  return false
+}
+
+/** Why this commit would be blocked, or undefined when it may proceed (also for commands that are not commits). */
 export function gateProblem(command: string, verified: boolean): string | undefined {
+  if (!COMMIT.test(command)) return undefined
   const stamp = /^\s*Verified:[ \t]*(.*)$/im.exec(command)?.[1]?.trim()
   if (!stamp) return 'The commit message has no "Verified: <how>" line ("Verified: none (<reason>)" when nothing was verified).'
   if (/^none\b/i.test(stamp)) return /^none\W+\w/i.test(stamp) ? undefined : 'Give the reason: "Verified: none (<reason>)".'
