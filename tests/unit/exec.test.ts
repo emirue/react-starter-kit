@@ -5,7 +5,7 @@ import { join } from "node:path"
 
 import { afterEach, describe, expect, it } from "vitest"
 
-import { commandVersion, killedPids, runCommand, stopRunningCommands } from "../../src/utils/exec.ts"
+import { commandVersion, descendants, processTableWindows, runCommand, stopRunningCommands } from "../../src/utils/exec.ts"
 
 const isAlive = (pid: number) => {
   try {
@@ -61,17 +61,41 @@ describe("commandVersion", () => {
   })
 })
 
-describe("killedPids", () => {
-  it("reads the terminated processes from taskkill /T, not their parents", () => {
-    const output = [
-      "SUCCESS: The process with PID 4321 (child process of PID 1234) has been terminated.",
-      "SUCCESS: The process with PID 1234 (child process of PID 999) has been terminated.",
-      "",
-    ].join("\r\n")
-    // 999 is the CLI itself: waiting for it to exit would always time out.
-    expect(killedPids(output)).toEqual([4321, 1234])
-    expect(killedPids("")).toEqual([])
+describe("descendants", () => {
+  it("finds every process below the root in a [pid, parent pid] table", () => {
+    const table: [number, number][] = [
+      [1, 0],
+      [999, 1], // this CLI
+      [1234, 999], // the command
+      [4321, 1234], // a package manager it started
+      [5555, 4321], // the version that one re-launched
+      [7777, 999], // a sibling: not part of the command
+    ]
+    expect(descendants(table, 1234).sort()).toEqual([4321, 5555])
+    expect(descendants(table, 5555)).toEqual([])
+    // A reused PID can make a cycle; the walk still ends.
+    expect(descendants([...table, [1234, 5555]], 1234).sort()).toEqual([4321, 5555])
   })
+
+  it.runIf(process.platform === "win32")(
+    "lists a running grandchild on Windows, in any display language",
+    async () => {
+      // taskkill's messages are localized, so the tree is read from Win32_Process before killing.
+      const dir = await mkdtemp(join(tmpdir(), "produx-tree-"))
+      dirs.push(dir)
+      const marker = join(dir, "grandchild-pid")
+      const grandchild = `require("fs").writeFileSync(${JSON.stringify(marker)}, String(process.pid)); setInterval(() => {}, 1000)`
+      const parent = `require("child_process").spawn(process.execPath, ["-e", ${JSON.stringify(grandchild)}], { stdio: "ignore" }); setInterval(() => {}, 1000)`
+      const running = runCommand(process.execPath, ["-e", parent], dir)
+      for (let i = 0; i < 200 && !existsSync(marker); i++) await new Promise((r) => setTimeout(r, 25))
+      const grandchildPid = Number(await readFile(marker, "utf8"))
+      expect(descendants(processTableWindows(), process.pid)).toContain(grandchildPid)
+      await stopRunningCommands()
+      await running
+      expect(isAlive(grandchildPid)).toBe(false)
+    },
+    30_000
+  )
 })
 
 describe("stopRunningCommands", () => {

@@ -58,21 +58,38 @@ async function gone(alive: () => boolean, ms: number): Promise<boolean> {
 }
 const groupGone = (pid: number, ms: number) => gone(() => signalGroup(pid, 0), ms)
 
-/**
- * PIDs taskkill reports as terminated: "The process with PID <killed> (child process of PID <parent>)".
- * The root's parent is this CLI, so only the first PID of each line counts.
- */
-export function killedPids(taskkillOutput: string): number[] {
-  // ponytail: English output; a localized message without "PID <n> (" leaves only the direct child awaited,
-  // as before. Upgrade path: list the tree with Win32_Process before killing.
-  return [...taskkillOutput.matchAll(/PID (\d+) \(/g)].map((m) => Number(m[1]))
+/** Every PID below `root` in a table of [pid, parent pid] rows. */
+export function descendants(table: [number, number][], root: number): number[] {
+  const found: number[] = []
+  const queue = [root]
+  for (let parent = queue.shift(); parent !== undefined; parent = queue.shift()) {
+    for (const [pid, ppid] of table) {
+      if (ppid !== parent || pid === root || found.includes(pid)) continue
+      found.push(pid)
+      queue.push(pid)
+    }
+  }
+  return found
 }
 
-/** taskkill /T /F starts terminating the tree and returns; the processes it names may still run for a moment. */
+/** [pid, parent pid] of every process (Win32_Process: the same in every display language, unlike taskkill's messages). */
+export function processTableWindows(): [number, number][] {
+  const script = 'Get-CimInstance Win32_Process | ForEach-Object { "$($_.ProcessId) $($_.ParentProcessId)" }'
+  const r = spawnSync("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", script], { encoding: "utf8" })
+  return (r.stdout ?? "")
+    .split(/\r?\n/)
+    .map((line) => line.trim().split(/\s+/).map(Number))
+    .filter((row): row is [number, number] => row.length === 2 && row.every(Number.isInteger))
+}
+
+/**
+ * taskkill /T /F starts terminating the tree and returns while the processes may still run for a moment,
+ * so the tree is listed first and awaited until every process in it has exited.
+ */
 async function killTreeWindows(pid: number, ms: number) {
-  const r = spawnSync("taskkill", ["/pid", String(pid), "/T", "/F"], { encoding: "utf8" })
-  const pids = killedPids(r.stdout ?? "")
-  await gone(() => pids.some(isAlive), ms)
+  const tree = [pid, ...descendants(processTableWindows(), pid)]
+  spawnSync("taskkill", ["/pid", String(pid), "/T", "/F"], { stdio: "ignore" })
+  await gone(() => tree.some(isAlive), ms)
 }
 
 /** Stops every running command and every process it started, and returns once they are gone (Ctrl+C, before the rollback). */

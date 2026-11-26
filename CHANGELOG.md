@@ -18,8 +18,9 @@ All notable changes to this project are documented here. The format follows
 ### Fixed
 
 - Ctrl+C on Windows waits until every process of the command tree has exited
-  before rolling back (`taskkill /F` returns while they are still ending; a
-  test saw a grandchild write after the rollback had started).
+  before rolling back: the tree is listed (Win32_Process) before
+  `taskkill /T /F`, which returns while the processes are still ending (a
+  test saw a grandchild write after the call had returned).
 - The `Try "..."` hint after an invalid project name is always a name the CLI
   accepts: reserved names (`node_modules`) and names over 214 characters were
   suggested unchanged. Found by new property-based tests.
