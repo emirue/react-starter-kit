@@ -5,7 +5,7 @@ import { join, posix, relative, sep } from "node:path"
 
 import { describe, expect, it } from "vitest"
 
-import { rawColorClasses, SCENARIOS, vendoredUiFiles } from "../../scripts/scenarios.ts"
+import { RAW_COLOR_SAMPLES, rawColorClasses, SCENARIOS, TOKEN_SAMPLES, vendoredUiFiles } from "../../scripts/scenarios.ts"
 import type { CliOptions } from "../../src/cli/options.ts"
 import versionsJson from "../../src/config/dependency-versions.json" with { type: "json" }
 import { createPlan, type Plan, type Target } from "../../src/core/generate.ts"
@@ -487,9 +487,19 @@ describe("generated configuration", () => {
     const config = content(await plan({}), "eslint.config.js")!
     const pattern = /^const RAW_COLOR = String\.raw`(.*)`$/m.exec(config)?.[1]
     expect(pattern, "RAW_COLOR in eslint.config.js").toBeDefined()
-    // The same classes as the harness check.
-    const sample = `<div className="bg-gray-500 hover:text-red-600 bg-white border-[#fff] text-[rgb(0_0_0)] bg-black/10 bg-primary text-muted-foreground bg-destructive/10" />`
-    expect(sample.match(new RegExp(pattern!, "g"))?.sort()).toEqual(rawColorClasses(sample).sort())
+    // The first version missed most of these (an independent review: new palettes, other color utilities,
+    // white/black with other prefixes, color functions).
+    const raw = new RegExp(pattern!)
+    expect(
+      RAW_COLOR_SAMPLES.filter((c) => !raw.test(c)),
+      "raw colors not matched"
+    ).toEqual([])
+    expect(
+      TOKEN_SAMPLES.filter((c) => raw.test(c)),
+      "tokens matched"
+    ).toEqual([])
+    // No "/" in the pattern: ESLint's selector parser ends a regular expression at the first "/".
+    expect(pattern).not.toContain("/")
     expect(config).toContain("selector: `Literal[value=/${RAW_COLOR}/]`")
     expect(config).toContain("selector: `TemplateElement[value.raw=/${RAW_COLOR}/]`")
     expect(config).toContain('ignores: ["src/shared/ui/**"]')

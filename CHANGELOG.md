@@ -8,13 +8,18 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 
-- Generated projects with Tailwind CSS and ESLint reject raw palette classes and
-  arbitrary colors (`bg-gray-500`, `text-[#fff]`) in every file outside
-  `src/shared/ui`, so pages and features keep using the design tokens after
-  generation. Until now only this repository's validation checked it, once.
+- Generated projects with Tailwind CSS and ESLint reject raw colors in `.ts`
+  and `.tsx` files outside `src/shared/ui`: any utility with a palette color
+  (`bg-gray-500`, `divide-mauve-200`, `shadow-black/10`) and arbitrary color
+  values (`text-[#fff]`, `bg-[oklch(...)]`). Pages and features keep using the
+  design tokens after generation; until now only this repository's validation
+  checked it, once. Named colors in brackets (`bg-[red]`) are not detected.
 
 ### Fixed
 
+- Ctrl+C on Windows waits until every process of the command tree has exited
+  before rolling back (`taskkill /F` returns while they are still ending; a
+  test saw a grandchild write after the rollback had started).
 - The `Try "..."` hint after an invalid project name is always a name the CLI
   accepts: reserved names (`node_modules`) and names over 214 characters were
   suggested unchanged. Found by new property-based tests.

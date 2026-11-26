@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto"
-import { existsSync, readdirSync } from "node:fs"
+import { existsSync, readdirSync, readFileSync } from "node:fs"
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises"
 import { dirname, join, relative } from "node:path"
 
@@ -237,14 +237,71 @@ function monorepo(name: string, args: string[], o: Partial<CliOptions>, extra: P
   }
 }
 
-const PALETTE =
-  /\b(?:bg|text|border|ring|fill|stroke|from|to|via)-(?:slate|gray|zinc|neutral|stone|red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose)-\d{2,3}\b|\b(?:bg|text)-(?:white|black)\b/g
-// Tailwind arbitrary colors: bg-[#fff], text-[rgb(0_0_0)], [color:#000].
-const ARBITRARY_COLOR = /\[(?:[a-z-]+:)?(?:#[0-9a-fA-F]{3,8}|rgba?\(|hsla?\()[^\]]*\]/g
+/** The raw-color pattern of the generated eslint.config.js: one definition for the lint rule and the harness. */
+export const RAW_COLOR = new RegExp(
+  /^const RAW_COLOR = String\.raw`(.*)`$/m.exec(
+    readFileSync(join(import.meta.dirname, "..", "templates/features/eslint/app/eslint.config.js"), "utf8")
+  )![1]!,
+  "g"
+)
+
+/** Classes that make Tailwind 4.3.5 emit a color (each checked with @tailwindcss/node): lint must reject every one. */
+export const RAW_COLOR_SAMPLES = [
+  "hover:bg-gray-500",
+  "text-red-600",
+  "bg-slate-50",
+  "stroke-emerald-950",
+  "bg-mauve-500",
+  "text-olive-700",
+  "bg-mist-200",
+  "border-taupe-300",
+  "bg-white",
+  "text-black",
+  "border-white",
+  "ring-black",
+  "border-black/10",
+  "fill-white",
+  "from-white",
+  "border-t-gray-200",
+  "divide-gray-200",
+  "outline-red-500",
+  "shadow-gray-500/20",
+  "ring-offset-gray-100",
+  "decoration-red-500",
+  "accent-blue-600",
+  "caret-pink-500",
+  "placeholder-gray-400",
+  "inset-shadow-red-500",
+  "text-shadow-sky-300",
+  "drop-shadow-gray-900",
+  "border-[#fff]",
+  "text-[rgb(0_0_0)]",
+  "bg-[hsl(0_0%_50%)]",
+  "bg-[oklch(0.5_0.2_20)]",
+  "text-[oklab(0.5_0.1_0.1)]",
+  "bg-[color-mix(in_oklab,red,blue)]",
+  "text-[color:red]",
+]
+
+/** Token classes and other strings that look close: lint must accept every one. */
+export const TOKEN_SAMPLES = [
+  "bg-background text-foreground",
+  "text-muted-foreground",
+  "border-destructive/40",
+  "bg-primary/10 ring-ring/50",
+  "bg-sidebar-primary fill-chart-1",
+  "aria-[current=page]:bg-muted",
+  "[&_svg]:size-4",
+  "bg-[var(--sidebar)]",
+  "text-[color:var(--primary)]",
+  "whitespace-nowrap bg-transparent text-current",
+  "grid-cols-[1fr_2fr]",
+  "#main",
+]
 
 /** Raw color classes in a source file. Generated code uses design tokens only (docs/architecture/frontend-architecture.md). */
 export function rawColorClasses(source: string): string[] {
-  return [...source.matchAll(PALETTE), ...source.matchAll(ARBITRARY_COLOR)].map((m) => m[0])
+  return [...source.matchAll(RAW_COLOR)].map((m) => m[0])
 }
 
 /**

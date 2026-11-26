@@ -23,7 +23,7 @@ import { execa, execaSync } from "execa"
 import type { Page } from "playwright"
 
 import { FEATURES } from "../src/core/features.ts"
-import { rawColorClasses, SCENARIOS, vendoredUiFiles, type Scenario } from "./scenarios.ts"
+import { RAW_COLOR_SAMPLES, rawColorClasses, SCENARIOS, TOKEN_SAMPLES, vendoredUiFiles, type Scenario } from "./scenarios.ts"
 
 type Status = "PASS" | "FAIL" | "SKIPPED"
 interface Check {
@@ -292,15 +292,39 @@ async function architectureCanaries(s: Scenario, app: string, log: string): Prom
     })
   }
   if (s.features.includes("tailwind")) {
+    const lintCheck = async (name: string, file: string, code: string, passed: (r: { code: number | null; output: string }) => boolean) => {
+      const r = await lintWith(file, code)
+      const ok = passed(r)
+      checks.push({
+        name,
+        status: ok ? "PASS" : "FAIL",
+        command: `${s.pm} run lint  (with ${file})`,
+        exitCode: r.code,
+        ms: r.ms,
+        detail: ok ? undefined : r.output.slice(-1500),
+      })
+    }
+    const consts = (values: string[]) => values.map((v, i) => `export const c${i} = ${JSON.stringify(v)}\n`).join("")
+    const pageFile = `src/pages/${page}/ui/__canary.ts`
+    await lintCheck(
+      `lint rejects each of ${RAW_COLOR_SAMPLES.length} raw color forms in a page`,
+      pageFile,
+      consts(RAW_COLOR_SAMPLES),
+      (r) => (r.output.match(/no-restricted-syntax/g)?.length ?? 0) === RAW_COLOR_SAMPLES.length
+    )
+    await lintCheck("lint accepts design tokens in a page", pageFile, consts(TOKEN_SAMPLES), (r) => r.code === 0)
     // The design system itself (vendored shadcn/ui overlays use bg-black/10).
-    const r = await lintWith("src/shared/ui/__canary.tsx", rawColor)
+    await lintCheck("lint accepts a raw color class in src/shared/ui", "src/shared/ui/__canary.tsx", rawColor, (r) => r.code === 0)
+
+    // Every color of the installed Tailwind, so a Tailwind update with a new palette fails here.
+    const theme = await readFile(createRequire(join(app, "package.json")).resolve("tailwindcss/theme.css"), "utf8")
+    const colors = [...theme.matchAll(/--color-([a-z]+(?:-\d+)?):/g)].map((m) => `bg-${m[1]}`)
+    const pattern = /^const RAW_COLOR = String\.raw`(.*)`$/m.exec(await readFile(join(app, "eslint.config.js"), "utf8"))?.[1]
+    const missed = pattern ? colors.filter((c) => !new RegExp(pattern).test(c)) : colors
     checks.push({
-      name: "lint accepts a raw color class in src/shared/ui",
-      status: r.code === 0 ? "PASS" : "FAIL",
-      command: `${s.pm} run lint  (with src/shared/ui/__canary.tsx)`,
-      exitCode: r.code,
-      ms: r.ms,
-      detail: r.code === 0 ? undefined : r.output.slice(-1500),
+      name: "the lint pattern covers every color in the installed tailwindcss/theme.css",
+      status: colors.length > 0 && missed.length === 0 ? "PASS" : "FAIL",
+      detail: `${colors.length - missed.length}/${colors.length} colors${missed.length ? `; missed: ${missed.slice(0, 20).join(" ")}` : ""}`,
     })
   }
   const clean = await exec(s.pm, ["run", "lint"], app, log)

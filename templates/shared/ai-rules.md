@@ -95,7 +95,7 @@ Reference implementations (copy their shape for new code of the same kind; if yo
 
 - Style with Tailwind CSS utilities and the semantic tokens in `src/index.css`: `bg-background`, `text-foreground`, `text-muted-foreground`, `bg-primary`, `border`, `text-destructive`. Do not use raw palette classes (`bg-gray-500`) or hex colors.
 <!-- @if eslint -->
-- `lint` rejects raw colors everywhere except `src/shared/ui`, the design system itself (vendored shadcn/ui keeps a few, such as the `bg-black/10` overlay). Add a token in `src/index.css` instead of disabling the rule.
+- `lint` rejects raw colors in `.ts`/`.tsx` files outside `src/shared/ui`, the design system itself (vendored shadcn/ui keeps a few, such as the `bg-black/10` overlay). Add a token in `src/index.css` instead of disabling the rule.
 <!-- @endif -->
 - Build screens from `src/shared/ui`: `PageHeader` for the page title (one `h1` per page), `LoadingState` / `ErrorState` / `EmptyState` for every data view, `Card`, `Button`, `Input` + `Label`.
 - Mobile first. Pages must not scroll horizontally at 375 px: stack on small screens (`flex-col sm:flex-row`), wrap action rows (`flex-wrap`), let wide tables scroll in their own container.
