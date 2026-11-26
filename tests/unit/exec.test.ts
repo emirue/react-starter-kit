@@ -1,11 +1,20 @@
 import { existsSync } from "node:fs"
-import { chmod, mkdtemp, rm, writeFile } from "node:fs/promises"
+import { chmod, mkdtemp, readFile, rm, writeFile } from "node:fs/promises"
 import { tmpdir } from "node:os"
 import { join } from "node:path"
 
 import { afterEach, describe, expect, it } from "vitest"
 
-import { commandVersion, runCommand, stopRunningCommands } from "../../src/utils/exec.ts"
+import { commandVersion, killedPids, runCommand, stopRunningCommands } from "../../src/utils/exec.ts"
+
+const isAlive = (pid: number) => {
+  try {
+    process.kill(pid, 0)
+    return true
+  } catch {
+    return false
+  }
+}
 
 const dirs: string[] = []
 afterEach(async () => {
@@ -52,23 +61,42 @@ describe("commandVersion", () => {
   })
 })
 
+describe("killedPids", () => {
+  it("reads the terminated processes from taskkill /T, not their parents", () => {
+    const output = [
+      "SUCCESS: The process with PID 4321 (child process of PID 1234) has been terminated.",
+      "SUCCESS: The process with PID 1234 (child process of PID 999) has been terminated.",
+      "",
+    ].join("\r\n")
+    // 999 is the CLI itself: waiting for it to exit would always time out.
+    expect(killedPids(output)).toEqual([4321, 1234])
+    expect(killedPids("")).toEqual([])
+  })
+})
+
 describe("stopRunningCommands", () => {
   // Ctrl+C rolls back after this. A package manager that re-launched itself (pnpm switching to the
   // version in "packageManager") kept writing after its parent was gone, so a directory survived the rollback.
   it("stops the whole process tree of a running command before returning", async () => {
-    const dir = await mkdtemp(join(tmpdir(), "produx-stop-"))
-    dirs.push(dir)
-    const marker = join(dir, "written-by-grandchild")
-    const grandchild = `setInterval(() => require("fs").writeFileSync(${JSON.stringify(marker)}, "x"), 20)`
-    const parent = `require("child_process").spawn(process.execPath, ["-e", ${JSON.stringify(grandchild)}], { stdio: "ignore" }); setInterval(() => {}, 1000)`
-    const running = runCommand(process.execPath, ["-e", parent], dir)
-    for (let i = 0; i < 100 && !existsSync(marker); i++) await new Promise((r) => setTimeout(r, 20))
-    expect(existsSync(marker)).toBe(true)
+    // Three rounds: on windows-latest the grandchild still wrote after the call returned in one of four CI runs
+    // (taskkill /F starts the termination and returns).
+    for (let round = 0; round < 3; round++) {
+      const dir = await mkdtemp(join(tmpdir(), "produx-stop-"))
+      dirs.push(dir)
+      const marker = join(dir, "written-by-grandchild")
+      const grandchild = `setInterval(() => require("fs").writeFileSync(${JSON.stringify(marker)}, String(process.pid)), 20)`
+      const parent = `require("child_process").spawn(process.execPath, ["-e", ${JSON.stringify(grandchild)}], { stdio: "ignore" }); setInterval(() => {}, 1000)`
+      const running = runCommand(process.execPath, ["-e", parent], dir)
+      for (let i = 0; i < 100 && !existsSync(marker); i++) await new Promise((r) => setTimeout(r, 20))
+      const grandchildPid = Number(await readFile(marker, "utf8"))
+      expect(isAlive(grandchildPid)).toBe(true)
 
-    await stopRunningCommands()
-    expect((await running).ok).toBe(false)
-    await rm(marker, { force: true })
-    await new Promise((r) => setTimeout(r, 300))
-    expect(existsSync(marker)).toBe(false)
-  })
+      await stopRunningCommands()
+      expect(isAlive(grandchildPid), `grandchild ${grandchildPid} after stopRunningCommands`).toBe(false)
+      expect((await running).ok).toBe(false)
+      await rm(marker, { force: true })
+      await new Promise((r) => setTimeout(r, 300))
+      expect(existsSync(marker)).toBe(false)
+    }
+  }, 30_000)
 })
