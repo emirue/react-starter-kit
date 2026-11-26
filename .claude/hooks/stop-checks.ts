@@ -1,10 +1,12 @@
 // Stop: when the checkout changed since the last green run, run the fast checks before Claude finishes.
 // A failure exits 2, so Claude keeps working on it. After three blocked stops in a session the hook
 // lets Claude stop, so it reports to the user instead of looping.
-import { execFileSync, spawnSync } from "node:child_process"
+import { execFileSync } from "node:child_process"
 import { createHash } from "node:crypto"
 import { existsSync, readFileSync, writeFileSync } from "node:fs"
 import { join, resolve } from "node:path"
+
+import { execaSync } from "execa"
 
 const CHECKS = ["typecheck", "lint", "format:check", "test:run"]
 const MAX_BLOCKS = 3
@@ -30,8 +32,9 @@ const state: { green?: string; blocks: Record<string, number> } = existsSync(sta
 if (state.green === fingerprint) process.exit(0)
 
 const failures = CHECKS.flatMap((script) => {
-  const r = spawnSync("pnpm", ["run", script], { cwd: root, encoding: "utf8", shell: process.platform === "win32" })
-  if (r.status === 0) return []
+  // execa, not a shell: it finds pnpm.cmd on Windows without concatenating arguments.
+  const r = execaSync("pnpm", ["run", script], { cwd: root, reject: false })
+  if (r.exitCode === 0) return []
   const output = `${r.stdout}${r.stderr}`.trim().split("\n").slice(-40).join("\n")
   return [{ script, output }]
 })

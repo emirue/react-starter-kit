@@ -10,14 +10,19 @@ ran, with numbers.
 
 ## 1. Fast checks (always)
 
+Run them one by one, so each result can be reported:
+
 ```bash
-pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:run && pnpm build
+pnpm typecheck; pnpm lint; pnpm format:check; pnpm test:run; pnpm build
 ```
+
+Changes only to `tests/**` or documentation stop here.
 
 ## 2. Generate real projects
 
-Pick scenarios from the changed files. Names are in `scripts/scenarios.ts`; preset contents are in
-`src/core/presets.ts`.
+Pick scenarios from the changed files. Names are in `scripts/scenarios.ts`, preset contents in
+`src/core/presets.ts`, template flags in `src/core/flags.ts`. When the table gives more scenarios than you can run,
+run first those that turn each changed `@if` flag on and off; the rest run in the full matrix before a release.
 
 | Changed                                                     | Scenarios                                                                                      | Also                                                                 |
 | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -26,21 +31,33 @@ Pick scenarios from the changed files. Names are in `scripts/scenarios.ts`; pres
 | `src/adapters/`, package-manager handling                   | `standard`, `standard-npm`, `standard-yarn`, `standard-bun`, `mono-turbo`                      |                                                                      |
 | `src/core/resolve-*.ts`, `src/cli/`                         | `minimal`, `standard`, `mono-turbo`, `existing-standard`                                       | interactive check if `src/cli/prompts.ts` changed                    |
 | `templates/base/**`                                         | `minimal`, `standard`, `enterprise`, `mono-enterprise`, `custom-primitives-no-tailwind`        | `--browser`                                                          |
-| `templates/features/<id>/**`                                | the scenarios whose preset or `--features` include `<id>`, with the feature on and off         | `--browser` for UI; `--shadcn-add` for shadcn/ui                     |
-| design tokens, CSS, color classes                           | `standard`, `enterprise`, `custom-primitives-no-tailwind`                                      | `--browser`                                                          |
+| `templates/features/<id>/**`                                | scenarios with each `@if` flag the change touches on and off                                   | `--browser` for UI; `--shadcn-add` for shadcn/ui                     |
+| `templates/shared/**`                                       | `standard`, `enterprise`, `mono-enterprise`                                                    |                                                                      |
+| design tokens, CSS, color classes that render               | `standard`, `enterprise`, `custom-primitives-no-tailwind`                                      | `--browser`                                                          |
+| a lint rule in generated projects                           | scenarios with the rule on and off                                                             | step 2a                                                              |
+| `src/utils/**`                                              | the row of the module that imports the changed helper                                          |                                                                      |
 | `scripts/validate.ts`, `scripts/scenarios.ts`               | `minimal` and one scenario that runs the changed check                                         |                                                                      |
 | `package.json`, the build                                   | step 4                                                                                         |                                                                      |
 
 ```bash
-node scripts/validate.ts --only <a,b> [--browser] --out "${TMPDIR:-/tmp}/produx-verify.json"
+node scripts/validate.ts --only <a,b> [--browser] --out "${TMPDIR:-/tmp}/produx-verify-<run>.json"
 ```
 
-- Always pass `--out`. The default rewrites `docs/validation/results.json`, which changes only in a release
-  validation (`docs/releasing.md`).
+- Always pass `--out`, with a new file for each run: results are merged into an existing file. The default rewrites
+  `docs/validation/results.json`, which changes only in a release validation (`docs/releasing.md`).
+- `--browser` is for changes to what renders (CSS, classes or markup in generated files), not for lint, test or
+  documentation changes.
 - Every scenario prints `PASS (n checks)` and the exit code is 0. For a FAIL read the detail and the log directory
   printed on the last line.
 - Docker checks print SKIPPED without a Docker daemon: report them as not tested.
 - Afterwards `pgrep -fl produx-validate` prints nothing. A leftover server is a defect (REVIEW.md item 1).
+- When done, delete the `produx-validate-*` directories your runs created (the path is on the last line).
+
+### 2a. Lint rules in generated projects
+
+One canary per rule only shows that the rule fires. In a generated project, lint a file of real positives and a file
+of near misses, and confirm that every positive is what the rule claims to catch (for a color rule: Tailwind emits a
+color for it). Every positive must be reported and every near miss accepted.
 
 ## 3. Use the CLI the way a user does
 
@@ -57,6 +74,8 @@ cd "$(mktemp -d)" && node <repo>/dist/index.mjs my-app --yes --no-install --no-g
 npm publish --dry-run                      # no warnings
 npm pack --pack-destination "${TMPDIR:-/tmp}"
 ```
+
+Both rebuild `dist/` (`prepack`): never run them while a harness run is using it.
 
 Install the tarball outside the repository, then run
 `node scripts/validate.ts --cli <installed bin> --only minimal,mono-turbo,existing-standard --out <scratch json>`.
